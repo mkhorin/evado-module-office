@@ -1,0 +1,23 @@
+<% layout(_view.get('_layout/modal/list')) %>
+
+<% block('title', 'Data history') %>
+
+<%- include(_view.get('_part/list/grid'), {
+    data: {
+        columns: [{
+            name: 'createdAt',
+            format: 'timestamp'
+        },{
+            name: 'data'
+        },{
+            name: 'user',
+            format: 'relation'
+        }],
+        order: {[model.PK]: -1},
+        list: _url('list', {c: owner.class.id, id: owner.getId()}),
+        create: null,
+        update: null,
+        delete: null,
+        showTop: false
+    }
+}) %>

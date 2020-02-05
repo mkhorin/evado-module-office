@@ -1,0 +1,21 @@
+<!-- model/sortOwnRelated -->
+
+<% block('title', `Sort related: ${meta.master.attr.title}`) %>
+
+<%- include(_view.get('_meta/list/sort'), {
+    data: {
+        jam: 'RelationSortList',
+        id: `related-sort-${meta.master.attr.id}`,
+        list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getClassMetaId()}`,
+        pageSize: 50
+    },
+    extraData: extraMeta.getData(meta.master.attr.getListView())
+}) %>
+
+<% if (meta.master.model.hasRelationOrder(meta.master.attr)) { %>
+<div class="after-list-commands">
+    <button data-command="deleteSort" class="btn-danger btn" type="button" title="Delete relation sort">
+        <span class="fa fa-trash"></span>
+    </button>
+</div>
+<% } %>

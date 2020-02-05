@@ -1,0 +1,31 @@
+<!-- office/./_meta/transition/group -->
+<% if (model.transitions && model.transitions.length) { %>
+<div data-command="transitions" class="transitions btn-group">
+    <%
+        let item = model.transitions[0];
+    %>
+    <button type="button" class="btn btn-default btn-light"
+            title="<%= item.hint || item.title %>"
+            data-command="transit"
+            data-transition="<%- item.name %>"
+            data-options="<%= JSON.stringify(item.options) %>"
+            data-t="meta.<%- item.translationKey %>"><%= item.title %></button>
+    <% if (model.transitions.length > 1) { %>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <% for (let i = 1; i < model.transitions.length; ++i) {
+           item = model.transitions[i]; %>
+        <li>
+            <a href="#" title="<%= item.hint || item.title %>"
+               data-command="transit"
+               data-transition="<%- item.name %>"
+               data-options="<%= JSON.stringify(item.options) %>"
+               data-t="meta.<%- item.translationKey %>"><%= item.title %></a>
+        </li>
+        <% } %>
+    </ul>
+    <% } %>
+</div>
+<% } %>

@@ -1,0 +1,33 @@
+<!-- office/./_meta/group/children -->
+<%
+let template, params, viewType;
+for (const item of group.children) {
+    template = _view.getMetaItemTemplate(item);
+    if (item.isGroup()) {
+        if (!template) {
+            template = _view.get(`_meta/group/${item.type}`);
+        }
+        params = {
+            group: item,
+            parent: group
+        };
+    } else {
+        if (!security.canReadAttr(item)) {
+            template = _view.get('_meta/attr/noAccess');
+        } else if (!template) {
+            viewType = item.isHidden() ? 'hidden' : item.getViewType();
+            template = _view.get(meta.isReadOnlyAttr(item, model)
+                ? '_meta/attr/view/' + viewType
+                : '_meta/attr/edit/' + viewType);
+        }
+        params = {
+            attr: item,
+            parent: group,
+            formAttrId: item.getFormId(_controller.timestamp), // for label
+            formAttrName: item.getFormName(),
+            required: item.isRequired() ? 'required' : ''
+        };
+    }
+%>
+<%- include(template, params) %>
+<% } %>

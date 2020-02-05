@@ -1,0 +1,200 @@
+/**
+ * @copyright Copyright (c) 2020 Maxim Khorin <maksimovichu@gmail.com>
+ */
+'use strict';
+
+const Base = require('evado/component/base/BaseController');
+
+module.exports = class BaseMetaController extends Base {
+
+    static getConstants () {
+        return {
+            ACTION_VIEW: require('evado/component/meta/MetaActionView')
+        };
+    }
+
+    constructor (config) {
+        super(config);
+        this.metaHub = this.module.getMetaHub();
+        this.docMeta = this.metaHub.get('document');
+        this.navMeta = this.metaHub.get('navigation');
+        this.security = this.createMetaSecurity();
+        this.meta = this.spawn('meta/MetaParams');
+        this.meta.security = this.security;
+        this.extraMeta = this.module.get('extraMeta');
+    }
+
+    getMetaParams (params) {
+        return {
+            docMeta: this.docMeta,
+            extraMeta: this.extraMeta,
+            meta: this.meta,
+            security: this.security,
+            readOnly: false,
+            ...params
+        };
+    }
+
+    createMetaSecurity (config) {
+        return this.spawn('meta/MetaSecurity', {controller: this, ...config});
+    }
+
+    createMetaTransit () {
+        return this.spawn('meta/MetaTransit', {
+            controller: this,
+            security: this.security
+        });
+    }
+
+    getModelQuery (id = this.getQueryParam('id')) {
+        return this.meta.view.findById(id, this.getSpawnConfig());
+    }
+
+    setMetaParams (data = {}) {
+        this.setClassMetaParams(data.className);
+        this.setViewMetaParams(data.viewName);
+        return this.setMasterRelationMetaParams();
+    }
+
+    setClassMetaParams (className = this.getQueryParam('c')) {
+        this.meta.class = this.docMeta.getClass(className);
+        if (!this.meta.class) {
+            throw new BadRequest('Meta class not found');
+        }
+        this.meta.view = this.meta.class;
+    }
+
+    setViewClassMetaParams (data = this.getQueryParam('v')) {
+        const [viewName, className] = String(data).split('.');
+        this.setClassMetaParams(className);
+        this.setViewMetaParams(viewName);
+    }
+
+    setViewMetaParams (viewName) {
+        this.meta.view = this.meta.class.getViewByPrefix(this.module.NAME, viewName) || this.meta.class;
+    }
+
+    setAttrMetaParams (data = this.getQueryParam('a')) {
+        const [attrName, viewName, className] = String(data).split('.');
+        this.setClassMetaParams(className);
+        this.setViewMetaParams(viewName);
+        this.meta.attr = this.meta.view.getAttr(attrName);
+        if (!this.meta.attr) {
+            throw new BadRequest(`Meta attribute not found: ${data}`);
+        }
+    }
+
+    async setMasterRelationMetaParams (data = this.getQueryParam('m')) {
+        if (!data) {
+            return null;
+        }
+        const [attrName, id, className] = String(data).split('.');
+        const master = this.meta.master;
+        master.class = this.docMeta.getClass(className);
+        if (!master.class) {
+            throw new BadRequest(`Master class not found: ${data}`);
+        }
+        master.view = master.class;
+        master.attr = master.view.getAttr(attrName);
+        if (!master.attr) {
+            throw new BadRequest(`Master attribute not found: ${data}`);
+        }
+        if (!master.attr.relation) {
+            throw new BadRequest(`Invalid master relation: ${data}`);
+        }
+        if (!this.meta.class) {
+            this.meta.class = master.attr.relation.refClass;
+            this.meta.view = master.attr.getListView();
+        }
+        if (!id) {
+            master.model = master.view.spawnModel(this.getSpawnConfig());
+            return master.model;
+        }
+        master.model = await master.view.findById(id, this.getSpawnConfig()).one();
+        if (!master.model) {
+            throw new BadRequest(`Master object not found: ${data}`);
+        }
+    }
+
+    async setModelMetaParams (query) {
+        const model = await query.one();
+        if (!model) {
+            throw new BadRequest('Object not found');
+        }
+        model.setUser(this.user);
+        this.meta.model = model;
+        return model;
+    }
+
+    setViewNodeMetaParams (data) {
+        this.setNodeMetaParams(data);
+        if (!this.meta.view) {
+            throw new BadRequest(`Node view not found`);
+        }
+    }
+
+    setNodeMetaParams ({node} = {}) {
+        node = node || this.getQueryParam('n');
+        node = this.navMeta.getNode(node);
+        if (!node) {
+            throw new NotFound('Node not found');
+        }
+        const metaClass = this.docMeta.getClass(node.data.class);
+        const view = node.data.view || 'list';
+        this.meta.node = node;
+        this.meta.class = metaClass;
+        this.meta.view = (metaClass && metaClass.getView(view)) || metaClass;
+        return node;
+    }
+
+    async resolveTreeMetaParams (node, depth, viewName) {
+        const level = this.meta.view.treeView.getLevel(depth);
+        if (!level) {
+            throw new BadRequest(`Tree view level not found`);
+        }
+        const master = this.meta.master;
+        master.class = level.sourceClass;
+        master.view = master.class;
+        master.attr = level.refAttr;
+        master.model = await master.view.findById(node, this.getSpawnConfig()).one();
+        if (!master.model) {
+            throw new BadRequest('Tree view node not found');
+        }
+        this.meta.class = level.getRefClass();
+        this.meta.view = level.getRefView(viewName);
+    }
+
+    async assignSecurityModelFilter (query) {
+        query.security = this.createMetaSecurity();
+        return await query.security.resolveOnList(query.view, {skipAccessException: true})
+            ? query.security.access.assignObjectFilter(query)
+            : query.where(['FALSE']);
+    }
+
+    handleModelError (model) {
+        this.send({[model.class.name]: this.translateMessageMap(model.getFirstErrorMap())}, 400);
+    }
+
+    async renderMeta (template, params) {
+        //const template = this.view.getMetaItemTemplate(this.meta.view);
+        return this.render(template, Object.assign(params, {
+            hasUtility: await this.hasUtility()
+        }));
+    }
+
+    hasUtility () {
+        return this.module.get('utility').isActiveUtility({
+            controller: this,
+            modelAction: this.action.name,
+            postParams: {meta: this.meta}
+        });
+    }
+
+    log (type, message, data) {
+        message = this.meta.view ? `${this.meta.view.id}: ${message}` : message;
+        this.docMeta.log(type, message, data);
+    }
+};
+
+const BadRequest = require('areto/error/BadRequestHttpException');
+const NotFound = require('areto/error/NotFoundHttpException');

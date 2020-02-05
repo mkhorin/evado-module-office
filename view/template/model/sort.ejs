@@ -1,0 +1,15 @@
+<!-- model/sort -->
+
+<% block('title', `Sort by ${sortAttr.title}`) %>
+
+<%- include(_view.get('_meta/list/sort'), {
+    data: {
+        order: {[sortAttr.name]: 1},
+        id: `sort-${meta.node.id}`,
+        list: `office/model/list?n=${meta.node.id}`
+    },
+    extraData: extraMeta.getData(meta.view)
+}) %>
+
+<div class="before-list-commands btn-set">
+</div>

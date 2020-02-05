@@ -1,0 +1,24 @@
+<!-- office/./_meta/attr/sort -->
+<%
+if (p.multiple && extraData.modalSortNames.length && access.canUpdate()) {
+    p.modalSort = {
+        url: `office/model/sort-related?${params}&column=`,
+        columns: extraData.modalSortNames
+    };
+%>
+<button data-command="sort" class="btn btn-white ml10" type="button" title="Sort">
+    <span class="glyphicon glyphicon-sort"></span>
+</button>
+<% } if (!model.isNew() && attr.relation.isSortable()) {
+    p.relationSort = {
+        url: `office/model/sort-own-related?${params}`,
+        active: model.hasRelationOrder(attr)
+    };
+    if (p.relationSort.active) {
+        p.order = null; // clear default order
+    }
+%>
+<button data-command="relationSort" class="btn btn-white ml10" type="button" title="Sort relation">
+    <span class="fa fa-sort"></span>
+</button>
+<% } %>

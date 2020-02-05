@@ -1,0 +1,17 @@
+<%
+const extra = extraMeta.getData(meta.view);
+const template = meta.view.treeView.isActive() ? 'tree' : 'grid';
+%>
+<% layout(_view.get('_layout/content')) %>
+
+<% block('title', extraMeta.getPageTitle(meta)) %>
+<% block('description', extraMeta.getPageDescription(meta)) %>
+
+<%- include(_view.get(`_meta/list/${template}`), {
+    data: {
+        modalSort: extra.modalSortNames.length ? {
+            url: `office/model/sort?n=${meta.node.id}&column=`,
+            columns: extra.modalSortNames
+        } : null
+    }
+}) %>

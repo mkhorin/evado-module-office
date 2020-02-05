@@ -1,0 +1,8 @@
+<!-- office/./_meta/attr/view/state -->
+<%
+const state = model.class.getState(model.get(attr));
+if (state) {
+    model.setDisplayValue(attr, `<span data-t="meta.${state.class.translationKey}">${state.title}</span>`);
+}
+%>
+<%- include(_view.get('_meta/attr/static')) %>

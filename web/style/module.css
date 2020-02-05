@@ -1,0 +1,19 @@
+
+.model-commands .transitions {
+    margin-left: 15px;
+}
+.model-commands .transitions .btn {
+    margin: 0 0 0 -1px;
+}
+
+.btn-white.ordered {
+    background-color: #f39c12;
+    border-color: #e08e0b;
+    color: #fff;
+}
+.btn-white.ordered:hover,
+.btn-white.ordered:active,
+.btn-white.ordered:focus,
+.btn-white.ordered:focus:active {
+    background-color: #e08e0b
+}

@@ -1,0 +1,131 @@
+<!-- office/./_meta/attr/edit/relation -->
+<%
+const extraData = extraMeta.getData(attr.getListView());
+const relation = attr.relation;
+const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getClassMetaId()}`;
+const defaultValue = model.isNew() ? model.get(attr) : null;
+const access = security.relationAccessMap[attr.name];
+const commands = extraMeta.getCommandData(attr, extraData);
+const p = {
+    id: attr.id,
+    relName: attr.name,
+    key: relation.refClass.getKey(),
+    pageSize: 10,
+    order: attr.getListView().getOrder(),
+    multiple: relation.multiple,
+    columns:  extraData.columns,
+    list: `office/model/list-related?${params}`,
+    link: commands.link ? `office/model/select?${params}` : false,
+    unlink: commands.unlink,
+    view: `office/model/view?${params}`,
+    update: commands.update ? `office/model/update?${params}` : false,
+    create: commands.create && access.canCreate() ? `office/model/create?${params}` : false,
+    delete: commands.delete && access.canDelete(),
+    ...attr.options.relation
+};
+if (p.showBottom === undefined) {
+    p.showBottom = p.pageSize > 0;
+}
+if (p.showTop && p.filter === undefined) {
+    p.filter = {};
+}
+if (p.filter && !p.filter.url) {
+    p.filter.url = `office/model/filter?c=${relation.refClass.id}`;
+}
+%>
+<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="Relation"
+     data-action-binder="<%= attr.actionBinder.stringified %>">
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
+           data-t="meta.<%- attr.translationKey %>"><%- attr.title %></label>
+    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+        <div class="box box-grid box-grid-field">
+            <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
+            <div class="box-header">
+                <div class="list-commands">
+                    <% if (p.link) { %>
+                    <div class="btn-set">
+                        <button data-command="link" class="btn btn-default" type="button" title="Add">
+                            <span class="fa fa-link"></span>
+                        </button>
+                        <% if (p.unlink) { %>
+                        <button data-command="unlink" class="btn btn-default" type="button" title="Remove">
+                            <span class="fa fa-unlink text-danger"></span>
+                        </button>
+                        <% } %>
+                    </div>
+                    <% } if (p.create) { %>
+                    <button data-command="create" class="btn btn-success btn-light" type="button" title="Create">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <% } if (p.update) { %>
+                    <button data-command="update" class="btn btn-warning btn-light" type="button" title="Update">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                    <% } if (p.delete) { %>
+                    <button data-command="delete" class="btn btn-default" type="button" title="Delete">
+                        <span class="glyphicon glyphicon-trash text-danger"></span>
+                    </button>
+                    <% } %>
+                    <div class="btn-set">
+                        <button data-command="reload" class="btn btn-default" type="button" title="Reload">
+                            <span class="fa fa-redo-alt"></span>
+                        </button>
+                    </div>
+                    <%- include(_view.get('_meta/attr/sort'), {p, extraData, access, params}) %>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
+                    <% if (p.filter) { %>
+                    <div class="list-filter">
+                        <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
+                    </div>
+                    <% } if (p.showTop) { %>
+                    <div class="row-top row">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="data-grid-common-search">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="clear" title="Clear">&times;</span>
+                                <span class="advanced-toggle glyphicon glyphicon-cog" title="Advanced search"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-8 col-lg-9">
+                            <div class="data-grid-tuner">
+                                <button type="button" class="toggle btn btn-default">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                </button>
+                            </div>
+                            <div class="data-grid-page-size hidden">
+                                <select class="form-control" title="Page size"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <div class="table-responsive">
+                        <table class="data-grid-table table table-bordered table-striped table-condensed">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <% if (p.showBottom) { %>
+                    <div class="row-bottom row">
+                        <div class="col-md-5">
+                            <div class="data-grid-info"></div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="data-grid-pages">
+                                <div class="data-grid-pagination"></div>
+                                <select class="data-grid-page-jumper form-control hidden"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="list-loader overlay"><i class="fa fa-spinner fa-spin"></i></div>
+        </div>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+    </div>
+</div>

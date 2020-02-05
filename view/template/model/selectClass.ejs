@@ -1,0 +1,44 @@
+<%
+const items = [];
+for (const {title, name} of meta.class.getActiveDescendants()) {
+    items.push({label: title, name});
+}
+const p = {
+    key: 'name',
+    multiple: false,
+    order: {label: 1},
+    columns: [{
+        name: 'label',
+        label: 'Label',
+        searchable: true,
+        sortable: true
+    },{
+        name: 'name',
+        label: 'Name',
+        searchable: true,
+        sortable: true
+    }],
+    data: items,
+    create: 'office/model/create?c='
+};
+%>
+<div class="jmodal-scroll-container box-grid box" data-title="Select class">
+    <div class="box-header with-border scroll-header">
+        <div class="list-commands clearfix">
+            <button data-command="selectClass" class="btn btn-primary" type="button" title="Select">
+                <span class="glyphicon glyphicon-check"></span>
+            </button>
+        </div>
+    </div>
+    <div class="scroll-body box-body">
+        <div class="data-grid" data-jam="SelectClassList" data-params="<%= JSON.stringify(p) %>">
+            <div class="table-responsive">
+                <table class="data-grid-table table table-bordered table-striped table-condensed">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="list-loader overlay"><i class="fa fa-spinner fa-spin"></i></div>
+</div>

@@ -1,0 +1,32 @@
+<% layout(_view.get('_layout/content')) %>
+
+<% block('title', 'Эксплуатация приложения') %>
+
+<%- include(_view.get('_meta/alert')) %>
+
+<div class="folder panel-default panel">
+    <div class="panel-heading">
+        <h4 class="panel-title">Краткий обзор</h4>
+    </div>
+    <div class="panel-body">
+        <p>
+            В Офисе приложение заполняется данными.
+            <br>
+            Например, в приложении <b>Блог</b> по классу <b>Статья</b> пишутся уже сами статьи.
+        </p>
+    </div>
+</div>
+
+<div class="folder panel-default panel">
+    <div class="panel-heading">
+        <h4 class="panel-title">Навигация</h4>
+    </div>
+    <div class="panel-body">
+        <p>
+            Боковое меню Офиса определяется из <b>main</b> секции навигации созданной в Студии.
+        </p>
+        <p>
+            В режиме разработки отображается служебный пункт со списком всех классов приложения.
+        </p>
+    </div>
+</div>

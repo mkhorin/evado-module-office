@@ -1,0 +1,21 @@
+<!-- office/./_meta/attr/edit/select -->
+<%
+const value = model.get(attr);
+%>
+<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="Enum"
+     data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
+     data-action-binder="<%= attr.actionBinder.stringified %>"
+     data-select2="<%= attr.options.select2 ? JSON.stringify(attr.options.select2) : '{}' %>">
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+           data-t="meta.<%- attr.translationKey %>"
+           title="<%= attr.extHint %>"><%- attr.title %></label>
+    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+        <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
+        <select <%- required %> class="form-control">
+            <option value></option>
+        </select>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+    </div>
+</div>

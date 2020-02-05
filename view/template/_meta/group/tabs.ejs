@@ -1,0 +1,26 @@
+<!-- office/./_part/group/tabs -->
+<div class="tabs form-tabs <%- group.data.css %>"
+     data-id="<%- group.name %>"
+     data-action-binder="<%= group.actionBinder.stringified %>">
+    <ul class="nav nav-tabs" role="tablist">
+    <% for (const tab of group.children) {
+       if (tab.isGroup()) { %>
+        <li class="nav-tab <%- tab.isActive() ? 'active' : '' %>" data-id="<%- tab.name %>">
+            <a href="#" data-t="meta.<%- tab.translationKey %>"
+               title="<%= tab.hint %>"><%- tab.title %></a>
+        </li>
+    <% }} %>
+    </ul>
+    <div class="tab-content">
+        <% for (const tab of group.children) {
+           if (tab.isGroup()) { %>
+        <div class="form-base-group tab-pane <%- tab.isActive() ? 'active' : '' %> <%- group.data.css %>"
+             data-id="<%- tab.name %>"
+             data-action-binder="<%= tab.actionBinder.stringified %>">
+            <div class="form-base-group-body">
+            <%- include(_view.get('_meta/group/children'), {group: tab}) %>
+            </div>
+        </div>
+        <% }} %>
+    </div>
+</div>

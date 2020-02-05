@@ -1,0 +1,40 @@
+<!-- office/./_meta/attr/edit/user -->
+<%
+let select2 = {ajax: {url: _url('user/list-select')}};
+let content = '';
+if (model.has(attr)) {
+    content = `<option selected value="${model.get(attr)}">${model.related.getTitle(attr)}</option>`;
+}
+const userUrl = _module.getParam('userUpdateUrl');
+%>
+<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="Select"
+     data-select2="<%= JSON.stringify(select2) %>"
+     data-action-binder="<%= attr.actionBinder.stringified %>">
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+           data-t="meta.<%- attr.translationKey %>"
+           title="<%= attr.extHint %>"><%- attr.title %></label>
+    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+        <% if (userUrl) { %>
+        <div class="input-group">
+            <select name="<%- formAttrName %>" class="form-control form-value">
+                <option value=""></option>
+                <%- content %>
+            </select>
+            <div class="input-group-btn">
+                <button class="btn-default btn" type="button" data-action="update" data-blank="true"
+                        data-url="<%- _url(userUrl) %>">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+            </div>
+        </div>
+        <% } else { %>
+        <select name="<%- formAttrName %>" class="form-control form-value">
+            <option value=""></option>
+            <%- content %>
+        </select>
+        <% } %>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+    </div>
+</div>

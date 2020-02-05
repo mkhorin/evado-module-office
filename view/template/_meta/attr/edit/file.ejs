@@ -1,0 +1,55 @@
+<!-- office/./_meta/attr/edit/file -->
+<%
+const options = extraMeta.getData(model.class).file;
+const data = extraMeta.getModelFileData(model);
+const file = data ? data.file : null;
+%>
+<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="File"
+     data-name-attr="<%- options.nameAttr %>"
+     data-action-binder="<%= attr.actionBinder.stringified %>">
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+           data-t="meta.<%- attr.translationKey %>"
+           title="<%= attr.extHint %>"><%- attr.title %></label>
+    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+        <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
+        <div class="uploader show-dropzone" data-options="<%= JSON.stringify(options)%>">
+            <div class="uploader-input">
+                <input type="file" class="uploader-input-file">
+                <div class="uploader-dropzone">
+                    <div class="uploader-dropzone-h1" data-t="">Drop or select file here</div>
+                </div>
+            </div>
+            <div class="uploader-overflow">Too many files</div>
+            <div class="uploader-list clearfix">
+                <div class="uploader-item pending sample">
+                    <div class="uploader-thumbnail"></div>
+                    <div class="uploader-signs">
+                        <div class="uploader-sign-pending fa fa-spinner fa-spin"></div>
+                        <div class="uploader-sign-processing fa fa-spinner fa-spin"></div>
+                        <div class="uploader-sign-done glyphicon glyphicon-ok"></div>
+                        <div class="uploader-sign-failed glyphicon glyphicon-ban-circle"></div>
+                        <div class="uploader-sign-saved glyphicon glyphicon-saved"></div>
+                    </div>
+                    <div class="uploader-delete" title="Delete"><span class="fa fa-times"></span></div>
+                    <div class="uploader-info">
+                        <div class="uploader-filename">File</div>
+                        <div class="progress progress-xxs"><div class="progress-bar"></div></div>
+                        <div class="uploader-message" data-t="">Preparing to upload...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <% if (data && data.size) { %>
+        <div class="file-download">
+            <a class="download-link" href="<%- data.download %>" target="_blank" title="<%= data.name %>">Download</a>
+            <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
+            <% if (data.thumbnail) { %>
+            <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>" class="thumbnail img-responsive" alt="">
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <base href="<%- _baseUrl %>">
+    <title data-text="<%= blocks.title %>" data-t="meta"><%- _module.getTitle() %></title>
+
+    <%- include(_view.get('_part/asset/style/defaults'), {skin: 'blue'}) %>
+    <link rel="stylesheet" href="office/style/module.css">
+    <%- include(_view.get('_part/asset/style/custom')) %>
+
+    <!-- assets -->
+    <!-- <%- _view.createHead() %> -->
+</head>
+<body class="hold-transition skin-blue sidebar-mini" data-csrf="<%- _controller.getCsrfToken() %>">
+
+    <%- body %>
+
+    <%- include(_view.get('_part/other/modal')) %>
+    <%- include(_view.get('_part/other/dialog')) %>
+    <%- include(_view.get('_part/asset/script/jam')) %>
+
+    <script src="office/jam/attr/Relation.js"></script>
+    <script src="office/jam/attr/RelationSelect.js"></script>
+    <script src="office/jam/list/List.js"></script>
+    <script src="office/jam/list/RelationSortList.js"></script>
+    <script src="office/jam/meta/DocModel.js"></script>
+    <script src="office/jam/meta/ModelWorkflow.js"></script>
+
+    <%- include(_view.get('_part/asset/script/messages')) %>
+    <%- include(_view.get('_part/asset/script/defaults')) %>
+    <%- include(_view.get('_part/asset/script/custom')) %>
+
+    <script src="script/init.js"></script>
+
+    <!-- assets -->
+    <!-- <%- _view.createBodyEnd() %> -->
+</body>
+</html>

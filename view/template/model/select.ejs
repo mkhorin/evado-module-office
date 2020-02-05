@@ -1,0 +1,14 @@
+<!-- office/model/select -->
+<% layout(_view.get('_layout/modal/select')) %>
+
+<% block('title', 'Select') %>
+
+<%- include(_view.get('_meta/list/grid'), {
+    data: {
+        jam: 'SelectList',
+        list: `office/model/list-select?m=${meta.master.attr.name}.${meta.master.model.getClassMetaId()}`,
+        multiple: meta.master.attr.relation.multiple,
+        create: null,
+        delete: null
+    }
+}) %>

@@ -1,0 +1,15 @@
+<!-- office/./_meta/group/set -->
+<fieldset class="form-base-group form-set <%- group.isActive() ? 'active' : '' %> <%- group.data.css %>"
+          data-id="<%- group.name %>"
+          data-action-binder="<%= group.actionBinder.stringified  %>">
+    <legend title="">
+        <div class="form-set-toggle">
+            <span class="icon fas"></span>
+            <span data-t="meta.<%- group.translationKey %>"
+                  title="<%= group.hint %>"><%- group.title %></span>
+        </div>
+    </legend>
+    <div class="form-set-body form-base-group-body">
+        <%- include(_view.get('_meta/group/children')) %>
+    </div>
+</fieldset>

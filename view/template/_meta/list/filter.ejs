@@ -1,0 +1,9 @@
+<!-- office/_meta/list/filter -->
+<%
+const extraData = extraMeta.getData(meta.view);
+const p = {
+    columns: extraData.searchColumns,
+    types: {selector: {url: 'office/model/list-filter-select'}}
+};
+%>
+<%- include(_view.get('_part/list/filterContent'), {data: p}) %>

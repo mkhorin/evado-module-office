@@ -1,0 +1,38 @@
+<!-- office/./_meta/attr/view/relationSelect -->
+<%
+const update = `office/model/update?c=${attr.relation.refClass.id}&id=`;
+const raw = model.get(attr);
+const related = model.related.get(attr);
+const items = [];
+if (Array.isArray(related)) {
+    for (const item of related) {
+        items.push(`<a href="${update}${item.getId()}" class="modal-link">${item.getEscapedTitle()}</a>`);
+    }
+} else if (related) {
+    items.push(`<a href="${update}${related.getId()}" class="modal-link">${related.getEscapedTitle()}</a>`);
+} else if (Array.isArray(raw)) {
+    for (const value of raw) {
+        items.push(`<a href="${update}${value}" class="modal-link">${value}</a>`);
+    }
+} else if (raw) {
+    items.push(`<a href="${update}${raw}" class="modal-link">${raw}</a>`);
+}
+%>
+<div class="form-attr form-group <%- attr.options.css %>"
+     data-action-binder="<%= attr.actionBinder.stringified %>">
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+           data-t="meta.<%- attr.translationKey %>"
+           title="<%= attr.extHint %>"><%- attr.title %></label>
+    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+        <div class="box relation-select-box">
+            <div class="box-body">
+                <input name="<%- formAttrName %>" type="hidden" value="<%= raw %>" class="form-value">
+                <p class="form-control-static">
+                    <%- items.length ? items.join('<br>') : _format(null) %>
+                </p>
+            </div>
+        </div>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<% attr.translationKey %>"><%- attr.hint %></div>
+    </div>
+</div>

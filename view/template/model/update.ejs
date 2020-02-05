@@ -1,0 +1,8 @@
+<% layout(_view.get('_layout/modal/modelForm')) %>
+
+<% block('tab', model.view.getTitle()) %>
+<% block('tabTranslation', 'meta.' + meta.view.translationKey) %>
+<% block('title', model.getTitle()) %>
+<% block('titleTranslation', 'none') %>
+
+<%- include(_view.get('model/_form')) %>

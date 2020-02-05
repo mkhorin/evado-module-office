@@ -1,0 +1,12 @@
+<!-- model/sortRelated -->
+
+<% block('title', `Sort by ${sortAttr.title}`) %>
+
+<%- include(_view.get('_meta/list/sort'), {
+    data: {
+        order: {[sortAttr.name]: 1},
+        id: `sort-${meta.master.attr.id}`,
+        list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getClassMetaId()}`
+    },
+    extraData: extraMeta.getData(meta.master.attr.getListView())
+}) %>

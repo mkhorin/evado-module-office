@@ -24,7 +24,7 @@ module.exports = class SortAction extends Base {
         const attrName = this.getQueryParam('column');
         const names = this.controller.extraMeta.getData(view).modalSortNames;
         if (!names.includes(attrName)) {
-            throw new BadRequest(`Not sortable attribute`);
+            throw new BadRequest(`Not modal sortable attribute`);
         }
         const sortAttr = view.getAttr(attrName);
         if (this.isGet()) {

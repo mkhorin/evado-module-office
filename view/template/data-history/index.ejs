@@ -1,6 +1,8 @@
 <% layout(_view.get('_layout/modal/list')) %>
 
-<% block('title', 'Data history') %>
+<% block('tab', 'Data history') %>
+<% block('title', owner.class.title) %>
+<% block('titleTranslation', 'meta') %>
 
 <%- include(_view.get('_part/list/grid'), {
     data: {

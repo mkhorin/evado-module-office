@@ -1,7 +1,7 @@
-<!-- office/./_meta/attr/edit/boolean -->
+<!-- _meta/attr/edit/boolean -->
 
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="Checkbox"
+     data-handler="<%- typeof handler === 'undefined' ? 'Checkbox' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <div class="<%- attr.options.cssValue || 'col-md-10 col-md-offset-2' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- model.get(attr) %>" class="form-value">

@@ -24,6 +24,10 @@ Jam.DocModel = class DocModel extends Jam.Model {
         return this.params.transiting;
     }
 
+    formatAttrName (name) {
+        return typeof name !== 'string' || name.includes('[') ? name : `data[${name}]`;
+    }
+
     setReadOnly () {
         this.findCommand('saveClose').remove();
         this.findCommand('save').remove();

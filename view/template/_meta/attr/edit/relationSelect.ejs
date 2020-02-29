@@ -1,21 +1,20 @@
-<!-- office/./_meta/attr/edit/relationSelect -->
+<!-- _meta/attr/edit/relationSelect -->
 <%
 const extraData = extraMeta.getData(attr.getListView());
 const relation = attr.relation;
-const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getClassMetaId()}`;
+const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getViewMetaId()}`;
 const value = model.get(attr);
 const defaultValue = model.isNew() ? model.get(attr) : null;
 const related = model.related.get(attr);
 const access = security.relationAccessMap[attr.name];
-const commands = extraMeta.getCommandData(attr, extraData);
+const commands = attr.commandMap;
 const p = {
     key: relation.refClass.getKey(),
     multiple: relation.multiple,
     maxSelectionLength: relation.maxItems,
-    list: `office/model/list-related-select?${params}`,
-    unlink: commands.unlink,
-    view: `office/model/view?${params}`,
-    update: commands.update ? `office/model/update?${params}` : false,
+    list: commands.add ? `office/model/list-related-select?${params}` : false,
+    unlink: commands.remove,
+    update: commands.edit ? `office/model/update?${params}` : false,
     create: commands.create && access.canCreate() ? `office/model/create?${params}` : false,
     delete: commands.delete && access.canDelete(),
     viewTitle: `office/model/title?${params}`,
@@ -23,7 +22,7 @@ const p = {
 };
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="RelationSelect"
+     data-handler="<%- typeof handler === 'undefined' ? 'RelationSelect' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
            title="<%= attr.extHint %>"
@@ -43,7 +42,7 @@ const p = {
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                     <% } if (p.update) { %>
-                    <button data-command="update" class="btn btn-warning btn-light" type="button" title="Update">
+                    <button data-command="update" class="btn btn-warning btn-light" type="button" title="Edit">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </button>
                     <% } if (p.delete) { %>

@@ -64,7 +64,7 @@ Jam.SelectClassList = class SelectClassList extends Jam.SelectList {
     onSelect () {
         const $row = this.getSelectedRow();
         if ($row) {
-            this.modal.load(this.params.create + this.serializeObjectIds($row));
+            this.modal.load(this.params.create, {c: this.serializeObjectIds($row)});
         }
     }
 

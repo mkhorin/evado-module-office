@@ -19,19 +19,17 @@ const p = {
         sortable: true
     }],
     data: items,
-    create: 'office/model/create?c='
+    create: 'office/model/create'
 };
 %>
 <div class="jmodal-scroll-container box-grid box" data-title="Select class">
-    <div class="box-header with-border scroll-header">
-        <div class="list-commands clearfix">
-            <button data-command="selectClass" class="btn btn-primary" type="button" title="Select">
-                <span class="glyphicon glyphicon-check"></span>
-            </button>
-        </div>
-    </div>
     <div class="scroll-body box-body">
         <div class="data-grid" data-jam="SelectClassList" data-params="<%= JSON.stringify(p) %>">
+            <div class="list-commands clearfix">
+                <button data-command="select" class="btn btn-primary" type="button" title="Select">
+                    <span class="glyphicon glyphicon-check"></span>
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="data-grid-table table table-bordered table-striped table-condensed">
                     <thead></thead>

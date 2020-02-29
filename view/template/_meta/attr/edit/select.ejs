@@ -1,9 +1,7 @@
-<!-- office/./_meta/attr/edit/select -->
-<%
-const value = model.get(attr);
-%>
+<!-- _meta/attr/edit/select -->
+
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="Enum"
+     data-handler="<%- typeof handler === 'undefined' ? 'Enum' : handler %>"
      data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-select2="<%= attr.options.select2 ? JSON.stringify(attr.options.select2) : '{}' %>">
@@ -11,7 +9,7 @@ const value = model.get(attr);
            data-t="meta.<%- attr.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
+        <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
         <select <%- required %> class="form-control">
             <option value></option>
         </select>

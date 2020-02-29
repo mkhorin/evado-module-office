@@ -1,4 +1,4 @@
-<!-- office/./_meta/attr/edit/user -->
+<!-- _meta/attr/edit/user -->
 <%
 let select2 = {ajax: {url: _url('user/list-select')}};
 let content = '';
@@ -8,7 +8,7 @@ if (model.has(attr)) {
 const userUrl = _module.getParam('userUpdateUrl');
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="Select"
+     data-handler="<%- typeof handler === 'undefined' ? 'Select' : handler %>"
      data-select2="<%= JSON.stringify(select2) %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"

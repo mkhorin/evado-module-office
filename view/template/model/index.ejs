@@ -2,7 +2,7 @@
 const extra = extraMeta.getData(meta.view);
 const template = meta.view.treeView.isActive() ? 'tree' : 'grid';
 %>
-<% layout(_view.get('_layout/content')) %>
+<% layout(_view.get('_layout/list')) %>
 
 <% block('title', extraMeta.getPageTitle(meta)) %>
 <% block('description', extraMeta.getPageDescription(meta)) %>

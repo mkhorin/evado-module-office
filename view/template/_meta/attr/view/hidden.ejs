@@ -1,5 +1,7 @@
-<!-- office/./_meta/attr/view/hidden -->
+<!-- _meta/attr/view/hidden -->
 
-<div class="form-attr hidden">
-    <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>" class="form-value">
+<div class="form-attr hidden"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
+    <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>"
+           class="form-value" readonly="readonly">
 </div>

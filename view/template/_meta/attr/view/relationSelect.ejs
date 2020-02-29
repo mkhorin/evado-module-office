@@ -1,24 +1,40 @@
-<!-- office/./_meta/attr/view/relationSelect -->
+<!-- _meta/attr/view/relationSelect -->
 <%
 const update = `office/model/update?c=${attr.relation.refClass.id}&id=`;
 const raw = model.get(attr);
 const related = model.related.get(attr);
 const items = [];
-if (Array.isArray(related)) {
+
+if (attr.commandMap.edit) {
+    if (Array.isArray(related)) {
+        for (const item of related) {
+            items.push(`<a href="${update}${item.getId()}" class="modal-link">${item.getEscapedTitle()}</a>`);
+        }
+    } else if (related) {
+        items.push(`<a href="${update}${related.getId()}" class="modal-link">${related.getEscapedTitle()}</a>`);
+    } else if (Array.isArray(raw)) {
+        for (const value of raw) {
+            items.push(`<a href="${update}${value}" class="modal-link">${value}</a>`);
+        }
+    } else if (raw) {
+        items.push(`<a href="${update}${raw}" class="modal-link">${raw}</a>`);
+    }
+} else if (Array.isArray(related)) {
     for (const item of related) {
-        items.push(`<a href="${update}${item.getId()}" class="modal-link">${item.getEscapedTitle()}</a>`);
+        items.push(item.getEscapedTitle());
     }
 } else if (related) {
-    items.push(`<a href="${update}${related.getId()}" class="modal-link">${related.getEscapedTitle()}</a>`);
+    items.push(related.getEscapedTitle());
 } else if (Array.isArray(raw)) {
     for (const value of raw) {
-        items.push(`<a href="${update}${value}" class="modal-link">${value}</a>`);
+        items.push(value);
     }
 } else if (raw) {
-    items.push(`<a href="${update}${raw}" class="modal-link">${raw}</a>`);
+    items.push(raw);
 }
 %>
-<div class="form-attr form-group <%- attr.options.css %>"
+<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
            data-t="meta.<%- attr.translationKey %>"
@@ -26,7 +42,8 @@ if (Array.isArray(related)) {
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <div class="box relation-select-box">
             <div class="box-body">
-                <input name="<%- formAttrName %>" type="hidden" value="<%= raw %>" class="form-value">
+                <input name="<%- formAttrName %>" type="hidden" value="<%= raw %>"
+                       class="form-value" readonly="readonly">
                 <p class="form-control-static">
                     <%- items.length ? items.join('<br>') : _format(null) %>
                 </p>

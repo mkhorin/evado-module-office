@@ -1,16 +1,17 @@
-<!-- office/./_meta/attr/view/date -->
+<!-- _meta/attr/view/date -->
 <%
 let value = model.get(attr);
 value = value instanceof Date ? value.toISOString() : value;
 %>
 <div class="form-attr form-group <%- attr.options.css %>"
-     data-handler="Date"
+     data-handler="<%- typeof handler === 'undefined' ? 'Date' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
            data-t="meta.<%- attr.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%- value %>" class="form-value">
+        <input name="<%- formAttrName %>" type="hidden" value="<%- value %>"
+               class="form-value" readonly="readonly">
         <p class="form-control-static">
             <%- _format(value, 'clientDate', {
                 utc: attr.isUTC(),

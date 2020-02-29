@@ -88,13 +88,16 @@ module.exports = class BaseMetaController extends Base {
         if (!data) {
             return null;
         }
-        const [attrName, id, className] = String(data).split('.');
+        const [attrName, id, viewName, className] = data.split('.');
         const master = this.meta.master;
         master.class = this.docMeta.getClass(className);
         if (!master.class) {
             throw new BadRequest(`Master class not found: ${data}`);
         }
-        master.view = master.class;
+        master.view = viewName ? master.class.getView(viewName) : master.class;
+        if (!master.view) {
+            throw new BadRequest(`Master view not found: ${data}`);
+        }
         master.attr = master.view.getAttr(attrName);
         if (!master.attr) {
             throw new BadRequest(`Master attribute not found: ${data}`);
@@ -116,12 +119,20 @@ module.exports = class BaseMetaController extends Base {
         }
     }
 
+    setDefaultMasterValue (model) {
+        const master = this.meta.master;
+        const attr = master.attr && master.attr.relation.refAttr;
+        if (attr && attr.relation && !model.get(attr)) {
+            model.set(attr, master.model.get(attr.relation.refAttrName));
+            master.refAttr = attr;
+        }
+    }
+
     async setModelMetaParams (query) {
         const model = await query.one();
         if (!model) {
             throw new BadRequest('Object not found');
         }
-        model.setUser(this.user);
         this.meta.model = model;
         return model;
     }

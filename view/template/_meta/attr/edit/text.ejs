@@ -1,6 +1,7 @@
-<!-- office/./_meta/attr/edit/text -->
+<!-- _meta/attr/edit/text -->
 
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
            data-t="meta.<% attr.translationKey %>"

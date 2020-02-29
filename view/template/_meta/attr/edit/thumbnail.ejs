@@ -1,4 +1,4 @@
-<!-- office/./_meta/attr/edit/thumbnail -->
+<!-- _meta/attr/edit/thumbnail -->
 <%
 const related = model.rel(attr);
 const models = Array.isArray(related) ? related : related ? [related] : [];
@@ -6,11 +6,12 @@ const refView = attr.getEagerView();
 const extraData = extraMeta.getData(refView);
 const file = extraData.file;
 const size = attr.options.thumbnail || refView.options.thumbnail || '';
-const commands = extraMeta.getCommandData(attr, extraData);
-const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getClassMetaId()}`;
+const commands = attr.commandMap;
+const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getViewMetaId()}`;
 const update = commands.update ? `office/model/update?${params}&id=` : false;
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
            data-t="meta.<%- attr.translationKey %>"><%- attr.title %></label>

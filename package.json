@@ -1,6 +1,6 @@
 {
   "name": "evado-module-office",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Evado module for operating business applications",
   "author": {
     "name": "Maxim Khorin",
@@ -8,7 +8,7 @@
   },
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=12.13.1"
+    "node": ">=12.14.1"
   },
   "homepage": "https://github.com/mkhorin/evado-module-office",
   "repository": {

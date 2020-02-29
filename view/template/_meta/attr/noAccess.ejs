@@ -1,10 +1,10 @@
-<!-- office/_meta/attr/noAccess -->
+<!-- _meta/attr/noAccess -->
 <div class="form-attr form-group <%- attr.options.css %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
            data-t="meta.<%- attr.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <input name="<%- formAttrName %>" type="hidden" class="form-value">
+        <input name="<%- formAttrName %>" type="hidden" class="form-value" readonly="readonly">
         <p class="form-control-static">
             <%- _controller.format(null, 'noAccess') %>
         </p>

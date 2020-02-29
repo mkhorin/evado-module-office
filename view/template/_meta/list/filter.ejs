@@ -1,8 +1,8 @@
-<!-- office/_meta/list/filter -->
+<!-- _meta/list/filter -->
 <%
 const extraData = extraMeta.getData(meta.view);
 const p = {
-    columns: extraData.searchColumns,
+    columns: extraData.filterColumns,
     types: {selector: {url: 'office/model/list-filter-select'}}
 };
 %>

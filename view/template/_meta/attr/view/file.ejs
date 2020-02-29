@@ -1,15 +1,17 @@
-<!-- office/./_meta/attr/view/file -->
+<!-- _meta/attr/view/file -->
 <%
 const data = extraMeta.getModelFileData(model);
 const file = data ? data.file : null;
 %>
 <div class="form-attr form-group <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
            data-t="meta.<%- attr.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
+        <input type="hidden" name="<%- formAttrName %>" value="<%- file %>"
+               class="form-value" readonly="readonly">
         <div class="form-control-static">
             <% if (data && data.size) { %>
             <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" data-t="">Download</a>

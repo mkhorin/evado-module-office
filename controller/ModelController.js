@@ -38,33 +38,41 @@ module.exports = class ModelController extends Base {
     }
 
     async actionCreate () {
-        await this.setMetaParams({viewName: this.action.name});
-        if (this.meta.class.isAbstract()) {
+        await this.setMetaParams({viewName: 'create'});
+        const meta = this.meta;
+        if (meta.class.isAbstract()) {
             return this.renderMeta('selectClass', this.getMetaParams());
         }
-        await this.security.resolveOnCreate(this.meta.view);
+        await this.security.resolveOnCreate(meta.view);
         if (this.isGet()) {
-            await this.security.resolveRelations(this.meta.view);
+            await this.security.resolveRelations(meta.view);
         }
-        const model = this.meta.view.spawnModel(this.getSpawnConfig());
-        this.meta.model = model;
+        const config = this.getSpawnConfig();
+        const model = meta.view.spawnModel(config);
+        meta.model = model;
         await model.setDefaultValues();
-        model.related.setDefaultMasterRelation(this.meta.master);
+        this.setDefaultMasterValue(model);
         if (this.isGet()) {
-            await this.meta.view.resolveEnums();
+            const query = meta.view.find(config).withFormData();
+            await query.resolveRelation([model]);
+            await meta.view.resolveEnums();
             return this.renderMeta(this.action.name, this.getMetaParams({model}));
         }
-        model.load(this.getPostParams(), this.security.getForbiddenAttrs('create'));
-        return await model.save()
-            ? this.sendText(model.getId())
-            : this.handleModelError(model);
+        const excludes = this.security.getForbiddenAttrs('create') || [];
+        if (meta.master.refAttr) {
+            excludes.push(meta.master.refAttr.name);
+        }
+        model.load(this.getPostParam('data'), excludes);
+        if (!await model.save()) {
+            return this.handleModelError(model);
+        }
+        this.sendText(model.getId());
     }
 
     async actionUpdate () {
         const transit = this.createMetaTransit();
-        const viewName = this.action.name;
-        await this.setMetaParams({viewName});
-        const query = this.getModelQuery().withFormDefaults();
+        await this.setMetaParams({viewName: 'edit'});
+        const query = this.getModelQuery().withFormData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const model = await this.setModelMetaParams(query);
         await this.security.resolveOnUpdate(model);
@@ -76,7 +84,7 @@ module.exports = class ModelController extends Base {
         model.readOnly = forbidden || model.isTransiting() || model.isReadOnlyState();
         if (this.isGet()) {
             await this.meta.view.resolveEnums();
-            return this.renderMeta(viewName, this.getMetaParams({model}));
+            return this.renderMeta('update', this.getMetaParams({model}));
         }
         if (forbidden) {
             throw new Forbidden;
@@ -84,16 +92,16 @@ module.exports = class ModelController extends Base {
         if (model.isTransiting()) {
             throw new Forbidden('Transition in progress');
         }
+        const request = this.getPostParams();
         if (!model.readOnly) {
-            model.load(this.getPostParams(), this.security.getForbiddenAttrs('update'));
+            model.load(request.data, this.security.getForbiddenAttrs('update'));
             if (!await model.save()) {
                 return this.handleModelError(model);
             }
-            await this.deleteRelated(model); // to check access
+            await this.deleteRelatedModels(model); // to check access
         }
-        const transition = this.getPostParam('transition');
-        if (transition) {
-            await transit.execute(model, transition);
+        if (request.transition) {
+            await transit.execute(model, request.transition);
         }
         this.sendText(model.getId());
     }
@@ -123,6 +131,7 @@ module.exports = class ModelController extends Base {
             refView: 'selectListView',
             access: {actions: ['read', 'create', 'update']}
         });
+        this.meta.dependency = this.getQueryParam('d');
         return this.render('select', this.getMetaParams());
     }
 
@@ -131,7 +140,7 @@ module.exports = class ModelController extends Base {
     async actionList () {
         await this.setViewNodeMetaParams();
         await this.security.resolveOnList(this.meta.view);
-        const query = this.meta.view.find(this.getSpawnConfig()).withListDefaults();
+        const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
         this.sendJson(await grid.getList());
@@ -145,10 +154,11 @@ module.exports = class ModelController extends Base {
             await this.resolveTreeMetaParams(node, depth, 'list');
         }
         await this.security.resolveOnList(this.meta.view);
-        const query = this.meta.view.find(this.getSpawnConfig()).withListDefaults();
+        const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
-        if (this.meta.master.attr) {
-            await this.meta.master.attr.relation.setQueryByModel(query, this.meta.master.model);
+        const master = this.meta.master;
+        if (master.attr) {
+            await master.attr.relation.setQueryByModel(query, master.model);
         }
         const grid = this.spawn('meta/MetaTreeGrid', {controller: this, query, depth});
         this.sendJson(await grid.getList());
@@ -157,17 +167,21 @@ module.exports = class ModelController extends Base {
     async actionListSelect () {
         await this.setMasterRelationMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
-        const attr = this.meta.master.attr;
-        const query = this.meta.view.find(this.getSpawnConfig());
+        const master = this.meta.master;
+        const query = this.meta.view.find(this.getSpawnConfig({
+            model: master.model,
+            dependency: this.getPostParam('dependency')
+        }));
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
+        const attr = master.attr;
         const name = attr.isRef() ? attr : attr.relation.linkAttrName;
-        const value = this.meta.master.model.get(name);
+        const value = master.model.get(name);
         if (value) {
             query.and(['NOT IN', attr.relation.refAttrName, value]);
         }
         const grid = this.spawn('meta/MetaGrid', {
             controller: this,
-            query: query.withListDefaults()
+            query: query.withListData()
         });
         this.sendJson(await grid.getList());
     }
@@ -175,7 +189,7 @@ module.exports = class ModelController extends Base {
     async actionListRelated () {
         await this.setMasterRelationMetaParams();
         await this.resolveMasterAttr({refView: 'listView'});
-        const query = this.meta.view.find(this.getSpawnConfig()).withListDefaults();
+        const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         await this.meta.master.attr.relation.setQueryByModel(query, this.meta.master.model);
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
@@ -186,14 +200,18 @@ module.exports = class ModelController extends Base {
         await this.setMasterRelationMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
         const request = this.getPostParams();
-        const query = this.meta.view.find(this.getSpawnConfig()).withTitle();
+        const query = this.meta.view.find(this.getSpawnConfig({
+            model: this.meta.master.model,
+            dependency: request.dependency
+        })).withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const select = this.spawn('meta/MetaSelect2', {request, query});
         this.sendJson(await select.getList());
     }
 
     async actionListFilterSelect () {
-        const attr = this.docMeta.getAttr(this.getPostParam('id'));
+        const request = this.getPostParams();
+        const attr = this.docMeta.getAttr(request.id);
         if (!attr) {
             throw new BadRequest('Meta attribute not found');
         }
@@ -201,7 +219,6 @@ module.exports = class ModelController extends Base {
         this.meta.class = attr.class;
         this.meta.view = attr.getSelectListView();
         await this.security.resolveOnList(this.meta.view);
-        const request = this.getPostParams();
         const query = this.meta.view.find(this.getSpawnConfig()).withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const select = this.spawn('meta/MetaSelect2', {request, query});
@@ -223,9 +240,9 @@ module.exports = class ModelController extends Base {
         return this.security.resolveOnList(this.meta.view, access);
     }
 
-    async deleteRelated (model) {
-        for (const data of model.related.getDeletionData()) {
-            await this.deleteById(data.id, data.metaClass);
+    async deleteRelatedModels (owner) {
+        for (const model of owner.related.getDeletedModels()) {
+            await this.deleteById(model.getId(), model.class);
         }
     }
 

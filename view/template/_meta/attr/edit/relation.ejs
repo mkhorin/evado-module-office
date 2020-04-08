@@ -11,7 +11,7 @@ const p = {
     relName: attr.name,
     key: relation.refClass.getKey(),
     pageSize: 10,
-    order: attr.getListView().getOrder(),
+    order: attr.getListView().order,
     multiple: relation.multiple,
     columns:  extraData.columns,
     list: `office/model/list-related?${params}`,
@@ -23,7 +23,7 @@ const p = {
     ...attr.options.relation
 };
 if (p.showBottom === undefined) {
-    p.showBottom = p.pageSize > 0;
+    p.showBottom = p.multiple && p.pageSize > 0;
 }
 if (p.showTop && p.filter === undefined) {
     p.filter = {};
@@ -31,6 +31,7 @@ if (p.showTop && p.filter === undefined) {
 if (p.filter && !p.filter.url) {
     p.filter.url = `office/model/filter?c=${relation.refClass.id}`;
 }
+const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? 'Relation' : handler %>"
@@ -72,7 +73,7 @@ if (p.filter && !p.filter.url) {
                                 <span class="fa fa-redo-alt"></span>
                             </button>
                         </div>
-                        <%- include(_view.get('_meta/attr/sort'), {p, extraData, access, params}) %>
+                        <%- sortCommands %>
                     </div>
                     <% if (p.filter) { %>
                     <div class="list-filter">
@@ -106,17 +107,7 @@ if (p.filter && !p.filter.url) {
                         </table>
                     </div>
                     <% if (p.showBottom) { %>
-                    <div class="row-bottom row">
-                        <div class="col-md-5">
-                            <div class="data-grid-info"></div>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="data-grid-pages">
-                                <div class="data-grid-pagination"></div>
-                                <select class="data-grid-page-jumper form-control hidden"></select>
-                            </div>
-                        </div>
-                    </div>
+                    <%- include(_view.get('_part/list/bottom')) %>
                     <% } %>
                 </div>
             </div>

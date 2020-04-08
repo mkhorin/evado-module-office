@@ -2,8 +2,9 @@
 <%
 let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
 let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
+let value = model.get(attr);
 let displayValue = _format(model.getDisplayValue(attr), attrFormat, attrFormatParams);
-if (attr.escaping) {
+if (value && attr.escaping) {
     displayValue = _view.EscapeHelper.escapeTags(displayValue);
 }
 %>
@@ -14,7 +15,7 @@ if (attr.escaping) {
            data-t="meta.<%- attr.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>"
+        <input name="<%- formAttrName %>" type="hidden" value="<%= value %>"
                class="form-value" readonly="readonly">
         <p class="form-control-static"><%- displayValue %></p>
         <div class="error-block"></div>

@@ -1,0 +1,9 @@
+<!-- _meta/attr/view/class -->
+<%
+const item = model.class.meta.getClass(model.get(attr));
+if (item) {
+    const value = `<span data-t="meta.${item.translationKey}" title="${item.name}">${item.title}</span>`;
+    model.setDisplayValue(attr, value);
+}
+%>
+<%- include(_view.get('_meta/attr/static')) %>

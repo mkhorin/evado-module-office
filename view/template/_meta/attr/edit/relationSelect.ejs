@@ -20,6 +20,7 @@ const p = {
     viewTitle: `office/model/title?${params}`,
     ...attr.options.relation
 };
+const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? 'RelationSelect' : handler %>"
@@ -50,7 +51,7 @@ const p = {
                         <span class="glyphicon glyphicon-trash text-danger"></span>
                     </button>
                     <% } %>
-                    <%- include(_view.get('_meta/attr/sort'), {p, extraData, access, params}) %>
+                    <%- sortCommands %>
                 </div>
                 <input type="hidden" name="<%- formAttrName %>" value="<%= defaultValue %>" class="form-value">
                 <select class="form-control" <% if (p.multiple) { %>multiple<% } %>

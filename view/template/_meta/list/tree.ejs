@@ -5,7 +5,7 @@ data = {
     jam: 'MainTreeList',
     key: meta.class.getKey(),
     multiple: true,
-    order: meta.view.getOrder() || {[meta.class.getKey()]: -1},
+    order: meta.view.order || {[meta.class.getKey()]: -1},
     columns: extraData.columns,
     create: `office/model/create?c=${meta.class.id}`,
     update: `office/model/update`,
@@ -18,10 +18,14 @@ if (!data.list) {
     data.list = `office/model/list-tree?n=${meta.node.id}`;
 }
 const commands = extraData.commands;
+const canCreate = commands.create && data.create && security.access.canCreate();
 %>
-<div class="tree-data-grid data-grid" data-jam="<%- data.jam %>" data-params="<%= JSON.stringify(data) %>">
+<div class="tree-data-grid data-grid <%- meta.view.options.css %>"
+     data-jam="<%- data.jam %>"
+     data-params="<%= JSON.stringify(data) %>">
+
     <div class="list-commands clearfix">
-        <% if (commands.create && data.create && security.access.canCreate()) { %>
+        <% if (canCreate) { %>
         <button data-command="create" class="btn btn-success btn-light" type="button" title="Create">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
@@ -39,7 +43,11 @@ const commands = extraData.commands;
                 <span class="fa fa-redo-alt"></span>
             </button>
         </div>
-        <% if (data.modalSort && security.access.canUpdate()) { %>
+        <% if (canCreate) { %>
+        <button data-command="clone" class="btn btn-success btn-light" type="button" title="Clone">
+            <span class="fa fa-clone"></span>
+        </button>
+        <% } if (data.modalSort && security.access.canUpdate()) { %>
         <button data-command="sort" class="btn btn-white" type="button" title="Sort">
             <span class="glyphicon glyphicon-sort"></span>
         </button>
@@ -77,15 +85,5 @@ const commands = extraData.commands;
             <tbody></tbody>
         </table>
     </div>
-    <div class="row-bottom row">
-        <div class="col-md-5">
-            <div class="data-grid-info"></div>
-        </div>
-        <div class="col-md-7">
-            <div class="data-grid-pages">
-                <div class="data-grid-pagination"></div>
-                <select class="data-grid-page-jumper form-control hidden"></select>
-            </div>
-        </div>
-    </div>
+    <%- include(_view.get('_part/list/bottom')) %>
 </div>

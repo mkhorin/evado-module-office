@@ -47,16 +47,12 @@ module.exports = class ModelController extends Base {
         if (this.isGet()) {
             await this.security.resolveRelations(meta.view);
         }
-        const config = this.getSpawnConfig();
-        const model = meta.view.spawnModel(config);
+        const model = meta.view.spawnModel(this.getSpawnConfig());
         meta.model = model;
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
         if (this.isGet()) {
-            const query = meta.view.find(config).withFormData();
-            await query.resolveRelation([model]);
-            await meta.view.resolveEnums();
-            return this.renderMeta(this.action.name, this.getMetaParams({model}));
+            return this.renderCreate(model);
         }
         const excludes = this.security.getForbiddenAttrs('create') || [];
         if (meta.master.refAttr) {
@@ -133,6 +129,21 @@ module.exports = class ModelController extends Base {
         });
         this.meta.dependency = this.getQueryParam('d');
         return this.render('select', this.getMetaParams());
+    }
+
+    async actionClone () {
+        if (this.isPost()) {
+            return this.actionCreate();
+        }
+        await this.setMetaParams({viewName: 'create'});
+        const sample = await this.setModelMetaParams(this.getModelQuery().withFormData());
+        await this.security.resolveOnCreate(this.meta.view);
+        await this.security.resolveRelations(this.meta.view);
+        const model = this.meta.view.spawnModel(this.getSpawnConfig());
+        model.clone(sample);
+        this.meta.model = model;
+        await model.setDefaultValues();
+        return this.renderCreate(model);
     }
 
     // LIST
@@ -226,6 +237,14 @@ module.exports = class ModelController extends Base {
     }
 
     // METHODS
+
+    async renderCreate (model) {
+        const query = this.meta.view.find(this.getSpawnConfig()).withFormData();
+        await query.resolveRelation([model]);
+        await this.meta.view.resolveEnums();
+        await model.resolveCalc();
+        return this.renderMeta('create', this.getMetaParams({model}));
+    }
 
     resolveMasterAttr ({refView, access}) {
         const attr = this.meta.master.attr;

@@ -2,4 +2,4 @@
 
 ### Evado module for operating business applications
 
-[Evado Kit](https://github.com/mkhorin/evado)
+[Evado Platform](https://github.com/mkhorin/evado)

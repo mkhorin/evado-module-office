@@ -1,7 +1,11 @@
 <%
 const items = [];
-for (const {title, name} of meta.class.getActiveDescendants()) {
-    items.push({label: title, name});
+for (const metaClass of meta.class.getActiveDescendants()) {
+    items.push({
+        label: metaClass.title,
+        name: metaClass.name,
+        description: metaClass.data.description
+    });
 }
 const p = {
     key: 'name',
@@ -17,12 +21,16 @@ const p = {
         label: 'Name',
         searchable: true,
         sortable: true
+    },{
+        name: 'description',
+        label: 'Description'
     }],
     data: items,
     create: 'office/model/create'
 };
 %>
 <div class="jmodal-scroll-container box-grid box" data-title="Select class">
+    <div class="box-header with-border scroll-header"></div>
     <div class="scroll-body box-body">
         <div class="data-grid" data-jam="SelectClassList" data-params="<%= JSON.stringify(p) %>">
             <div class="list-commands clearfix">
@@ -30,6 +38,22 @@ const p = {
                     <span class="glyphicon glyphicon-check"></span>
                 </button>
             </div>
+            <% if (items.length > 10) { %>
+            <div class="row-top row">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="data-grid-common-search">
+                        <input type="search" class="form-control" placeholder="Search...">
+                        <span class="clear" title="Clear">&times;</span>
+                        <span class="advanced-toggle glyphicon glyphicon-cog" title="Advanced search"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-8 col-lg-9">
+                    <div class="data-grid-page-size hidden">
+                        <select class="form-control" title="Page size"></select>
+                    </div>
+                </div>
+            </div>
+            <% } %>
             <div class="table-responsive">
                 <table class="data-grid-table table table-bordered table-striped table-condensed">
                     <thead></thead>

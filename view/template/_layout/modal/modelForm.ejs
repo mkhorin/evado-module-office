@@ -18,7 +18,7 @@ if (typeof params !== 'undefined') {
     Object.assign(p, params);
 }
 %>
-<div class="jmodal-scroll-container box-info box"
+<div class="jmodal-scroll-container box-info box <%- model.view.options.css %>"
      data-tab="<%= blocks.tab %>"
      data-title="<%= blocks.title %>"
      data-t-tab="<%- blocks.tabTranslation %>"

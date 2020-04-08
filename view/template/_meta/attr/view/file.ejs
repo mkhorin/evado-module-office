@@ -14,7 +14,7 @@ const file = data ? data.file : null;
                class="form-value" readonly="readonly">
         <div class="form-control-static">
             <% if (data && data.size) { %>
-            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" data-t="">Download</a>
+            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" tabindex="-1" data-t="">Download</a>
             <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
             <% if (data.thumbnail) { %>
             <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>" class="thumbnail img-responsive" alt="">

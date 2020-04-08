@@ -3,6 +3,15 @@
  */
 'use strict';
 
+Jam.MainList = class MainList extends Jam.MainList {
+
+    getCloneParams ($row) {
+        const id = $row.data('id');
+        const c = this.grid.getData(id)._metaClass;
+        return {c, id};
+    }
+};
+
 Jam.TreeList = class TreeList extends Jam.TreeList {
 
     onClickRow (event) {

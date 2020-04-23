@@ -47,11 +47,13 @@ module.exports = class ModelController extends Base {
         if (this.isGet()) {
             await this.security.resolveRelations(meta.view);
         }
+        const transit = this.createMetaTransit();
         const model = meta.view.spawnModel(this.getSpawnConfig());
         meta.model = model;
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
         if (this.isGet()) {
+            await transit.resolve(model);
             return this.renderCreate(model);
         }
         const excludes = this.security.getForbiddenAttrs('create') || [];
@@ -59,10 +61,9 @@ module.exports = class ModelController extends Base {
             excludes.push(meta.master.refAttr.name);
         }
         model.load(this.getPostParam('data'), excludes);
-        if (!await model.save()) {
-            return this.handleModelError(model);
-        }
-        this.sendText(model.getId());
+        return await model.save()
+            ? this.resolveTransit(transit, model)
+            : this.handleModelError(model);
     }
 
     async actionUpdate () {
@@ -88,18 +89,15 @@ module.exports = class ModelController extends Base {
         if (model.isTransiting()) {
             throw new Forbidden('Transition in progress');
         }
-        const request = this.getPostParams();
         if (!model.readOnly) {
-            model.load(request.data, this.security.getForbiddenAttrs('update'));
+            const excludes = this.security.getForbiddenAttrs('update');
+            model.load(this.getPostParam('data'), excludes);
             if (!await model.save()) {
                 return this.handleModelError(model);
             }
             await this.deleteRelatedModels(model); // to check access
         }
-        if (request.transition) {
-            await transit.execute(model, request.transition);
-        }
-        this.sendText(model.getId());
+        return this.resolveTransit(transit, model);
     }
 
     async actionDelete () {
@@ -210,19 +208,17 @@ module.exports = class ModelController extends Base {
     async actionListRelatedSelect () {
         await this.setMasterRelationMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
-        const request = this.getPostParams();
         const query = this.meta.view.find(this.getSpawnConfig({
             model: this.meta.master.model,
-            dependency: request.dependency
+            dependency: this.getPostParam('dependency')
         })).withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
-        const select = this.spawn('meta/MetaSelect2', {request, query});
+        const select = this.spawn('meta/MetaSelect2', {controller: this, query});
         this.sendJson(await select.getList());
     }
 
     async actionListFilterSelect () {
-        const request = this.getPostParams();
-        const attr = this.docMeta.getAttr(request.id);
+        const attr = this.docMeta.getAttr(this.getPostParam('id'));
         if (!attr) {
             throw new BadRequest('Meta attribute not found');
         }
@@ -232,15 +228,27 @@ module.exports = class ModelController extends Base {
         await this.security.resolveOnList(this.meta.view);
         const query = this.meta.view.find(this.getSpawnConfig()).withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
-        const select = this.spawn('meta/MetaSelect2', {request, query});
+        const select = this.spawn('meta/MetaSelect2', {controller: this, query});
         this.sendJson(await select.getList());
     }
 
     // METHODS
 
+    async resolveTransit (transit, model) {
+        const transition = this.getPostParam('transition');
+        if (transition) {
+            await transit.execute(model, transition);
+            if (model.hasError()) {
+                return this.handleModelError(model);
+            }
+        }
+        this.sendText(model.getId());
+    }
+
     async renderCreate (model) {
         const query = this.meta.view.find(this.getSpawnConfig()).withFormData();
         await query.resolveRelation([model]);
+        await query.resolveUsers([model]);
         await this.meta.view.resolveEnums();
         await model.resolveCalc();
         return this.renderMeta('create', this.getMetaParams({model}));

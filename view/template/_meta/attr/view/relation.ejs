@@ -15,7 +15,7 @@ const p = {
     multiple: attr.relation.multiple,
     columns: extraData.columns,
     list: `office/model/list-related?${params}`,
-    update: commands.edit && access.canUpdate() ? `office/model/update?${params}` : false,
+    update: commands.edit ? `office/model/update?${params}` : false,
     oneSelect: 'Select one item for action',
     anySelect: 'Select items for action',
     ...attr.options.relation

@@ -29,8 +29,8 @@ Jam.DocModel = class DocModel extends Jam.Model {
     }
 
     setReadOnly () {
-        this.findCommand('saveClose').remove();
-        this.findCommand('save').remove();
+        this.findCommand('saveClose').attr('disabled', true).removeAttr('data-command');
+        this.findCommand('save').attr('disabled', true).removeAttr('data-command');
         this.findCommand('utilities').remove();
     }
 

@@ -1,9 +1,8 @@
 <!-- _meta/group/set -->
-
 <fieldset class="form-base-group form-set <%- group.isActive() ? 'active' : '' %> <%- group.data.css %>"
           data-id="<%- group.name %>"
           data-action-binder="<%= group.actionBinder.stringified  %>">
-    <legend title="">
+    <legend>
         <div class="form-set-toggle">
             <span class="icon fas"></span>
             <span data-t="meta.<%- group.translationKey %>"

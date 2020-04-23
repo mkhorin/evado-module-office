@@ -24,7 +24,7 @@ Jam.RelationSortList = class RelationSortList extends Jam.SortList {
     }
 
     beforeClose (event) {
-        if (this.changed && !Jam.Helper.confirm('Close without saving changes?')) {
+        if (this.changed && !Jam.Helper.confirm('Close without saving?')) {
             event.stopPropagation();
         }
     }

@@ -12,13 +12,13 @@ for (const item of group.children) {
             parent: group
         };
     } else {
-        if (!security.canReadAttr(item)) {
+        if (!meta.canReadAttr(item, model)) {
             template = _view.get('_meta/attr/noAccess');
         } else if (!template) {
             viewType = item.isHidden() ? 'hidden' : item.getViewType();
-            template = _view.get(meta.isReadOnlyAttr(item, model)
-                ? '_meta/attr/view/' + viewType
-                : '_meta/attr/edit/' + viewType);
+            template = _view.get(meta.canUpdateAttr(item, model)
+                ? '_meta/attr/edit/' + viewType
+                : '_meta/attr/view/' + viewType);
         }
         params = {
             attr: item,

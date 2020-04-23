@@ -3,8 +3,4 @@
  */
 'use strict';
 
-const Base = require('evado/component/meta/MetaParams');
-
-module.exports = class MetaParams extends Base {
-
-};
+module.exports = require('evado/component/meta/MetaParams');

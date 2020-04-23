@@ -17,7 +17,8 @@ const file = data ? data.file : null;
             <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" tabindex="-1" data-t="">Download</a>
             <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
             <% if (data.thumbnail) { %>
-            <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>" class="thumbnail img-responsive" alt="">
+            <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>"
+                 class="file-download-thumbnail thumbnail img-responsive" alt="">
             <% }} else { %>
             <%- _format(null) %>
             <% } %>

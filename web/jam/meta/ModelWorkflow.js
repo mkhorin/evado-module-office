@@ -27,7 +27,7 @@ Jam.ModelWorkflow = class ModelWorkflow {
     createTransition ($control) {
         const options = $control.data('options') || {};
         const Transition = options.jam
-            ? Jam.getClass(`ModelTransition.${options.jam}`)
+            ? Jam.getClass(`${options.jam}ModelTransition`)
             : Jam.ModelTransition;
         return new Transition(this, $control);
     }
@@ -55,10 +55,14 @@ Jam.ModelTransition = class ModelTransition {
     execute () {
         return $.when(this.confirm()).then(()=> {
             if (this.model.validate()) {
-                this.workflow.setTransitionValue(this.name);
-                this.model.forceSave(true);
+                return this.forceExecute();
             }
         });
+    }
+
+    forceExecute () {
+        this.workflow.setTransitionValue(this.name);
+        return this.model.forceSave(true);
     }
 
     translate (message) {

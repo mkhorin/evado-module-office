@@ -34,7 +34,7 @@ module.exports = class DataHistory extends Base {
     }
 
     async append (data) {
-        this.assignAttrs({
+        this.assign({
             owner: this.owner.getId(),
             createdAt: new Date,
             user: this.owner.getUserId(),

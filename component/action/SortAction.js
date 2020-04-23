@@ -31,12 +31,12 @@ module.exports = class SortAction extends Base {
             return this.controller.renderMeta(this.template, this.controller.getMetaParams({sortAttr}));
         }
         const data = this.validateData(this.getPostParam('order'));
-        for (const config of view.class.getBehaviorsByClassAndAttr(SortOrderBehavior, attrName)) {
+        for (const config of view.getBehaviorsByClassAndAttr(SortOrderBehavior, attrName)) {
             const behavior = this.spawn(config, {
                 owner: this,
                 user: this.user
             });
-            await behavior.update(data, view.class);
+            await behavior.update(data, view);
         }
         this.sendText('Done');
     }

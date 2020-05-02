@@ -1,7 +1,7 @@
 <!-- _meta/attr/edit/file -->
 <%
 const options = extraMeta.getData(model.class).file;
-const data = extraMeta.getModelFileData(model);
+const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"

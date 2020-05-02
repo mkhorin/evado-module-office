@@ -44,15 +44,13 @@ module.exports = class ModelController extends Base {
             return this.renderMeta('selectClass', this.getMetaParams());
         }
         await this.security.resolveOnCreate(meta.view);
-        if (this.isGet()) {
-            await this.security.resolveRelations(meta.view);
-        }
         const transit = this.createMetaTransit();
         const model = meta.view.spawnModel(this.getSpawnConfig());
         meta.model = model;
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
         if (this.isGet()) {
+            await this.security.resolveRelations(meta.view);
             await transit.resolve(model);
             return this.renderCreate(model);
         }
@@ -73,13 +71,11 @@ module.exports = class ModelController extends Base {
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const model = await this.setModelMetaParams(query);
         await this.security.resolveOnUpdate(model);
-        if (this.isGet()) {
-            await transit.resolve(model);
-            await this.security.resolveRelations(this.meta.view);
-        }
         const forbidden = !this.security.access.canUpdate();
         model.readOnly = forbidden || model.isTransiting() || model.isReadOnlyState();
         if (this.isGet()) {
+            await this.security.resolveRelations(this.meta.view);
+            await transit.resolve(model);
             await this.meta.view.resolveEnums();
             return this.renderMeta('update', this.getMetaParams({model}));
         }
@@ -218,7 +214,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionListFilterSelect () {
-        const attr = this.docMeta.getAttr(this.getPostParam('id'));
+        const attr = this.baseMeta.getAttr(this.getPostParam('id'));
         if (!attr) {
             throw new BadRequest('Meta attribute not found');
         }

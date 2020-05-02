@@ -1,6 +1,6 @@
 <!-- _meta/attr/view/file -->
 <%
-const data = extraMeta.getModelFileData(model);
+const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
 %>
 <div class="form-attr form-group <%- attr.options.css %>"

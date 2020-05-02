@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const Base = require('evado-api-document/component/ExtraMeta');
+const Base = require('evado-api-base/component/ExtraMeta');
 
 module.exports = class ExtraMeta extends Base {
 

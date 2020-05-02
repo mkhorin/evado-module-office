@@ -1,3 +1,38 @@
 <!-- _meta/attr/view/thumbnail -->
-
-<%- include(_view.get('_meta/attr/edit/thumbnail')) %>
+<%
+const related = model.rel(attr) || model.get(attr);
+const values = Array.isArray(related) ? related : related ? [related] : [];
+const refView = attr.getEagerView();
+const extraData = extraMeta.getData(refView);
+const file = extraData.file;
+const size = attr.options.thumbnail || '';
+const commands = attr.commandMap;
+const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getViewMetaId()}`;
+const edit = commands.edit ? `office/model/update?${params}&id=` : false;
+%>
+<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
+     data-action-binder="<%= attr.actionBinder.stringified %>">
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
+           data-t="meta.<%- attr.translationKey %>"><%- attr.title %></label>
+    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+        <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>" class="form-value">
+        <% if (file && file.thumbnail) {
+            const thumbnail = file.thumbnail + '&s=' + size + '&id='; %>
+        <div class="thumbnail-list">
+            <% for (const value of values) {
+                const id = value.getId ? value.getId() : value;
+                const name = value.getTitle ? value.getTitle() : value;
+            if (edit) { %>
+            <a href="<%- edit + id %>" class="modal-link">
+                <img src="<%- thumbnail + id %>" class="thumbnail img-responsive" title="<%= name %>" alt="">
+            </a>
+            <% } else  { %>
+            <img src="<%- thumbnail + id %>" class="thumbnail img-responsive" title="<%= name %>" alt="">
+            <% }} %>
+        </div>
+        <% } %>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+    </div>
+</div>

@@ -16,7 +16,7 @@ module.exports = class BaseMetaController extends Base {
     constructor (config) {
         super(config);
         this.metaHub = this.module.getMetaHub();
-        this.docMeta = this.metaHub.get('document');
+        this.baseMeta = this.metaHub.get('base');
         this.navMeta = this.metaHub.get('navigation');
         this.security = this.createMetaSecurity();
         this.meta = this.spawn('meta/MetaParams');
@@ -26,7 +26,7 @@ module.exports = class BaseMetaController extends Base {
 
     getMetaParams (params) {
         return {
-            docMeta: this.docMeta,
+            baseMeta: this.baseMeta,
             extraMeta: this.extraMeta,
             meta: this.meta,
             security: this.security,
@@ -57,7 +57,7 @@ module.exports = class BaseMetaController extends Base {
     }
 
     setClassMetaParams (className = this.getQueryParam('c')) {
-        this.meta.class = this.docMeta.getClass(className);
+        this.meta.class = this.baseMeta.getClass(className);
         if (!this.meta.class) {
             throw new BadRequest('Meta class not found');
         }
@@ -90,7 +90,7 @@ module.exports = class BaseMetaController extends Base {
         }
         const [attrName, id, viewName, className] = data.split('.');
         const master = this.meta.master;
-        master.class = this.docMeta.getClass(className);
+        master.class = this.baseMeta.getClass(className);
         if (!master.class) {
             throw new BadRequest(`Master class not found: ${data}`);
         }
@@ -150,7 +150,7 @@ module.exports = class BaseMetaController extends Base {
         if (!node) {
             throw new NotFound('Node not found');
         }
-        const metaClass = this.docMeta.getClass(node.data.class);
+        const metaClass = this.baseMeta.getClass(node.data.class);
         const view = node.data.view || 'list';
         this.meta.node = node;
         this.meta.class = metaClass;
@@ -203,7 +203,7 @@ module.exports = class BaseMetaController extends Base {
 
     log (type, message, data) {
         message = this.meta.view ? `${this.meta.view.id}: ${message}` : message;
-        this.docMeta.log(type, message, data);
+        this.baseMeta.log(type, message, data);
     }
 };
 

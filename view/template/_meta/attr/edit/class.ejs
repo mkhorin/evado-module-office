@@ -1,6 +1,6 @@
 <!-- _meta/attr/edit/class -->
 <%
-const select2 = {ajax: {url: _url('/api/document/meta/list-class-select')}};
+const select2 = {ajax: {url: _url('/api/base/meta/list-class-select')}};
 const value = model.get(attr);
 const metaClass = model.class.meta.getClass(value);
 const title = metaClass ? metaClass.title : value;

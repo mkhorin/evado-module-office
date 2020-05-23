@@ -1,3 +1,7 @@
 <!-- _meta/attr/view/radioList -->
-
+<%
+const value = model.get(attr);
+const text = attr.enum.getText(value) || value;
+model.setDisplayValue(attr, text ? `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>` : text);
+%>
 <%- include(_view.get('_meta/attr/static')) %>

@@ -2,6 +2,6 @@
 <%
 const value = model.get(attr);
 const text = attr.enum.getText(value) || value;
-model.setDisplayValue(attr, `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>`);
+model.setDisplayValue(attr, text ? `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>` : text);
 %>
 <%- include(_view.get('_meta/attr/static')) %>

@@ -110,7 +110,7 @@ module.exports = class BaseMetaController extends Base {
             this.meta.view = master.attr.getListView();
         }
         if (!id) {
-            master.model = master.view.spawnModel(this.getSpawnConfig());
+            master.model = master.view.createModel(this.getSpawnConfig());
             return master.model;
         }
         master.model = await master.view.findById(id, this.getSpawnConfig()).one();

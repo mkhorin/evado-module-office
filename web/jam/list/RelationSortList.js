@@ -23,19 +23,12 @@ Jam.RelationSortList = class RelationSortList extends Jam.SortList {
         return result;
     }
 
-    beforeClose (event) {
-        if (this.changed && !Jam.Helper.confirm('Close without saving?')) {
-            event.stopPropagation();
-        }
-    }
-
     onDeleteSort () {
-        if (!Jam.Helper.confirm('Delete relation sort?')) {
-            return false;
-        }
-        this.post(this.params.url, {delete: true}).done(()=> {
-            this.changed = false;
-            this.modal.close({deleted: true});
+        Jam.dialog.confirmDeletion('Delete relation sort?').then(() => {
+            this.post(this.params.url, {delete: true}).done(() => {
+                this.changed = false;
+                this.modal.close({deleted: true});
+            });
         });
     }
 

@@ -45,7 +45,7 @@ module.exports = class ModelController extends Base {
         }
         await this.security.resolveOnCreate(meta.view);
         const transit = this.createMetaTransit();
-        const model = meta.view.spawnModel(this.getSpawnConfig());
+        const model = meta.view.createModel(this.getSpawnConfig());
         meta.model = model;
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
@@ -67,7 +67,7 @@ module.exports = class ModelController extends Base {
     async actionUpdate () {
         const transit = this.createMetaTransit();
         await this.setMetaParams({viewName: 'edit'});
-        const query = this.getModelQuery().withFormData();
+        const query = this.getModelQuery().withReadData().withStateView();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const model = await this.setModelMetaParams(query);
         await this.security.resolveOnUpdate(model);
@@ -75,7 +75,9 @@ module.exports = class ModelController extends Base {
         model.readOnly = forbidden || model.isTransiting() || model.isReadOnlyState();
         if (this.isGet()) {
             await this.security.resolveRelations(this.meta.view);
-            await transit.resolve(model);
+            if (!forbidden) {
+                await transit.resolve(model);
+            }
             await this.meta.view.resolveEnums();
             return this.renderMeta('update', this.getMetaParams({model}));
         }
@@ -130,10 +132,11 @@ module.exports = class ModelController extends Base {
             return this.actionCreate();
         }
         await this.setMetaParams({viewName: 'create'});
-        const sample = await this.setModelMetaParams(this.getModelQuery().withFormData());
+        const query = this.getModelQuery().withReadData();
+        const sample = await this.setModelMetaParams(query);
         await this.security.resolveOnCreate(this.meta.view);
         await this.security.resolveRelations(this.meta.view);
-        const model = this.meta.view.spawnModel(this.getSpawnConfig());
+        const model = this.meta.view.createModel(this.getSpawnConfig());
         model.clone(sample);
         this.meta.model = model;
         await model.setDefaultValues();
@@ -242,9 +245,9 @@ module.exports = class ModelController extends Base {
     }
 
     async renderCreate (model) {
-        const query = this.meta.view.find(this.getSpawnConfig()).withFormData();
+        const query = this.meta.view.find(this.getSpawnConfig()).withReadData();
         await query.resolveRelation([model]);
-        await query.resolveUsers([model]);
+        await query.resolveEmbeddedModels([model]);
         await this.meta.view.resolveEnums();
         await model.resolveCalc();
         return this.renderMeta('create', this.getMetaParams({model}));
@@ -270,7 +273,7 @@ module.exports = class ModelController extends Base {
     }
 
     async deleteById (id, metaClass) {
-        const model = await metaClass.findById(id, this.getSpawnConfig()).withState().one();
+        const model = await metaClass.findById(id, this.getSpawnConfig()).withStateView().one();
         if (!model) {
             throw new BadRequest(`Object not found: ${id}.${metaClass.id}`);
         }

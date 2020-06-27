@@ -4,12 +4,12 @@
      data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<% attr.translationKey %>"
+           data-t="meta.<%- attr.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <textarea name="<%- formAttrName %>" rows="<%- attr.options.rows || 3 %>" <%- required %>
                   class="form-control form-value"><%- model.get(attr) %></textarea>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<% attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

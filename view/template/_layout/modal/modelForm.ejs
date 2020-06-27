@@ -47,15 +47,13 @@ if (typeof params !== 'undefined') {
                 <span class="fa fa-history"></span>
             </button>
             <% } %>
-
+            <%- include(_view.get('_meta/transition/group')) %>
             <%- include(_view.get('_part/tool/utilities'), {
                 params: {
                     meta: model.view.getViewId(),
                     model: id
                 }
             }) %>
-            <%- include(_view.get('_meta/transition/group')) %>
-
             <div class="pull-right">
                 <% if (id && security.access.canDelete()) { %>
                 <button data-command="delete" class="btn btn-white" type="button" title="Delete">

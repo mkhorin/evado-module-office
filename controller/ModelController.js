@@ -118,7 +118,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionSelect () {
-        await this.setMasterRelationMetaParams();
+        await this.setMasterMetaParams();
         await this.resolveMasterAttr({
             refView: 'selectListView',
             access: {actions: ['read', 'create', 'update']}
@@ -173,7 +173,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionListSelect () {
-        await this.setMasterRelationMetaParams();
+        await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
         const master = this.meta.master;
         const query = this.meta.view.find(this.getSpawnConfig({
@@ -195,7 +195,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionListRelated () {
-        await this.setMasterRelationMetaParams();
+        await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'listView'});
         const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
@@ -205,7 +205,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionListRelatedSelect () {
-        await this.setMasterRelationMetaParams();
+        await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
         const query = this.meta.view.find(this.getSpawnConfig({
             model: this.meta.master.model,

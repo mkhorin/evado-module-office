@@ -1,7 +1,7 @@
 <!-- _meta/transition/group -->
 
 <% if (model.transitions && model.transitions.length) { %>
-<div data-command="transitions" class="transitions btn-group">
+<div data-command="transitions" class="transitions btn-group btn-set">
     <%
         let item = model.transitions[0];
     %>
@@ -12,7 +12,7 @@
             data-options="<%= JSON.stringify(item.options) %>"
             data-t="meta.<%- item.translationKey %>"><%= item.title %></button>
     <% if (model.transitions.length > 1) { %>
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" title="Transitions">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">

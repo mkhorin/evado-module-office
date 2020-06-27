@@ -53,7 +53,7 @@ module.exports = class BaseMetaController extends Base {
     setMetaParams (data = {}) {
         this.setClassMetaParams(data.className);
         this.setViewMetaParams(data.viewName);
-        return this.setMasterRelationMetaParams();
+        return this.setMasterMetaParams();
     }
 
     setClassMetaParams (className = this.getQueryParam('c')) {
@@ -71,7 +71,7 @@ module.exports = class BaseMetaController extends Base {
     }
 
     setViewMetaParams (viewName) {
-        this.meta.view = this.meta.class.getViewByPrefix(this.module.NAME, viewName) || this.meta.class;
+        this.meta.view = this.meta.class.getViewByPrefix(this.module.getBaseName(), viewName) || this.meta.class;
     }
 
     setAttrMetaParams (data = this.getQueryParam('a')) {
@@ -84,7 +84,7 @@ module.exports = class BaseMetaController extends Base {
         }
     }
 
-    async setMasterRelationMetaParams (data = this.getQueryParam('m')) {
+    async setMasterMetaParams (data = this.getQueryParam('m')) {
         if (!data) {
             return null;
         }
@@ -103,19 +103,22 @@ module.exports = class BaseMetaController extends Base {
             throw new BadRequest(`Master attribute not found: ${data}`);
         }
         if (!master.attr.relation) {
-            throw new BadRequest(`Invalid master relation: ${data}`);
+            throw new BadRequest(`Master relation not found: ${data}`);
         }
         if (!this.meta.class) {
             this.meta.class = master.attr.relation.refClass;
             this.meta.view = master.attr.getListView();
         }
+        if (master.attr.relation.refClass !== this.meta.class) {
+            throw new BadRequest(`Invalid master: ${data}`);
+        }
         if (!id) {
             master.model = master.view.createModel(this.getSpawnConfig());
-            return master.model;
+            return master;
         }
         master.model = await master.view.findById(id, this.getSpawnConfig()).one();
         if (!master.model) {
-            throw new BadRequest(`Master object not found: ${data}`);
+            throw new BadRequest(`Master instance not found: ${data}`);
         }
     }
 
@@ -187,17 +190,18 @@ module.exports = class BaseMetaController extends Base {
     }
 
     async renderMeta (template, params) {
-        //const template = this.view.getMetaItemTemplate(this.meta.view);
-        return this.render(template, Object.assign(params, {
-            hasUtility: await this.hasUtility()
-        }));
+        return this.render(template, {
+            utilities: await this.getUtilities(),
+            utilityMenu: this.meta.view.options.utilityMenu,
+            ...params
+        });
     }
 
-    hasUtility () {
-        return this.module.get('utility').isActiveUtility({
+    getUtilities () {
+        return this.module.get('utility').getActiveItems({
             controller: this,
             modelAction: this.action.name,
-            postParams: {meta: this.meta}
+            metaParams: this.meta
         });
     }
 

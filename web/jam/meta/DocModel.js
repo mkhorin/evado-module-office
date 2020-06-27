@@ -31,14 +31,12 @@ Jam.DocModel = class DocModel extends Jam.Model {
     setReadOnly () {
         this.findCommand('saveClose').attr('disabled', true).removeAttr('data-command');
         this.findCommand('save').attr('disabled', true).removeAttr('data-command');
-        this.findCommand('utilities').remove();
     }
 
     setTransiting () {
         this.findCommand('history').remove();
         this.findCommand('transiting').show();
         this.findCommand('transitions').remove();
-        this.findCommand('utilities').remove();
         this.findCommand('delete').remove();
     }
 };

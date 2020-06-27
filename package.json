@@ -1,7 +1,7 @@
 {
   "name": "evado-module-office",
-  "version": "1.4.0",
-  "description": "Evado module for operating business applications",
+  "version": "1.5.0",
+  "description": "Evado application operating module",
   "author": {
     "name": "Maxim Khorin",
     "email": "maksimovichu@gmail.com"

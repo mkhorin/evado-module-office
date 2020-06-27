@@ -44,4 +44,6 @@ for (const item of items) {
     </a>
     <% }%>
 </li>
+<% } if (item.options.separatorAfter) { %>
+<li class="separator <%- css %>"></li>
 <% }} %>

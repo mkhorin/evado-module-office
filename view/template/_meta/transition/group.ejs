@@ -12,7 +12,7 @@
             data-options="<%= JSON.stringify(item.options) %>"
             data-t="meta.<%- item.translationKey %>"><%= item.title %></button>
     <% if (model.transitions.length > 1) { %>
-    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" title="Transitions">
+    <button type="button" class="btn btn-white dropdown-toggle" title="Transitions" data-t="" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">

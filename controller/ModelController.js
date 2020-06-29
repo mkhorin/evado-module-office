@@ -249,7 +249,7 @@ module.exports = class ModelController extends Base {
         await query.resolveRelation([model]);
         await query.resolveEmbeddedModels([model]);
         await this.meta.view.resolveEnums();
-        await model.resolveCalc();
+        await model.resolveCalcValues();
         return this.renderMeta('create', this.getMetaParams({model}));
     }
 

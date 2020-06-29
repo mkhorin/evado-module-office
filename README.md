@@ -1,5 +1,5 @@
 # Evado Office
 
-### Evado module for operating business applications
+### Evado application operating module
 
 [Evado Platform](https://github.com/mkhorin/evado)

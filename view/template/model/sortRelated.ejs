@@ -6,7 +6,7 @@
     data: {
         order: {[sortAttr.name]: 1},
         id: `sort-${meta.master.attr.id}`,
-        list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getViewMetaId()}`
+        list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getMetaId()}`
     },
-    extraData: extraMeta.getData(meta.master.attr.getListView())
+    extraData: extraMeta.getData(meta.master.attr.listView)
 }) %>

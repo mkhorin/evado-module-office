@@ -8,7 +8,7 @@
 <%- include(_view.get('_meta/list/grid'), {
     data: {
         jam: 'SelectList',
-        list: `office/model/list-select?m=${meta.master.attr.name}.${meta.master.model.getViewMetaId()}`,
+        list: `office/model/list-select?m=${meta.master.attr.name}.${meta.master.model.getMetaId()}`,
         multiple: meta.master.attr.relation.multiple,
         create: null,
         delete: null

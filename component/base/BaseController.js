@@ -23,5 +23,5 @@ module.exports = class BaseController extends Base {
 };
 module.exports.init(module);
 
-const BadRequest = require('areto/error/BadRequestHttpException');
-const NotFound = require('areto/error/NotFoundHttpException');
+const BadRequest = require('areto/error/http/BadRequest');
+const NotFound = require('areto/error/http/NotFound');

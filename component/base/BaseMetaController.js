@@ -50,28 +50,32 @@ module.exports = class BaseMetaController extends Base {
         return this.meta.view.findById(id, this.getSpawnConfig());
     }
 
-    setMetaParams (data = {}) {
-        this.setClassMetaParams(data.className);
-        this.setViewMetaParams(data.viewName);
+    setMetaParams (defaultView) {
+        this.setClassMetaParams();
+        this.setViewMetaParams(this.getQueryParam('v'), defaultView);
         return this.setMasterMetaParams();
     }
 
-    setClassMetaParams (className = this.getQueryParam('c')) {
-        this.meta.class = this.baseMeta.getClass(className);
+    setClassMetaParams (name = this.getQueryParam('c')) {
+        this.meta.class = this.baseMeta.getClass(name);
         if (!this.meta.class) {
             throw new BadRequest('Meta class not found');
         }
         this.meta.view = this.meta.class;
     }
 
-    setViewClassMetaParams (data = this.getQueryParam('v')) {
-        const [viewName, className] = String(data).split('.');
-        this.setClassMetaParams(className);
-        this.setViewMetaParams(viewName);
-    }
-
-    setViewMetaParams (viewName) {
-        this.meta.view = this.meta.class.getViewByPrefix(this.module.getBaseName(), viewName) || this.meta.class;
+    setViewMetaParams (name, defaultName) {
+        if (name) {
+            this.meta.view = this.meta.class.getViewByPrefix(this.module.getBaseName(), name);
+            if (!this.meta.view) {
+                throw new BadRequest('Meta view not found');
+            }
+        } else if (defaultName) {
+            const view = this.meta.class.getViewByPrefix(this.module.getBaseName(), defaultName);
+            if (view) {
+                this.meta.view = view;
+            }
+        }
     }
 
     setAttrMetaParams (data = this.getQueryParam('a')) {
@@ -107,7 +111,7 @@ module.exports = class BaseMetaController extends Base {
         }
         if (!this.meta.class) {
             this.meta.class = master.attr.relation.refClass;
-            this.meta.view = master.attr.getListView();
+            this.meta.view = master.attr.listView;
         }
         if (master.attr.relation.refClass !== this.meta.class) {
             throw new BadRequest(`Invalid master: ${data}`);
@@ -137,6 +141,7 @@ module.exports = class BaseMetaController extends Base {
             throw new BadRequest('Object not found');
         }
         this.meta.model = model;
+        model.readOnly = model.isTransiting() || model.isReadOnlyState();
         return model;
     }
 
@@ -211,5 +216,5 @@ module.exports = class BaseMetaController extends Base {
     }
 };
 
-const BadRequest = require('areto/error/BadRequestHttpException');
-const NotFound = require('areto/error/NotFoundHttpException');
+const BadRequest = require('areto/error/http/BadRequest');
+const NotFound = require('areto/error/http/NotFound');

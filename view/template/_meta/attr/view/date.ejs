@@ -7,7 +7,7 @@ value = value instanceof Date ? value.toISOString() : value;
      data-handler="<%- typeof handler === 'undefined' ? 'Date' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<%- attr.translationKey %>"
+           data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- value %>"
@@ -18,5 +18,7 @@ value = value instanceof Date ? value.toISOString() : value;
                 format: attr.getFormat()
             }) %>
         </p>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

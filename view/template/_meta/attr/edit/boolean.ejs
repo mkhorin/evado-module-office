@@ -6,13 +6,13 @@
     <div class="<%- attr.options.cssValue || 'col-md-10 col-md-offset-2' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- model.get(attr) %>" class="form-value">
         <div class="checkbox">
-            <label title="<%= attr.extHint %>" data-t-title="meta.<%- attr.translationKey %>">
+            <label title="<%= attr.extHint %>" data-t-title="meta.<%- attr.view.translationKey %>">
                 <input <%- model.get(attr) ? 'checked' : '' %> type="checkbox">
-                <span data-t="meta.<%- attr.translationKey %>"><%- attr.title %></span>
+                <span data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></span>
             </label>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>
 

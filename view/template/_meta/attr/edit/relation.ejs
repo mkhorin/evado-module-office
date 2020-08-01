@@ -1,27 +1,31 @@
 <!-- _meta/attr/edit/relation -->
 <%
-const extraData = extraMeta.getData(attr.getListView());
+const extraData = extraMeta.getData(attr.listView);
 const relation = attr.relation;
-const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getViewMetaId()}`;
+const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
 const defaultValue = model.isNew() ? model.get(attr) : null;
 const access = security.relationAccessMap[attr.name];
 const commands = attr.commandMap;
 const p = {
     id: attr.id,
     relName: attr.name,
+    backRef: attr.isBackRef(),
     key: relation.refClass.getKey(),
     pageSize: 10,
-    order: attr.getListView().order,
+    order: attr.listView.order,
     multiple: relation.multiple,
     columns:  extraData.columns,
     list: `office/model/list-related?${params}`,
     link: commands.add ? `office/model/select?${params}` : false,
     unlink: commands.remove,
-    update: commands.edit ? `office/model/update?${params}` : false,
-    create: commands.create && access.canCreate() ? `office/model/create?${params}` : false,
+    update: commands.edit ? `office/model/update?${params}&v=${attr.listView.editView.viewName}` : false,
+    create: false,
     delete: commands.delete && access.canDelete(),
     ...attr.options.relation
 };
+if (commands.create && access.canCreate()) {
+    p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
+}
 if (p.showBottom === undefined) {
     p.showBottom = p.multiple && p.pageSize > 0;
 }
@@ -37,7 +41,7 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
      data-handler="<%- typeof handler === 'undefined' ? 'Relation' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
-           data-t="meta.<%- attr.translationKey %>"><%- attr.title %></label>
+           data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <div class="box box-grid box-grid-field">
             <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
@@ -114,6 +118,6 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
             <div class="list-loader overlay"><i class="fa fa-spinner fa-spin"></i></div>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

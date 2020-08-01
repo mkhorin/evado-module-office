@@ -24,9 +24,9 @@ module.exports = class SortRelatedAction extends Base {
             refView: 'listView',
             access: {actions: [Rbac.UPDATE]}
         });
-        return this.executeView(meta.master.attr.getListView());
+        return this.executeView(meta.master.attr.listView);
     }
 };
 
-const BadRequest = require('areto/error/BadRequestHttpException');
+const BadRequest = require('areto/error/http/BadRequest');
 const Rbac = require('evado/component/security/rbac/Rbac');

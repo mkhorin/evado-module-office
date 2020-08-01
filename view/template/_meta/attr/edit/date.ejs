@@ -9,7 +9,7 @@ value = value instanceof Date ? value.toISOString() : value;
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-params="<%= JSON.stringify(attr.options) %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<%- attr.translationKey %>"
+           data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- value %>" class="form-value">
@@ -18,6 +18,6 @@ value = value instanceof Date ? value.toISOString() : value;
             <div class="input-group-addon"><i class="far fa-calendar"></i></div>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

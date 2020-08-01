@@ -22,7 +22,8 @@ if (typeof params !== 'undefined') {
      data-tab="<%= blocks.tab %>"
      data-title="<%= blocks.title %>"
      data-t-tab="<%- blocks.tabTranslation %>"
-     data-t-title="<%- blocks.titleTranslation %>">
+     data-t-title="<%- blocks.titleTranslation %>"
+     data-csrf="<%- _controller.getCsrfToken() %>">
 
     <div class="box-header with-border scroll-header">
         <div class="model-commands">
@@ -50,7 +51,7 @@ if (typeof params !== 'undefined') {
             <%- include(_view.get('_meta/transition/group')) %>
             <%- include(_view.get('_part/tool/utilities'), {
                 params: {
-                    meta: model.view.getViewId(),
+                    meta: model.view.id,
                     model: id
                 }
             }) %>

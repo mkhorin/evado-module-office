@@ -1,7 +1,14 @@
 <!-- _meta/attr/view/select -->
 <%
-const value = model.get(attr);
-const text = attr.enum.getText(value) || value;
-model.setDisplayValue(attr, text ? `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>` : text);
+let value = model.get(attr);
+let text = attr.enum.getText(value) || value;
+if (text) {
+    if (attr.escaping) {
+        text = _view.EscapeHelper.escapeTags(text);
+        value = value ? _view.EscapeHelper.escapeTags(value) : value;
+    }
+    text = `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>`;
+}
+model.setDisplayValue(attr, text);
 %>
-<%- include(_view.get('_meta/attr/static')) %>
+<%- include(_view.get('_meta/attr/static'), {escaping: false}) %>

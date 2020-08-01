@@ -1,6 +1,6 @@
 <!-- _meta/attr/view/relationSelect -->
 <%
-const update = `office/model/update?c=${attr.relation.refClass.id}&id=`;
+const update = `office/model/update?c=${attr.relation.refClass.id}&v=${attr.eagerView.editView.viewName}&id=`;
 const raw = model.get(attr);
 const related = model.related.get(attr);
 const items = [];
@@ -37,7 +37,7 @@ if (attr.commandMap.edit) {
      data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<%- attr.translationKey %>"
+           data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <div class="box relation-select-box">
@@ -50,6 +50,6 @@ if (attr.commandMap.edit) {
             </div>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

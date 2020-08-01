@@ -7,14 +7,14 @@ const extraData = extraMeta.getData(refView);
 const file = extraData.file;
 const size = attr.options.thumbnail || '';
 const commands = attr.commandMap;
-const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getViewMetaId()}`;
+const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
 const edit = commands.edit ? `office/model/update?${params}&id=` : false;
 %>
 <div class="form-attr form-group <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
-           data-t="meta.<%- attr.translationKey %>"><%- attr.title %></label>
+           data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>" class="form-value">
         <% if (file && file.thumbnail) {
@@ -33,6 +33,6 @@ const edit = commands.edit ? `office/model/update?${params}&id=` : false;
         </div>
         <% } %>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

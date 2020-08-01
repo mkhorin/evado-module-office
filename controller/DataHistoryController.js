@@ -38,4 +38,4 @@ module.exports = class DataHistoryController extends Base {
 };
 module.exports.init(module);
 
-const Forbidden = require('areto/error/ForbiddenHttpException');
+const Forbidden = require('areto/error/http/Forbidden');

@@ -38,7 +38,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionCreate () {
-        await this.setMetaParams({viewName: 'create'});
+        await this.setMetaParams('create');
         const meta = this.meta;
         if (meta.class.isAbstract()) {
             return this.renderMeta('selectClass', this.getMetaParams());
@@ -47,13 +47,15 @@ module.exports = class ModelController extends Base {
         const transit = this.createMetaTransit();
         const model = meta.view.createModel(this.getSpawnConfig());
         meta.model = model;
+        model.readOnly = model.isReadOnlyState();
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
         if (this.isGet()) {
-            await this.security.resolveRelations(meta.view);
+            await this.security.resolveRelations(model, meta.view);
             await transit.resolve(model);
             return this.renderCreate(model);
         }
+        this.checkCsrfToken();
         const excludes = this.security.getForbiddenAttrs('create') || [];
         if (meta.master.refAttr) {
             excludes.push(meta.master.refAttr.name);
@@ -66,26 +68,35 @@ module.exports = class ModelController extends Base {
 
     async actionUpdate () {
         const transit = this.createMetaTransit();
-        await this.setMetaParams({viewName: 'edit'});
-        const query = this.getModelQuery().withReadData().withStateView();
+        await this.setMetaParams('edit');
+        const query = this.getModelQuery().withFormData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
-        const model = await this.setModelMetaParams(query);
+        let model = await this.setModelMetaParams(query);
         await this.security.resolveOnUpdate(model);
-        const forbidden = !this.security.access.canUpdate();
-        model.readOnly = forbidden || model.isTransiting() || model.isReadOnlyState();
+        let forbidden = !this.security.access.canUpdate();
+        if (forbidden && this.meta.view.forbiddenView) {
+            forbidden = false;
+            query.view = this.meta.view.forbiddenView;
+            model = await this.setModelMetaParams(query.withStateView(false));
+        } else {
+            model.readOnly = forbidden || model.readOnly;
+        }
+        await this.security.resolveAttrsOnUpdate(model);
         if (this.isGet()) {
-            await this.security.resolveRelations(this.meta.view);
+            await this.security.resolveRelations(model, this.meta.view);
             if (!forbidden) {
                 await transit.resolve(model);
             }
             await this.meta.view.resolveEnums();
+            await model.resolveReadOnlyAttrTitles();
             return this.renderMeta('update', this.getMetaParams({model}));
         }
+        this.checkCsrfToken();
         if (forbidden) {
             throw new Forbidden;
         }
         if (model.isTransiting()) {
-            throw new Forbidden('Transition in progress');
+            throw new Locked('Transition in progress');
         }
         if (!model.readOnly) {
             const excludes = this.security.getForbiddenAttrs('update');
@@ -99,12 +110,14 @@ module.exports = class ModelController extends Base {
     }
 
     async actionDelete () {
+        this.checkCsrfToken();
         await this.setMetaParams();
         await this.deleteById(this.getPostParam('id'), this.meta.class);
         this.sendStatus(200);
     }
 
     async actionDeleteList () {
+        this.checkCsrfToken();
         await this.setMetaParams();
         const ids = String(this.getPostParam('ids')).split(',');
         for (const id of ids) {
@@ -131,15 +144,15 @@ module.exports = class ModelController extends Base {
         if (this.isPost()) {
             return this.actionCreate();
         }
-        await this.setMetaParams({viewName: 'create'});
-        const query = this.getModelQuery().withReadData();
+        await this.setMetaParams('create');
+        const query = this.getModelQuery();
         const sample = await this.setModelMetaParams(query);
         await this.security.resolveOnCreate(this.meta.view);
-        await this.security.resolveRelations(this.meta.view);
         const model = this.meta.view.createModel(this.getSpawnConfig());
         model.clone(sample);
         this.meta.model = model;
         await model.setDefaultValues();
+        await this.security.resolveRelations(model, this.meta.view);
         return this.renderCreate(model);
     }
 
@@ -245,9 +258,8 @@ module.exports = class ModelController extends Base {
     }
 
     async renderCreate (model) {
-        const query = this.meta.view.find(this.getSpawnConfig()).withReadData();
-        await query.resolveRelation([model]);
-        await query.resolveEmbeddedModels([model]);
+        await model.related.resolveEagers();
+        await model.related.resolveEmbeddedModels();
         await this.meta.view.resolveEnums();
         await model.resolveCalcValues();
         return this.renderMeta('create', this.getMetaParams({model}));
@@ -279,12 +291,13 @@ module.exports = class ModelController extends Base {
         }
         const access = await this.security.resolveAccessOnDelete(model);
         if (!access.canDelete()) {
-            throw new Forbidden(`Removal is forbidden: ${model}`);
+            throw new Forbidden(`Deletion is forbidden: ${model}`);
         }
         return model.delete();
     }
 };
 module.exports.init(module);
 
-const BadRequest = require('areto/error/BadRequestHttpException');
-const Forbidden = require('areto/error/ForbiddenHttpException');
+const BadRequest = require('areto/error/http/BadRequest');
+const Forbidden = require('areto/error/http/Forbidden');
+const Locked = require('areto/error/http/Locked');

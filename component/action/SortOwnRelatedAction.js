@@ -49,5 +49,5 @@ module.exports = class SortOwnRelatedAction extends Base {
     }
 };
 
-const BadRequest = require('areto/error/BadRequestHttpException');
+const BadRequest = require('areto/error/http/BadRequest');
 const Rbac = require('evado/component/security/rbac/Rbac');

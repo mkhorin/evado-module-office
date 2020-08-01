@@ -7,7 +7,7 @@ const file = data ? data.file : null;
      data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<%- attr.translationKey %>"
+           data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%- file %>"
@@ -24,6 +24,6 @@ const file = data ? data.file : null;
             <% } %>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

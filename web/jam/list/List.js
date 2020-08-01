@@ -7,8 +7,7 @@ Jam.MainList = class MainList extends Jam.MainList {
 
     getCloneParams ($row) {
         const id = $row.data('id');
-        const c = this.grid.getData(id)._metaClass;
-        return {c, id};
+        return {c: this.grid.getData(id)._metaClass, id};
     }
 };
 
@@ -55,7 +54,6 @@ Jam.MainTreeList = class MainTreeList extends Jam.MainTreeList {
     }
 
     onCreate (event) {
-        //this._modalClass =
         const $row = this.findSelectedRows();
         if ($row.length !== 1) {
             return super.onCreate(event);

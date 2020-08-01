@@ -1,25 +1,29 @@
 <!-- _meta/attr/view/relation -->
 <%
-const extraData = extraMeta.getData(attr.getListView());
+const extraData = extraMeta.getData(attr.listView);
 const refClass = attr.relation.refClass;
-const params = `c=${refClass.id}&m=${attr.name}.${model.getViewMetaId()}`;
+const params = `c=${refClass.id}&m=${attr.name}.${model.getMetaId()}`;
 const defaultValue = model.isNew() ? model.get(attr) : null;
 const access = security.relationAccessMap[attr.name];
 const commands = attr.commandMap;
 const p = {
     id: attr.id,
     relName: attr.name,
+    backRef: attr.isBackRef(),
     key: refClass.getKey(),
     pageSize: 10,
-    order: attr.getListView().order,
+    order: attr.listView.order,
     multiple: attr.relation.multiple,
     columns: extraData.columns,
     list: `office/model/list-related?${params}`,
-    update: commands.edit ? `office/model/update?${params}` : false,
+    update: commands.edit ? `office/model/update?${params}&v=${attr.listView.editView.viewName}` : false,
     oneSelect: 'Select one item for action',
     anySelect: 'Select items for action',
     ...attr.options.relation
 };
+if (p.backRef && p.createOnReadOnly && commands.create && access.canCreate()) {
+    p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
+}
 if (p.showBottom === undefined) {
     p.showBottom = p.multiple && p.pageSize > 0;
 }
@@ -34,7 +38,7 @@ if (p.filter && !p.filter.url) {
      data-handler="<%- typeof handler === 'undefined' ? 'Relation' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<%- attr.translationKey %>"
+           data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <div class="box box-grid box-grid-field">
@@ -43,7 +47,11 @@ if (p.filter && !p.filter.url) {
             <div class="box-body">
                 <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
                     <div class="list-commands">
-                        <% if (p.update) { %>
+                        <% if (p.create) { %>
+                        <button data-command="create" class="btn btn-success btn-light" type="button" title="Create">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <% } if (p.update) { %>
                         <button data-command="update" class="btn btn-warning btn-light" type="button" title="Edit">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
@@ -93,6 +101,6 @@ if (p.filter && !p.filter.url) {
             <div class="list-loader overlay"><i class="fa fa-spinner fa-spin"></i></div>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

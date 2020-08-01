@@ -56,4 +56,4 @@ module.exports = class SortAction extends Base {
 };
 
 const SortOrderBehavior = require('evado-meta-base/behavior/SortOrderBehavior');
-const BadRequest = require('areto/error/BadRequestHttpException');
+const BadRequest = require('areto/error/http/BadRequest');

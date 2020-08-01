@@ -3,8 +3,18 @@
 let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
 let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
 let value = model.get(attr);
-let displayValue = _format(model.getDisplayValue(attr), attrFormat, attrFormatParams);
-if (value && attr.escaping) {
+let escape = typeof escaping === 'undefined' ? attr.escaping : escaping;
+let displayValue = model.getDisplayValue(attr);
+if (attr.translatable) {
+    if (displayValue) {
+        displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
+        escape = false;
+    } else {
+        displayValue = value;
+    }
+}
+displayValue = _format(displayValue, attrFormat, attrFormatParams);
+if (value && escape) {
     displayValue = _view.EscapeHelper.escapeTags(displayValue);
 }
 %>
@@ -12,12 +22,12 @@ if (value && attr.escaping) {
      data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
-           data-t="meta.<%- attr.translationKey %>"
+           data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%= value %>" class="form-value">
         <p class="form-control-static"><%- displayValue %></p>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

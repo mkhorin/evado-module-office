@@ -1,4 +1,10 @@
 <!-- _meta/attr/noAccess -->
+
+<% if (_module.params.hideForbiddenAttr || attr.isHidden()) { %>
+<div class="form-attr hidden" data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
+    <input name="<%- formAttrName %>" type="hidden" class="form-value" readonly="readonly">
+</div>
+<% } else { %>
 <div class="form-attr form-group <%- attr.options.css %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
@@ -11,3 +17,4 @@
         <div class="error-block"></div>
     </div>
 </div>
+<% } %>

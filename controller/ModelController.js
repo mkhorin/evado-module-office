@@ -43,15 +43,15 @@ module.exports = class ModelController extends Base {
         if (meta.class.isAbstract()) {
             return this.renderMeta('selectClass', this.getMetaParams());
         }
-        await this.security.resolveOnCreate(meta.view);
         const transit = this.createMetaTransit();
         const model = meta.view.createModel(this.getSpawnConfig());
         meta.model = model;
         model.readOnly = model.isReadOnlyState();
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
+        await this.security.resolveOnCreate(model);
         if (this.isGet()) {
-            await this.security.resolveRelations(model, meta.view);
+            await this.security.resolveRelations(meta.view, {model});
             await transit.resolve(model);
             return this.renderCreate(model);
         }
@@ -83,7 +83,7 @@ module.exports = class ModelController extends Base {
         }
         await this.security.resolveAttrsOnUpdate(model);
         if (this.isGet()) {
-            await this.security.resolveRelations(model, this.meta.view);
+            await this.security.resolveRelations(this.meta.view, {model});
             if (!forbidden) {
                 await transit.resolve(model);
             }
@@ -112,22 +112,25 @@ module.exports = class ModelController extends Base {
     async actionDelete () {
         this.checkCsrfToken();
         await this.setMetaParams();
-        await this.deleteById(this.getPostParam('id'), this.meta.class);
-        this.sendStatus(200);
+        const id = this.getPostParam('id');
+        await this.deleteById(id, this.meta.class);
+        this.sendText(id);
     }
 
     async actionDeleteList () {
         this.checkCsrfToken();
         await this.setMetaParams();
         const ids = String(this.getPostParam('ids')).split(',');
+        const result = [];
         for (const id of ids) {
             try {
                 await this.deleteById(id, this.meta.class);
+                result.push(id);
             } catch (err) {
-                this.log('error', err);
+                this.log('error', `Deletion failed: ${id}.${this.meta.class.id}:`, err);
             }
         }
-        this.sendStatus(200);
+        this.sendText(result.join());
     }
 
     async actionSelect () {
@@ -147,12 +150,12 @@ module.exports = class ModelController extends Base {
         await this.setMetaParams('create');
         const query = this.getModelQuery();
         const sample = await this.setModelMetaParams(query);
-        await this.security.resolveOnCreate(this.meta.view);
         const model = this.meta.view.createModel(this.getSpawnConfig());
-        model.clone(sample);
         this.meta.model = model;
+        model.clone(sample);
         await model.setDefaultValues();
-        await this.security.resolveRelations(model, this.meta.view);
+        await this.security.resolveOnCreate(model);
+        await this.security.resolveRelations(this.meta.view, {model});
         return this.renderCreate(model);
     }
 

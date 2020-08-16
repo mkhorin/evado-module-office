@@ -21,7 +21,7 @@ const p = {
     anySelect: 'Select items for action',
     ...attr.options.relation
 };
-if (p.backRef && p.createOnReadOnly && commands.create && access.canCreate()) {
+if (p.backRef && attr.data.createOnRead && commands.create && access.canCreate()) {
     p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
 }
 if (p.showBottom === undefined) {

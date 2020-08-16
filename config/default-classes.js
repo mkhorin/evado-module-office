@@ -13,5 +13,5 @@ module.exports = {
     'meta/MetaTreeGrid': require('evado/component/meta/MetaTreeGrid'),
 
     'model/DataHistory': require('../model/DataHistory'),
-    'model/User': require('../model/User'),
+    'model/User': require('../model/User')
 };

@@ -36,7 +36,10 @@ module.exports = class BaseMetaController extends Base {
     }
 
     createMetaSecurity (config) {
-        return this.spawn('meta/MetaSecurity', {controller: this, ...config});
+        return this.spawn('meta/MetaSecurity', {
+            controller: this,
+            ...config
+        });
     }
 
     createMetaTransit () {
@@ -122,7 +125,7 @@ module.exports = class BaseMetaController extends Base {
         }
         master.model = await master.view.findById(id, this.getSpawnConfig()).one();
         if (!master.model) {
-            throw new BadRequest(`Master instance not found: ${data}`);
+            throw new BadRequest(`Master object not found: ${data}`);
         }
     }
 

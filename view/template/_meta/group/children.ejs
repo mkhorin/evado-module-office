@@ -1,6 +1,6 @@
 <!-- _meta/group/children -->
 <%
-let template, params, viewType;
+let template, params;
 for (const item of group.children) {
     template = _view.getMetaItemTemplate(item);
     if (item.isGroup()) {
@@ -12,13 +12,18 @@ for (const item of group.children) {
             parent: group
         };
     } else {
-        if (!meta.canReadAttr(item, model)) {
+        if (!meta.canReadAttr(item)) {
             template = _view.get('_meta/attr/noAccess');
+        } else if (item.isHidden()) {
+            template = _view.get('_meta/attr/hidden');
         } else if (!template) {
-            viewType = item.isHidden() ? 'hidden' : item.getViewType();
-            template = _view.get(meta.canUpdateAttr(item, model)
-                ? '_meta/attr/edit/' + viewType
-                : '_meta/attr/view/' + viewType);
+            if (item.relation && !meta.canReadRelation(item)) {
+                template = _view.get('_meta/attr/static');
+            } else {
+                template = _view.get(meta.canUpdateAttr(item, model)
+                    ? '_meta/attr/edit/' + item.getViewType()
+                    : '_meta/attr/view/' + item.getViewType());
+            }
         }
         params = {
             attr: item,

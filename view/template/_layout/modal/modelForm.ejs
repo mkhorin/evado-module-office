@@ -6,7 +6,7 @@ const p = {
     key: model.class.getKey(),
     id: model.isNew() ? '' : id,
     className: model.class.name,
-    viewName: model.view.name,
+    viewName: model.view.viewName,
     timestamp: _controller.timestamp,
     hideEmptyGroups: true,
     readOnly: model.readOnly,

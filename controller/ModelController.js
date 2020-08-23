@@ -50,6 +50,7 @@ module.exports = class ModelController extends Base {
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
         await this.security.resolveOnCreate(model);
+        await this.security.resolveAttrsOnCreate(model);
         if (this.isGet()) {
             await this.security.resolveRelations(meta.view, {model});
             await transit.resolve(model);
@@ -137,8 +138,9 @@ module.exports = class ModelController extends Base {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({
             refView: 'selectListView',
-            access: {actions: ['read', 'create', 'update']}
+            access: {actions: ['create', 'delete']}
         });
+        await this.security.resolveAttrsOnList(this.meta.view);
         this.meta.dependency = this.getQueryParam('d');
         return this.render('select', this.getMetaParams());
     }
@@ -153,8 +155,8 @@ module.exports = class ModelController extends Base {
         const model = this.meta.view.createModel(this.getSpawnConfig());
         this.meta.model = model;
         model.clone(sample);
-        await model.setDefaultValues();
         await this.security.resolveOnCreate(model);
+        await this.security.resolveAttrsOnCreate(model);
         await this.security.resolveRelations(this.meta.view, {model});
         return this.renderCreate(model);
     }
@@ -164,6 +166,7 @@ module.exports = class ModelController extends Base {
     async actionList () {
         await this.setViewNodeMetaParams();
         await this.security.resolveOnList(this.meta.view);
+        await this.security.resolveAttrsOnList(this.meta.view);
         const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
@@ -178,6 +181,7 @@ module.exports = class ModelController extends Base {
             await this.resolveTreeMetaParams(node, depth, 'list');
         }
         await this.security.resolveOnList(this.meta.view);
+        await this.security.resolveAttrsOnList(this.meta.view);
         const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const master = this.meta.master;
@@ -191,6 +195,7 @@ module.exports = class ModelController extends Base {
     async actionListSelect () {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
+        await this.security.resolveAttrsOnList(this.meta.view);
         const master = this.meta.master;
         const query = this.meta.view.find(this.getSpawnConfig({
             model: master.model,
@@ -213,6 +218,7 @@ module.exports = class ModelController extends Base {
     async actionListRelated () {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'listView'});
+        await this.security.resolveAttrsOnList(this.meta.view);
         const query = this.meta.view.find(this.getSpawnConfig()).withListData();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         await this.meta.master.attr.relation.setQueryByModel(query, this.meta.master.model);

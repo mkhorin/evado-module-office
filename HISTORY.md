@@ -1,3 +1,8 @@
+## 1.7.1
+
+* controller/ModelController
+    - fix relation view to resolve access
+    
 ## 1.7.0
 
 * model/DataHistory

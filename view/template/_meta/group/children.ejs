@@ -17,13 +17,9 @@ for (const item of group.children) {
         } else if (item.isHidden()) {
             template = _view.get('_meta/attr/hidden');
         } else if (!template) {
-            if (item.relation && !meta.canReadRelation(item)) {
-                template = _view.get('_meta/attr/static');
-            } else {
-                template = _view.get(meta.canUpdateAttr(item, model)
-                    ? '_meta/attr/edit/' + item.getViewType()
-                    : '_meta/attr/view/' + item.getViewType());
-            }
+            template = _view.get(meta.canUpdateAttr(item, model)
+                ? '_meta/attr/edit/' + item.getViewType()
+                : '_meta/attr/view/' + item.getViewType());
         }
         params = {
             attr: item,

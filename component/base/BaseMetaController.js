@@ -188,9 +188,11 @@ module.exports = class BaseMetaController extends Base {
 
     async assignSecurityModelFilter (query) {
         query.security = this.createMetaSecurity();
-        return await query.security.resolveOnList(query.view, {skipAccessException: true})
-            ? query.security.access.assignObjectFilter(query)
-            : query.where(['FALSE']);
+        if (await query.security.resolveOnList(query.view, {skipAccessException: true})) {
+            await query.security.resolveAttrsOnList(query.view);
+            return query.security.access.assignObjectFilter(query);
+        }
+        return query.where(['FALSE']);
     }
 
     handleModelError (model) {

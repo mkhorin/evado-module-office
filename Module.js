@@ -12,7 +12,9 @@ module.exports = class OfficeModule extends Base {
             BEHAVIORS: {
                 'access': {
                     Class: require('areto/filter/AccessControl'),
-                    rules: [{permissions: ['moduleOffice']}]
+                    rules: [{
+                        permissions: ['moduleOffice']
+                    }]
                 },
                 'expiredPassword': {
                     Class: require('evado/component/filter/ExpiredPasswordFilter')

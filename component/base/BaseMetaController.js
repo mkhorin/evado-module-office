@@ -50,7 +50,7 @@ module.exports = class BaseMetaController extends Base {
     }
 
     getModelQuery (id = this.getQueryParam('id')) {
-        return this.meta.view.findById(id, this.getSpawnConfig());
+        return this.meta.view.createQuery(this.getSpawnConfig()).byId(id);
     }
 
     setMetaParams (defaultView) {
@@ -123,7 +123,7 @@ module.exports = class BaseMetaController extends Base {
             master.model = master.view.createModel(this.getSpawnConfig());
             return master;
         }
-        master.model = await master.view.findById(id, this.getSpawnConfig()).one();
+        master.model = await master.view.createQuery(this.getSpawnConfig()).byId(id).one();
         if (!master.model) {
             throw new BadRequest(`Master object not found: ${data}`);
         }
@@ -178,7 +178,7 @@ module.exports = class BaseMetaController extends Base {
         master.class = level.sourceClass;
         master.view = master.class;
         master.attr = level.refAttr;
-        master.model = await master.view.findById(node, this.getSpawnConfig()).one();
+        master.model = await master.view.createQuery(this.getSpawnConfig()).byId(node).one();
         if (!master.model) {
             throw new BadRequest('Tree view node not found');
         }

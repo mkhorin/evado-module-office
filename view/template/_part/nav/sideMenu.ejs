@@ -5,6 +5,6 @@
     data-animation-speed="0"
     data-url="office/service/nav">
     <% if (forbiddenAccess[section.id] !== true) { %>
-        <%- include('sideMenuItems', {items: section.children}) %>
+        <%- include(_view.get('_part/nav/sideMenuItems'), {items: section.children}) %>
     <% } %>
 </ul>

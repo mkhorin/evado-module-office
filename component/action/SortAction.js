@@ -47,7 +47,7 @@ module.exports = class SortAction extends Base {
         }
         for (const key of Object.keys(data)) {
             data[key] = parseInt(data[key]);
-            if (!Number.isInteger(data[key])) {
+            if (!Number.isSafeInteger(data[key])) {
                 throw new BadRequest('Invalid order number');
             }
         }

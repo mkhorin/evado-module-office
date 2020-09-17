@@ -1,3 +1,13 @@
+## 1.8.0
+
+* component/base/BaseMetaController
+    - fix query creation
+* controller/ModelController
+    - refactor transition solver
+    - fix query creation
+* view/template/_part/nav/sideMenu
+    - fix path to template         
+    
 ## 1.7.1
 
 * controller/ModelController

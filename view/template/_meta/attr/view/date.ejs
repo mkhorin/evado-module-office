@@ -1,7 +1,7 @@
 <!-- _meta/attr/view/date -->
 <%
-let value = model.get(attr);
-value = value instanceof Date ? value.toISOString() : value;
+const value = model.get(attr);
+const stringValue = value instanceof Date ? value.toISOString() : value;
 %>
 <div class="form-attr form-group <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? 'Date' : handler %>"
@@ -10,7 +10,7 @@ value = value instanceof Date ? value.toISOString() : value;
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%- value %>"
+        <input name="<%- formAttrName %>" type="hidden" value="<%- stringValue %>"
                class="form-value" readonly="readonly">
         <p class="form-control-static">
             <%- _format(value, 'clientDate', {

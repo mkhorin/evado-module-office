@@ -5,7 +5,11 @@ for (const item of items) {
     }
     let translation = item.isSystem() ? 'null' : `meta.${item.translationKey}`;
     let css = item.options.css;
-    if (item.data.type === 'header') {
+    if (item.options.separatorBefore) {
+%>
+<li class="separator"></li>
+<%
+    } if (item.data.type === 'header') {
 %>
 <li class="header <%- css %>" data-t="<%- translation %>"><%- item.data.title %></li>
 <%
@@ -45,5 +49,5 @@ for (const item of items) {
     <% }%>
 </li>
 <% } if (item.options.separatorAfter) { %>
-<li class="separator <%- css %>"></li>
+<li class="separator"></li>
 <% }} %>

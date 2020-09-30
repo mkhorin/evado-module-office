@@ -8,10 +8,10 @@
     <title data-text="<%= blocks.title %>" data-t="meta"><%- _module.getTitle() %></title>
 
     <%- include(_view.get('_part/asset/style/defaults'), {skin: 'blue'}) %>
-    <link rel="stylesheet" href="office/style/module.css">
-    <%- include(_view.get('_part/asset/style/custom')) %>
 
-    <!-- <%- _view.createHead() %> -->
+    <link rel="stylesheet" href="office/style/module.css">
+
+    <%- include(_view.get('_part/asset/style/custom')) %>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" data-csrf="<%- _controller.getCsrfToken() %>">
 
@@ -33,7 +33,5 @@
     <%- include(_view.get('_part/asset/script/custom')) %>
 
     <script src="script/init.js"></script>
-
-    <!-- <%- _view.createBodyEnd() %> -->
 </body>
 </html>

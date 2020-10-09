@@ -18,8 +18,8 @@ for (const item of group.children) {
             template = _view.get('_meta/attr/hidden');
         } else if (!template) {
             template = _view.get(meta.canUpdateAttr(item, model)
-                ? '_meta/attr/edit/' + item.getViewType()
-                : '_meta/attr/view/' + item.getViewType());
+                ? '_meta/attr/edit/' + item.getTemplate()
+                : '_meta/attr/view/' + item.getTemplate());
         }
         params = {
             attr: item,

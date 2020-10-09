@@ -128,10 +128,7 @@ module.exports = class ModelController extends Base {
 
     async actionSelect () {
         await this.setMasterMetaParams();
-        await this.resolveMasterAttr({
-            refView: 'selectListView',
-            access: {actions: ['create', 'delete']}
-        });
+        await this.resolveMasterAttr({refView: 'selectListView'});
         await this.security.resolveAttrsOnList(this.meta.view);
         this.meta.dependency = this.getQueryParam('d');
         return this.render('select', this.getMetaParams());

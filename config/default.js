@@ -21,6 +21,7 @@ module.exports = {
             Class: require('../component/meta/ExtraMeta')
         }
     },
+    assets: require('./default-assets'),
     classes: require('./default-classes'),
     widgets: {
         'sideMenu': {

@@ -5,6 +5,9 @@
 
 Object.assign(Jam.I18n.defaults, {
 
+    'Delete relation sorting': 'Удалить сортировку отношения',
+    'Delete relation sorting?': 'Удалить сортировку отношения?',
+
     'Select class': 'Выберите класс',
     'Sort related objects': 'Сортировать связанные объекты',
     'Source data': 'Исходные данные',

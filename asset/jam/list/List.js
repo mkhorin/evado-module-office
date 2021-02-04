@@ -7,7 +7,7 @@ Jam.MainList = class MainList extends Jam.MainList {
 
     getCloneParams ($row) {
         const id = $row.data('id');
-        return {c: this.grid.getData(id)._metaClass, id};
+        return {c: this.grid.getData(id)._class, id};
     }
 };
 
@@ -71,7 +71,7 @@ Jam.SelectClassList = class SelectClassList extends Jam.SelectList {
     onSelect () {
         const $row = this.getSelectedRow();
         if ($row) {
-            this.modal.load(this.params.create, {c: this.serializeObjectIds($row)});
+            this.frame.load(this.params.create, {c: this.serializeObjectIds($row)});
         }
     }
 

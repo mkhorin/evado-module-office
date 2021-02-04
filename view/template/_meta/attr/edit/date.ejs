@@ -3,19 +3,21 @@
 let value = model.get(attr);
 value = value instanceof Date ? value.toISOString() : value;
 %>
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Date' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Date' : handler %>"
      data-utc="<%- attr.isUTC() %>"
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-params="<%= JSON.stringify(attr.options) %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- value %>" class="form-value">
         <div class="input-group">
             <input type="text" <%- required %> class="datepicker form-control">
-            <div class="input-group-addon"><i class="far fa-calendar"></i></div>
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="far fa-calendar"></i></span>
+            </div>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>

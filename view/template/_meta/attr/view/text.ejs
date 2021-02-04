@@ -1,9 +1,9 @@
 <!-- _meta/attr/view/text -->
 
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">

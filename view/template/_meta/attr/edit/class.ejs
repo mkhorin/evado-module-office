@@ -1,19 +1,27 @@
 <!-- _meta/attr/edit/class -->
 <%
-const select2 = {ajax: {url: _url('/api/base/meta/list-class-select')}};
+const select2 = {
+    ajax: {
+        url: _url('/api/base/meta/list-class-select')
+    },
+    queryData: {
+        ancestor: attr.options.ancestorClass
+    },
+    ...attr.options.select2
+};
 const value = model.get(attr);
-const metaClass = model.class.meta.getClass(value);
-const title = metaClass ? metaClass.title : value;
+const cls = model.class.meta.getClass(value);
+const title = cls ? cls.title : value;
 %>
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Select' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Select' : handler %>"
      data-select2="<%= JSON.stringify(select2) %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <select name="<%- formAttrName %>" class="form-control form-value">
+        <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
             <option value=""></option>
             <% if (value) { %>
             <option selected value="<%- value %>"><%- title %></option>

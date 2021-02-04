@@ -3,22 +3,23 @@
 const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
 %>
-<div class="form-attr form-group <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
+<div class="form-attr form-group row <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%- file %>"
                class="form-value" readonly="readonly">
-        <div class="form-control-static">
-            <% if (data && data.size) { %>
-            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" tabindex="-1" data-t="">Download</a>
+        <div class="form-control-plaintext">
+            <% if (data?.size) { %>
+            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>"
+               target="_blank" tabindex="-1" data-t="">Download</a>
             <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
             <% if (data.thumbnail) { %>
             <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>"
-                 class="file-download-thumbnail thumbnail img-responsive" alt="">
+                 class="file-download-thumbnail img-thumbnail img-fluid" alt="">
             <% }} else { %>
             <%- _format(null) %>
             <% } %>

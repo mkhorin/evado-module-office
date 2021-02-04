@@ -1,12 +1,6 @@
 
-.btn-white.ordered {
-    background-color: #f39c12;
-    border-color: #e08e0b;
-    color: #fff;
-}
-.btn-white.ordered:hover,
-.btn-white.ordered:active,
-.btn-white.ordered:focus,
-.btn-white.ordered:focus:active {
-    background-color: #e08e0b
+body {
+    --nav-item-acsent-color: var(--info);
+    --navbar-color: #328cc0;
+    --super-navbar-color: #1a72a4;
 }

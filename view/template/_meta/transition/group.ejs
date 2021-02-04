@@ -1,32 +1,28 @@
 <!-- _meta/transition/group -->
-
-<% if (model.transitions && model.transitions.length) { %>
-<div data-command="transitions" class="transitions btn-group btn-set">
-    <%
-        let item = model.transitions[0];
-    %>
-    <button type="button" class="btn btn-default btn-light"
+<% if (model.transitions?.length) { %>
+<div data-command="transitions" class="transitions btn-group nav-group" role="group">
+    <% let item = model.transitions[0]; %>
+    <button class="btn-outline-primary btn" type="button"
             title="<%= item.hint || item.title %>"
             data-command="transit"
             data-transition="<%- item.name %>"
             data-options="<%= JSON.stringify(item.options) %>"
             data-t="meta.<%- item.translationKey %>"><%= item.title %></button>
     <% if (model.transitions.length > 1) { %>
-    <button type="button" class="btn btn-white dropdown-toggle" title="Transitions" data-t="" data-toggle="dropdown">
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-        <% for (let i = 1; i < model.transitions.length; ++i) {
-           item = model.transitions[i]; %>
-        <li>
-            <a href="#" title="<%= item.hint || item.title %>"
+    <div class="btn-group" role="group">
+        <button type="button" class="dropdown-toggle btn-outline-secondary btn" title="Transitions"
+                data-toggle="dropdown" data-t=""></button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <% for (let i = 1; i < model.transitions.length; ++i) {
+                item = model.transitions[i]; %>
+            <a class="dropdown-item" href="#" title="<%= item.hint || item.title %>"
                data-command="transit"
                data-transition="<%- item.name %>"
                data-options="<%= JSON.stringify(item.options) %>"
                data-t="meta.<%- item.translationKey %>"><%= item.title %></a>
-        </li>
-        <% } %>
-    </ul>
+            <% } %>
+        </div>
+    </div>
     <% } %>
 </div>
 <% } %>

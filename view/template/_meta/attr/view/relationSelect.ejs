@@ -8,16 +8,16 @@ const items = [];
 if (attr.commandMap.edit) {
     if (Array.isArray(related)) {
         for (const item of related) {
-            items.push(`<a href="${update}${item.getId()}" class="modal-link">${item.getEscapedTitle()}</a>`);
+            items.push(`<a href="${update}${item.getId()}" class="frame-link">${item.getEscapedTitle()}</a>`);
         }
     } else if (related) {
-        items.push(`<a href="${update}${related.getId()}" class="modal-link">${related.getEscapedTitle()}</a>`);
+        items.push(`<a href="${update}${related.getId()}" class="frame-link">${related.getEscapedTitle()}</a>`);
     } else if (Array.isArray(raw)) {
         for (const value of raw) {
-            items.push(`<a href="${update}${value}" class="modal-link">${value}</a>`);
+            items.push(`<a href="${update}${value}" class="frame-link">${value}</a>`);
         }
     } else if (raw) {
-        items.push(`<a href="${update}${raw}" class="modal-link">${raw}</a>`);
+        items.push(`<a href="${update}${raw}" class="frame-link">${raw}</a>`);
     }
 } else if (Array.isArray(related)) {
     for (const item of related) {
@@ -33,21 +33,18 @@ if (attr.commandMap.edit) {
     items.push(raw);
 }
 %>
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <div class="box relation-select-box">
-            <div class="box-body">
-                <input name="<%- formAttrName %>" type="hidden" value="<%= raw %>"
-                       class="form-value" readonly="readonly">
-                <p class="form-control-static">
-                    <%- items.length ? items.join('<br>') : _format(null) %>
-                </p>
-            </div>
+        <input name="<%- formAttrName %>" type="hidden" value="<%= raw %>" class="form-value" readonly>
+        <div class="relation-select">
+            <p class="form-control-plaintext">
+                <%- items.length ? items.join('<br>') : _format(null) %>
+            </p>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>

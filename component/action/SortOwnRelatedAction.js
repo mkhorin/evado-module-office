@@ -30,9 +30,11 @@ module.exports = class SortOwnRelatedAction extends Base {
         }
         await this.controller.resolveMasterAttr({
             refView: 'listView',
-            access: {actions: [Rbac.UPDATE]}
+            access: {
+                actions: [Rbac.UPDATE]
+            }
         });
-        if (this.isGet()) {
+        if (this.isGetRequest()) {
             return this.controller.renderMeta(this.template, this.controller.getMetaParams());
         }
         this.getPostParam('delete')

@@ -5,13 +5,13 @@
     <input name="<%- formAttrName %>" type="hidden" class="form-value" readonly="readonly">
 </div>
 <% } else { %>
-<div class="form-attr form-group <%- attr.options.css %>"
+<div class="form-attr form-group row <%- attr.options.css %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" class="form-value" readonly="readonly">
-        <p class="form-control-static">
+        <p class="form-control-plaintext">
             <%- _controller.format(null, 'noAccess') %>
         </p>
         <div class="error-block"></div>

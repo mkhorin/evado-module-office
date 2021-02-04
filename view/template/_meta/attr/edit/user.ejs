@@ -7,29 +7,31 @@ if (model.has(attr)) {
 }
 const userUrl = _module.getParam('userUpdateUrl');
 %>
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Select' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Select' : handler %>"
      data-select2="<%= JSON.stringify(select2) %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <% if (userUrl) { %>
         <div class="input-group">
-            <select name="<%- formAttrName %>" class="form-control form-value">
+            <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
                 <option value=""></option>
                 <%- content %>
             </select>
-            <div class="input-group-btn">
-                <button class="btn-default btn" type="button" tabindex="-1" data-action="update" data-blank="true"
+            <div class="input-group-append">
+                <button class="btn-outline-info btn" type="button" tabindex="-1"
+                        data-action="update"
+                        data-blank="true"
                         data-url="<%- _url(userUrl) %>">
-                    <span class="glyphicon glyphicon-pencil"></span>
+                    <i class="fas fa-pencil-alt"></i>
                 </button>
             </div>
         </div>
         <% } else { %>
-        <select name="<%- formAttrName %>" class="form-control form-value">
+        <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
             <option value=""></option>
             <%- content %>
         </select>

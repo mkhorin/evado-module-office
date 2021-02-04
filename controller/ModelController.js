@@ -11,8 +11,8 @@ module.exports = class ModelController extends Base {
         return {
             ACTIONS: {
                 'sort': require('../component/action/SortAction'),
-                'sort-related': require('../component/action/SortRelatedAction'),
-                'sort-own-related': require('../component/action/SortOwnRelatedAction')
+                'sortRelated': require('../component/action/SortRelatedAction'),
+                'sortOwnRelated': require('../component/action/SortOwnRelatedAction')
             }
         };
     }
@@ -51,7 +51,7 @@ module.exports = class ModelController extends Base {
         this.setDefaultMasterValue(model);
         await this.security.resolveOnCreate(model);
         await this.security.resolveAttrsOnCreate(model);
-        if (this.isGet()) {
+        if (this.isGetRequest()) {
             await this.security.resolveRelations(meta.view, {model});
             await transit.resolve(model);
             return this.renderCreate(model);
@@ -83,7 +83,7 @@ module.exports = class ModelController extends Base {
             model.readOnly = forbiddenUpdate || model.readOnly;
         }
         await this.security.resolveAttrsOnUpdate(model);
-        if (this.isGet()) {
+        if (this.isGetRequest()) {
             await this.security.resolveRelations(this.meta.view, {model});
             await transit.resolve(model, forbiddenUpdate);
             await this.meta.view.resolveEnums();
@@ -135,7 +135,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionClone () {
-        if (this.isPost()) {
+        if (this.isPostRequest()) {
             return this.actionCreate();
         }
         await this.setMetaParams('create');
@@ -284,10 +284,10 @@ module.exports = class ModelController extends Base {
         }
     }
 
-    async deleteById (id, metaClass) {
-        const model = await metaClass.createQuery(this.getSpawnConfig()).byId(id).withStateView().one();
+    async deleteById (id, cls) {
+        const model = await cls.createQuery(this.getSpawnConfig()).byId(id).withStateView().one();
         if (!model) {
-            throw new BadRequest(`Object not found: ${id}.${metaClass.id}`);
+            throw new BadRequest(`Object not found: ${id}.${cls.id}`);
         }
         const access = await this.security.resolveAccessOnDelete(model);
         if (!access.canDelete()) {

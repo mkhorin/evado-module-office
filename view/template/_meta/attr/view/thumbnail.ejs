@@ -10,25 +10,25 @@ const commands = attr.commandMap;
 const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
 const edit = commands.edit ? `office/model/update?${params}&id=` : false;
 %>
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label" title="<%= attr.extHint %>"
            data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>" class="form-value">
-        <% if (file && file.thumbnail) {
+        <% if (file?.thumbnail) {
             const thumbnail = file.thumbnail + '&s=' + size + '&id='; %>
         <div class="thumbnail-list">
             <% for (const value of values) {
                 const id = value.getId ? value.getId() : value;
                 const name = value.getTitle ? value.getTitle() : value;
             if (edit) { %>
-            <a href="<%- edit + id %>" class="modal-link">
-                <img src="<%- thumbnail + id %>" class="thumbnail img-responsive" title="<%= name %>" alt="">
+            <a href="<%- edit + id %>" class="frame-link">
+                <img src="<%- thumbnail + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
             </a>
             <% } else  { %>
-            <img src="<%- thumbnail + id %>" class="thumbnail img-responsive" title="<%= name %>" alt="">
+            <img src="<%- thumbnail + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
             <% }} %>
         </div>
         <% } %>

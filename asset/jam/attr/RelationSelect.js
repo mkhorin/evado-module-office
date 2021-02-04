@@ -19,10 +19,10 @@ Jam.RelationSelectModelAttr = class extends Jam.RelationSelectModelAttr {
     }
 
     onSortRelation () {
-        this.loadModal(this.params.relationSort.url, null, this.onAfterCloseModal.bind(this));
+        this.openFrame(this.params.relationSort.url, null, this.onAfterCloseFrame.bind(this));
     }
 
-    onAfterCloseModal (event, data) {
+    onAfterCloseFrame (event, data) {
         if (data.order || data.deleted) {
             this.findCommand('relationSort').toggleClass('ordered', !!data.order);
             this.sortByIdList(data.order);

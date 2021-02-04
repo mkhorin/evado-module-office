@@ -1,3 +1,10 @@
+## 2.0.0
+
+* add client attribute handlers from metadata
+* migration to Bootstrap 4
+* update type request getters
+* use optional chaining
+
 ## 1.8.0
 
 * component/base/BaseMetaController

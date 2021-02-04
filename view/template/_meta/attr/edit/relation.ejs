@@ -37,85 +37,71 @@ if (p.filter && !p.filter.url) {
 }
 const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Relation' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Relation' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label" title="<%= attr.extHint %>"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label" title="<%= attr.extHint %>"
            data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
-        <div class="box box-grid box-grid-field">
-            <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
-            <div class="box-body">
-                <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
-                    <div class="list-commands">
-                        <% if (p.link) { %>
-                        <div class="btn-set">
-                            <button data-command="link" class="btn btn-default" type="button" title="Add">
-                                <span class="fa fa-link"></span>
-                            </button>
-                            <% if (p.unlink) { %>
-                            <button data-command="unlink" class="btn btn-default" type="button" title="Remove">
-                                <span class="fa fa-unlink text-danger"></span>
-                            </button>
-                            <% } %>
-                        </div>
-                        <% } if (p.create) { %>
-                        <button data-command="create" class="btn btn-success btn-light" type="button" title="Create">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                        <% } if (p.update) { %>
-                        <button data-command="update" class="btn btn-warning btn-light" type="button" title="Edit">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
-                        <% } if (p.delete) { %>
-                        <button data-command="delete" class="btn btn-default" type="button" title="Delete">
-                            <span class="glyphicon glyphicon-trash text-danger"></span>
-                        </button>
-                        <% } %>
-                        <div class="btn-set">
-                            <button data-command="reload" class="btn btn-default" type="button" title="Reload">
-                                <span class="fa fa-redo-alt"></span>
-                            </button>
-                        </div>
-                        <%- sortCommands %>
-                    </div>
-                    <% if (p.filter) { %>
-                    <div class="list-filter">
-                        <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
-                    </div>
-                    <% } if (p.showTop) { %>
-                    <div class="row-top row">
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="data-grid-common-search">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="clear" title="Clear">&times;</span>
-                                <span class="advanced-toggle glyphicon glyphicon-cog" title="Advanced search"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-8 col-lg-9">
-                            <div class="data-grid-tuner">
-                                <button type="button" class="toggle btn btn-default" title="Customize columns">
-                                    <span class="glyphicon glyphicon-cog"></span>
-                                </button>
-                            </div>
-                            <div class="data-grid-page-size hidden">
-                                <select class="form-control" title="Page size"></select>
-                            </div>
-                        </div>
-                    </div>
-                    <% } %>
-                    <div class="table-responsive">
-                        <table class="data-grid-table table table-bordered table-striped table-condensed">
-                            <thead></thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <% if (p.showBottom) { %>
-                    <%- include(_view.get('_part/list/bottom')) %>
+        <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
+        <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
+            <div class="hidden-commands commands">
+                <% if (p.link) { %>
+                <div class="nav-group">
+                    <button data-command="link" type="button" title="Add"
+                            class="btn-white btn-outline-success btn">
+                        <i class="fa fa-link"></i>
+                    </button>
+                    <% if (p.unlink) { %>
+                    <button data-command="unlink" type="button" title="Remove"
+                            class="btn-white btn-outline-danger btn">
+                        <i class="fa fa-unlink"></i>
+                    </button>
                     <% } %>
                 </div>
+                <% } if (p.create) { %>
+                <button data-command="create" type="button" title="Create"
+                        class="btn-white btn-outline-success btn">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <% } if (p.update) { %>
+                <button data-command="update" type="button" title="Edit"
+                        class="btn-white btn-outline-info btn">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <% } if (p.delete) { %>
+                <button data-command="delete" type="button" title="Delete"
+                        class="btn-white btn-outline-danger btn">
+                    <i class="far fa-trash-alt"></i>
+                </button>
+                <% } %>
+                <div class="nav-group">
+                    <button data-command="reload" type="button" title="Reload"
+                            class="btn-white btn-outline-secondary btn">
+                        <i class="fa fa-redo-alt"></i>
+                    </button>
+                </div>
+                <%- sortCommands %>
             </div>
-            <div class="list-loader overlay"><i class="fa fa-spinner fa-spin"></i></div>
+            <% if (p.filter) { %>
+            <div class="list-filter">
+                <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
+            </div>
+            <% } if (p.showTop) { %>
+            <%- include(_view.get('_part/list/top')) %>
+            <% } %>
+            <div class="table-responsive">
+                <table class="data-grid-table table-bordered table-striped table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <% if (p.showBottom) { %>
+            <%- include(_view.get('_part/list/bottom')) %>
+            <% } %>
+            <div class="overlay">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>

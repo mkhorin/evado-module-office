@@ -1,12 +1,12 @@
 <!-- _meta/attr/edit/select -->
 
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Enum' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Enum' : handler %>"
      data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
      data-t-sets="meta.<%- attr.translationKey %>"
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-select2="<%= attr.options.select2 ? JSON.stringify(attr.options.select2) : '{}' %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">

@@ -1,15 +1,13 @@
 <!-- _meta/attr/edit/boolean -->
-
-<div class="form-attr form-group <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Checkbox' : handler %>"
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Checkbox' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <div class="<%- attr.options.cssValue || 'col-md-10 col-md-offset-2' %>">
+    <div class="<%- attr.options.cssValue || 'col-md-10 offset-md-2' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- model.get(attr) %>" class="form-value">
-        <div class="checkbox">
-            <label title="<%= attr.extHint %>" data-t-title="meta.<%- attr.view.translationKey %>">
-                <input <%- model.get(attr) ? 'checked' : '' %> type="checkbox">
-                <span data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></span>
-            </label>
+        <div class="form-check">
+            <input class="form-check-input" <%- model.get(attr) ? 'checked' : '' %> type="checkbox">
+            <label class="form-check-label" title="<%= attr.extHint %>"
+                   data-t-title="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>

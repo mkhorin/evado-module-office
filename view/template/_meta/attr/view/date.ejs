@@ -3,16 +3,16 @@
 const value = model.get(attr);
 const stringValue = value instanceof Date ? value.toISOString() : value;
 %>
-<div class="form-attr form-group <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? 'Date' : handler %>"
+<div class="form-attr form-group row <%- attr.options.css %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Date' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> control-label"
+    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || 'col-md-10' %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- stringValue %>"
                class="form-value" readonly="readonly">
-        <p class="form-control-static">
+        <p class="form-control-plaintext">
             <%- _format(value, 'clientDate', {
                 utc: attr.isUTC(),
                 format: attr.getFormat()

@@ -1,4 +1,4 @@
-<% layout(_view.get('_layout/modal/list')) %>
+<% layout(_view.get('_layout/frame/list')) %>
 
 <% block('tab', 'Data history') %>
 <% block('title', owner.class.title) %>
@@ -17,7 +17,7 @@
         }],
         order: {[model.PK]: -1},
         list: _url('list', {c: owner.class.id, id: owner.getId()}),
-        jam: 'ModalList',
+        jam: 'FrameList',
         create: null,
         update: null,
         delete: null,

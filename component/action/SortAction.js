@@ -27,7 +27,7 @@ module.exports = class SortAction extends Base {
             throw new BadRequest(`Not modal sortable attribute`);
         }
         const sortAttr = view.getAttr(attrName);
-        if (this.isGet()) {
+        if (this.isGetRequest()) {
             return this.controller.renderMeta(this.template, this.controller.getMetaParams({sortAttr}));
         }
         const data = this.validateData(this.getPostParam('order'));

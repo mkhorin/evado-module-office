@@ -19,10 +19,10 @@ Jam.AttrList = class AttrList extends Jam.AttrList {
     }
 
     onSortRelation () {
-        this.loadModal(this.params.relationSort.url, null, this.onAfterModalClose.bind(this));
+        this.openFrame(this.params.relationSort.url, null, this.onAfterFrameClose.bind(this));
     }
 
-    onAfterModalClose (event, data) {
+    onAfterFrameClose (event, data) {
         if (data.order || data.deleted) {
             this.findCommand('relationSort').toggleClass('ordered', !!data.order);
             this.grid.clearOrder();

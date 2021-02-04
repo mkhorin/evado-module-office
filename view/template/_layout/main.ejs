@@ -1,37 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%- _controller.language %>">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <base href="<%- _baseUrl %>">
-    <title data-text="<%= blocks.title %>" data-t="meta"><%- _module.getTitle() %></title>
+    <title data-text="<%= blocks.title %>" data-t=""><%- _module.getTitle() %></title>
 
-    <%- include(_view.get('_part/asset/style/defaults'), {skin: 'blue'}) %>
+    <%- include(_view.get('_part/asset/style/main')) %>
 
     <link rel="stylesheet" href="office/style/module.css">
 
     <%- include(_view.get('_part/asset/style/custom')) %>
 </head>
-<body class="hold-transition skin-blue sidebar-mini" data-csrf="<%- _controller.getCsrfToken() %>">
+<body data-csrf="<%- _controller.getCsrfToken() %>">
+
+<div class="main-wrapper">
 
     <%- body %>
 
-    <%- include(_view.get('_part/other/modal')) %>
-    <%- include(_view.get('_part/other/dialog')) %>
-    <%- include(_view.get('_part/asset/script/jam')) %>
+</div>
 
-    <script src="office/jam/attr/Relation.js"></script>
-    <script src="office/jam/attr/RelationSelect.js"></script>
-    <script src="office/jam/list/List.js"></script>
-    <script src="office/jam/list/RelationSortList.js"></script>
-    <script src="office/jam/meta/DocModel.js"></script>
-    <script src="office/jam/meta/ModelWorkflow.js"></script>
+<%- include(_view.get('_part/asset/script/main')) %>
+<%- include(_view.get('_part/asset/script/messages')) %>
 
-    <%- include(_view.get('_part/asset/script/messages')) %>
-    <%- include(_view.get('_part/asset/script/defaults')) %>
-    <%- include(_view.get('_part/asset/script/custom')) %>
+<script src="office/vendor/jam/jam.min.js"></script>
 
-    <script src="script/init.js"></script>
+<%- include(_view.get('_part/asset/script/custom')) %>
+
+<script src="script/init.js"></script>
+
 </body>
 </html>

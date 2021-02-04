@@ -22,7 +22,9 @@ module.exports = class SortRelatedAction extends Base {
         }
         await this.controller.resolveMasterAttr({
             refView: 'listView',
-            access: {actions: [Rbac.UPDATE]}
+            access: {
+                actions: [Rbac.UPDATE]
+            }
         });
         return this.executeView(meta.master.attr.listView);
     }

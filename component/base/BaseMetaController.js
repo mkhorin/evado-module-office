@@ -69,12 +69,12 @@ module.exports = class BaseMetaController extends Base {
 
     setViewMetaParams (name, defaultName) {
         if (name) {
-            this.meta.view = this.meta.class.getViewByPrefix(this.module.getBaseName(), name);
+            this.meta.view = this.meta.class.getViewWithPrefix(this.module.name, name);
             if (!this.meta.view) {
                 throw new BadRequest('Meta view not found');
             }
         } else if (defaultName) {
-            const view = this.meta.class.getViewByPrefix(this.module.getBaseName(), defaultName);
+            const view = this.meta.class.getViewWithPrefix(this.module.name, defaultName);
             if (view) {
                 this.meta.view = view;
             }
@@ -131,8 +131,8 @@ module.exports = class BaseMetaController extends Base {
 
     setDefaultMasterValue (model) {
         const master = this.meta.master;
-        const attr = master.attr && master.attr.relation.refAttr;
-        if (attr && attr.relation && !model.has(attr)) {
+        const attr = master.attr?.relation.refAttr;
+        if (attr?.relation && !model.has(attr)) {
             model.set(attr, master.model.get(attr.relation.refAttrName));
             master.refAttr = attr;
         }
@@ -161,11 +161,10 @@ module.exports = class BaseMetaController extends Base {
         if (!node) {
             throw new NotFound('Node not found');
         }
-        const metaClass = this.baseMeta.getClass(node.data.class);
-        const view = node.data.view || 'list';
+        const cls = this.baseMeta.getClass(node.data.class);
         this.meta.node = node;
-        this.meta.class = metaClass;
-        this.meta.view = (metaClass && metaClass.getView(view)) || metaClass;
+        this.meta.class = cls;
+        this.meta.view = cls?.getView(node.data.view || 'list') || cls;
         return node;
     }
 

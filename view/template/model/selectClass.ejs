@@ -1,10 +1,10 @@
 <%
 const items = [];
-for (const metaClass of meta.class.getActiveDescendants()) {
+for (const cls of meta.class.getActiveDescendants()) {
     items.push({
-        label: metaClass.title,
-        name: metaClass.name,
-        description: metaClass.data.description
+        label: cls.title,
+        name: cls.name,
+        description: cls.data.description
     });
 }
 const p = {
@@ -29,38 +29,27 @@ const p = {
     create: 'office/model/create'
 };
 %>
-<div class="jmodal-scroll-container box-grid box" data-title="Select class">
-    <div class="box-header with-border scroll-header"></div>
-    <div class="scroll-body box-body">
+<div class="frame-box scroll-container" data-title="Select class">
+    <div class="frame-box-header scroll-header"></div>
+    <div class="frame-box-body scroll-body">
         <div class="data-grid" data-jam="SelectClassList" data-params="<%= JSON.stringify(p) %>">
-            <div class="list-commands clearfix">
-                <button data-command="select" class="btn btn-primary" type="button" title="Select">
-                    <span class="glyphicon glyphicon-check"></span>
+            <div class="commands">
+                <button data-command="select" class="btn-primary btn" type="button" title="Select">
+                    <i class="fas fa-check"></i>
                 </button>
             </div>
             <% if (items.length > 10) { %>
-            <div class="row-top row">
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="data-grid-common-search">
-                        <input type="search" class="form-control" placeholder="Search...">
-                        <span class="clear" title="Clear">&times;</span>
-                        <span class="advanced-toggle glyphicon glyphicon-cog" title="Advanced search"></span>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-8 col-lg-9">
-                    <div class="data-grid-page-size hidden">
-                        <select class="form-control" title="Page size"></select>
-                    </div>
-                </div>
-            </div>
+            <%- include(_view.get('_part/list/top')) %>
             <% } %>
             <div class="table-responsive">
-                <table class="data-grid-table table table-bordered table-striped table-condensed">
+                <table class="data-grid-table table table-bordered table-striped">
                     <thead></thead>
                     <tbody></tbody>
                 </table>
             </div>
+            <div class="overlay">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
         </div>
     </div>
-    <div class="list-loader overlay"><i class="fa fa-spinner fa-spin"></i></div>
 </div>

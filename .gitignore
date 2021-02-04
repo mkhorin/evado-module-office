@@ -1,6 +1,8 @@
 /.hg/*
 /.idea/*
 
+asset/dist
+
 *.log
 npm-debug.log*
 

@@ -17,10 +17,10 @@ const title = cls ? cls.title : value;
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Select' : handler %>"
      data-select2="<%= JSON.stringify(select2) %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
+    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
-    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+    <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
             <option value=""></option>
             <% if (value) { %>

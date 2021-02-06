@@ -29,10 +29,10 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RelationSelect' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || 'col-md-2' %> col-form-label"
+    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            title="<%= attr.extHint %>"
            data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
-    <div class="<%- attr.options.cssValue || 'col-md-10' %>">
+    <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <div class="relation-select">
             <input type="hidden" name="<%- formAttrName %>" value="<%= defaultValue %>" class="form-value">
             <div class="hidden-commands commands">

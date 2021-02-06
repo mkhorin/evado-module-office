@@ -26,7 +26,9 @@ for (const item of group.children) {
             parent: group,
             formAttrId: item.getFormId(_controller.timestamp), // for label
             formAttrName: item.getFormName(),
-            required: item.isRequired() ? 'required' : ''
+            required: item.isRequired() ? 'required' : '',
+            defaultCssLabel: 'col-lg-2',
+            defaultCssValue: 'col-lg-10'
         };
     }
 %>

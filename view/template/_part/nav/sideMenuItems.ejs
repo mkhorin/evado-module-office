@@ -5,13 +5,11 @@ for (const item of items) {
     }
     let translation = item.isSystem() ? 'null' : `meta.${item.translationKey}`;
     let css = item.options.css;
-    if (item.options.separatorBefore) {
+    if (item.data.type === 'divider') {
 %>
 <div class="nav-divider"></div>
-<%
-    } if (item.data.type === 'header') {
-%>
-<div class="nav-header <%- css %>" data-t="<%- translation %>"><%- item.data.title %></div>
+<% } else if (item.data.type === 'header') { %>
+<div class="nav-header <%- css %>" data-t="<%- translation %>"><%- item.label %></div>
 <%
 } else {
     let opened = item.data.opened || openedItems.includes(item);
@@ -28,7 +26,7 @@ for (const item of items) {
 <div class="nav-item <%- css %>" data-id="<%- item.id %>">
     <% if (item.children) { %>
     <a href="javascript:void(0)" class="nav-link" data-url="<%- _widget.getItemUrl(item) %>">
-        <span title="<%= item.title %>" data-t="<%- translation %>"><%- item.title %></span>
+        <span data-t="<%- translation %>"><%- item.label %></span>
         <span class="arrow fa fa-angle-left"></span>
     </a>
     <div class="nav-children">
@@ -42,10 +40,8 @@ for (const item of items) {
     </div>
     <% } else { %>
     <a href="<%- _widget.getItemUrl(item) %>" class="nav-link">
-        <span title="<%= item.title %>" data-t="<%- translation %>"><%- item.title %></span>
+        <span data-t="<%- translation %>"><%- item.label %></span>
     </a>
     <% }%>
 </div>
-<% } if (item.options.separatorAfter) { %>
-<div class="nav-divider"></div>
 <% }} %>

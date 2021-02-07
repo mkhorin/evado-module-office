@@ -1,8 +1,6 @@
 <!-- office/_part/nav/sideMenu -->
 <div class="nav-tree"
     data-jam="LoadableNavTree"
-    data-widget="tree"
-    data-animation-speed="0"
     data-url="office/service/nav">
     <% if (forbiddenAccess[section.id] !== true) { %>
         <%- include(_view.get('_part/nav/sideMenuItems'), {items: section.children}) %>

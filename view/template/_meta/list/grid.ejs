@@ -16,6 +16,7 @@ data = {
     clone: `office/model/clone`,
     showTop: true,
     dependency: meta.dependency,
+    ...meta.view.options.grid,
     ...data
 };
 if (!data.list) {
@@ -70,11 +71,7 @@ const canDelete = commands.delete && data.delete && security.access.canDelete();
     <% } if (data.showTop) { %>
     <%- include(_view.get('_part/list/top')) %>
     <% } %>
-    <div class="table-responsive">
-        <table class="data-grid-table table table-bordered table-striped">
-            <thead></thead>
-            <tbody></tbody>
-        </table>
-    </div>
+    <div class="data-grid-content"></div>
+
     <%- include(_view.get('_part/list/bottom')) %>
 </div>

@@ -17,8 +17,8 @@ Jam.RelationSortList = class RelationSortList extends Jam.SortList {
 
     getChangedOrder () {
         const result = [];
-        for (const row of this.findRows()) {
-            result.push(row.dataset.id);
+        for (const item of this.findItems()) {
+            result.push(item.dataset.id);
         }
         return result;
     }

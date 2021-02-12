@@ -70,12 +70,8 @@ if (p.filter && !p.filter.url) {
             <% } if (p.showTop) { %>
             <%- include(_view.get('_part/list/top')) %>
             <% } %>
-            <div class="table-responsive">
-                <table class="data-grid-table table table-bordered table-striped">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            <div class="data-grid-content"></div>
+
             <% if (p.showBottom) { %>
             <%- include(_view.get('_part/list/bottom')) %>
             <% } %>

@@ -41,12 +41,7 @@ const p = {
             <% if (items.length > 10) { %>
             <%- include(_view.get('_part/list/top')) %>
             <% } %>
-            <div class="table-responsive">
-                <table class="data-grid-table table table-bordered table-striped">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            <div class="data-grid-content"></div>
             <div class="overlay">
                 <i class="fa fa-spinner fa-spin"></i>
             </div>

@@ -5,60 +5,61 @@
 
 Jam.MainList = class MainList extends Jam.MainList {
 
-    getCloneParams ($row) {
-        const id = $row.data('id');
+    getCloneParams ($item) {
+        const id = $item.data('id');
         return {c: this.grid.getData(id)._class, id};
     }
 };
 
 Jam.TreeList = class TreeList extends Jam.TreeList {
 
-    onClickRow (event) {
-        if (super.onClickRow(event)) {
+    onClickItem (event) {
+        if (super.onClickItem(event)) {
             return true;
         }
         const name = $(event.currentTarget).data('class');
-        this.toggleRowSelect(this.findSelectedRows().not(`[data-class="${name}"]`), false);
+        this.toggleItemSelect(this.findSelectedItems().not(`[data-class="${name}"]`), false);
     }
 };
 
 Jam.MainTreeList = class MainTreeList extends Jam.MainTreeList {
 
     getCreateUrl () {
-        const $rows = this.findSelectedRows();
-        const name = $rows.first().data('class');
+        const $items = this.findSelectedItems();
+        const name = $items.first().data('class');
         const url = this.params.create;
         return name ? Jam.UrlHelper.addParams(url, {c: name}) : url;
     }
 
-    getDeleteUrl ($rows) {
-        const name = $rows.first().data('class');
+    getDeleteUrl ($items) {
+        const name = $items.first().data('class');
         return Jam.UrlHelper.addParams(this.params.delete, {c: name});
     }
 
-    getObjectIdParam ($rows) {
-        const data = {id: $rows.first().data('id')};
-        const className = $rows.first().data('class');
+    getObjectIdParam ($items) {
+        const $item = $items.first();
+        const data = {id: $item.data('id')};
+        const className = $item.data('class');
         if (className) {
             data.c = className;
         }
         return data;
     }
 
-    onClickRow (event) {
-        if (super.onClickRow(event)) {
+    onClickItem (event) {
+        if (super.onClickItem(event)) {
             return true;
         }
         const name = $(event.currentTarget).data('class');
-        this.toggleRowSelect(this.findSelectedRows().not(`[data-class="${name}"]`), false);
+        this.toggleItemSelect(this.findSelectedItems().not(`[data-class="${name}"]`), false);
     }
 
     onCreate (event) {
-        const $row = this.findSelectedRows();
-        if ($row.length !== 1) {
+        const $item = this.findSelectedItems();
+        if ($item.length !== 1) {
             return super.onCreate(event);
         }
-        const node = this.grid.getNodeByRow($row);
+        const node = this.grid.getNodeByItem($item);
         super.onCreate(event, {
             node: node.getId(),
             depth: node.getDepth()
@@ -69,9 +70,9 @@ Jam.MainTreeList = class MainTreeList extends Jam.MainTreeList {
 Jam.SelectClassList = class SelectClassList extends Jam.SelectList {
 
     onSelect () {
-        const $row = this.getSelectedRow();
-        if ($row) {
-            this.frame.load(this.params.create, {c: this.serializeObjectIds($row)});
+        const $item = this.getSelectedItem();
+        if ($item) {
+            this.frame.load(this.params.create, {c: this.serializeObjectIds($item)});
         }
     }
 

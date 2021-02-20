@@ -6,7 +6,7 @@
 module.exports = {
 
     build: [{
-        Class: 'MergeFiles',
+        Class: 'FileMerger',
         sources: [
             'jam'
         ],
@@ -15,6 +15,6 @@ module.exports = {
     }],
 
     deploy: {
-        'vendor/jam': 'dist/jam.min.js'
+        'vendor': 'dist/jam.min.js'
     }
 };

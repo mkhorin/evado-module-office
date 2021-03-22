@@ -6,15 +6,11 @@
 module.exports = {
 
     build: [{
-        Class: 'FileMerger',
+        Class: 'Packer',
         sources: [
             'jam'
         ],
-        target: 'dist/jam.min.js',
+        target: 'vendor/jam.min.js',
         copyright: `/* @copyright Copyright (c) 2021 Maxim Khorin <maksimovichu@gmail.com> */\n`
-    }],
-
-    deploy: {
-        'vendor': 'dist/jam.min.js'
-    }
+    }]
 };

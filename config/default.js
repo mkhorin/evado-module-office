@@ -23,14 +23,14 @@ module.exports = {
     },
     assets: require('./default-assets'),
     classes: require('./default-classes'),
+    indexes: [
+    ],
+    tasks: {
+    },
     widgets: {
         'sideMenu': {
             Class: require('../component/widget/SideMenu')
         }
-    },
-    indexes: [
-    ],
-    tasks: {
     },
     params: {
         // defaultUrl: 'office/model?n=[item].[section]',

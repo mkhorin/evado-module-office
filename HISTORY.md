@@ -1,3 +1,9 @@
+## 2.2.0
+
+* change adaptive CSS classes
+* fix asset configuration
+* fix sidebar menu
+
 ## 2.0.0
 
 * add client attribute handlers from metadata

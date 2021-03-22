@@ -30,7 +30,7 @@
 <section class="main-content">
     <div class="main-container container-fluid">
 
-        <%- include(_view.get('_part/other/alert')) %>
+        <%- include(_view.get('_part/misc/alert')) %>
 
         <% if (_module.getMetaHub().error) { %>
         <div class="alert-danger alert" data-t="">Invalid metadata</div>
@@ -47,5 +47,5 @@
     <i class="fa fa-spinner fa-spin"></i>
 </div>
 
-<%- include(_view.get('_part/other/footer')) %>
-<%- include(_view.get('_part/other/frameStack')) %>
+<%- include(_view.get('_part/misc/footer')) %>
+<%- include(_view.get('_part/misc/frameStack')) %>

@@ -1,17 +1,22 @@
 <!-- _meta/attr/view/file -->
 <%
+const attrHandler = typeof handler === 'undefined' ? attr.options.handler : handler;
 const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
+if (!file && attr.isHideEmpty()) {
 %>
+<div class="form-attr hidden" data-handler="<%- attrHandler %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
+</div>
+<% } else { %>
 <div class="form-attr form-group row <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+     data-handler="<%- attrHandler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%- file %>"
-               class="form-value" readonly="readonly">
+        <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
         <div class="form-control-plaintext">
             <% if (data?.size) { %>
             <a class="download-link" href="<%- data.download %>" title="<%= data.name %>"
@@ -28,3 +33,4 @@ const file = data ? data.file : null;
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>
+<% } %>

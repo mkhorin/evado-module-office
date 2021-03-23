@@ -2,6 +2,5 @@
 
 <div class="form-attr hidden"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>">
-    <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>"
-           class="form-value" readonly="readonly">
+    <input name="<%- formAttrName %>" type="hidden" value="<%= model.get(attr) %>" class="form-value">
 </div>

@@ -41,7 +41,7 @@ if (p.filter && !p.filter.url) {
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value" readonly>
+        <input type="hidden" name="<%- formAttrName %>" value="<%= defaultValue %>" class="form-value">
         <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
             <button class="btn-lazy-load btn-outline-primary btn" type="button" data-t>Load</button>
             <div class="hidden-commands commands">

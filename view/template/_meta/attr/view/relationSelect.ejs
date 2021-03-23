@@ -1,10 +1,10 @@
 <!-- _meta/attr/view/relationSelect -->
 <%
+const attrHandler = typeof handler === 'undefined' ? attr.options.handler : handler;
 const update = `office/model/update?c=${attr.relation.refClass.id}&v=${attr.eagerView.editView.viewName}&id=`;
 const raw = model.get(attr);
 const related = model.related.get(attr);
 const items = [];
-
 if (attr.commandMap.edit) {
     if (Array.isArray(related)) {
         for (const item of related) {
@@ -32,15 +32,20 @@ if (attr.commandMap.edit) {
 } else if (raw) {
     items.push(raw);
 }
+if (!items.length && attr.isHideEmpty()) {
 %>
+<div class="form-attr hidden" data-handler="<%- attrHandler %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
+</div>
+<% } else { %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+     data-handler="<%- attrHandler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%= raw %>" class="form-value" readonly>
+        <input type="hidden" name="<%- formAttrName %>" value="<%= raw %>" class="form-value">
         <div class="relation-select">
             <p class="form-control-plaintext">
                 <%- items.length ? items.join('<br>') : _format(null) %>
@@ -50,3 +55,4 @@ if (attr.commandMap.edit) {
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>
+<% } %>

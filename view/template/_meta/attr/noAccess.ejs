@@ -2,7 +2,7 @@
 
 <% if (_module.params.hideForbiddenAttr || attr.isHidden()) { %>
 <div class="form-attr hidden" data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
-    <input name="<%- formAttrName %>" type="hidden" class="form-value" readonly="readonly">
+    <input type="hidden" name="<%- formAttrName %>" class="form-value">
 </div>
 <% } else { %>
 <div class="form-attr form-group row <%- attr.options.css %>"
@@ -10,7 +10,7 @@
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input name="<%- formAttrName %>" type="hidden" class="form-value" readonly="readonly">
+        <input type="hidden" name="<%- formAttrName %>" class="form-value">
         <p class="form-control-plaintext">
             <%- _controller.format(null, 'noAccess') %>
         </p>

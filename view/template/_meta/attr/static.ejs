@@ -1,35 +1,25 @@
 <!-- _meta/attr/static -->
 <%
-const attrHandler = typeof handler === 'undefined' ? attr.options.handler : handler;
-const value = model.get(attr);
-if (!value && attr.isHideEmpty()) {
-%>
-<div class="form-attr hidden" data-handler="<%- attrHandler %>">
-    <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
-</div>
-<% } else {
-    let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
-    let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
-    let escape = typeof escaping === 'undefined' ? attr.escaping : escaping;
-    let displayValue = model.getDisplayValue(attr);
-    if (attr.translatable) {
-        if (displayValue) {
-            displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
-            escape = false;
-        } else {
-            displayValue = value;
-        }
+let value = model.get(attr);
+let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
+let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
+let escape = typeof escaping === 'undefined' ? attr.escaping : escaping;
+let displayValue = model.getDisplayValue(attr);
+if (attr.translatable) {
+    if (displayValue) {
+        displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
+        escape = false;
+    } else {
+        displayValue = value;
     }
-    displayValue = _format(displayValue, attrFormat, attrFormatParams);
-    if (value && escape) {
-        displayValue = _view.EscapeHelper.escapeTags(displayValue);
-    }
-    if (attr.hideEmpty && escape) {
-        displayValue = _view.EscapeHelper.escapeTags(displayValue);
-    }
+}
+displayValue = _format(displayValue, attrFormat, attrFormatParams);
+if (value && escape) {
+    displayValue = _view.EscapeHelper.escapeTags(displayValue);
+}
 %>
 <div class="form-attr-static form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- attrHandler%>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
@@ -41,4 +31,3 @@ if (!value && attr.isHideEmpty()) {
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>
-<% } %>

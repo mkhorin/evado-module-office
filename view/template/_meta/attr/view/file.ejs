@@ -1,16 +1,13 @@
 <!-- _meta/attr/view/file -->
 <%
-const attrHandler = typeof handler === 'undefined' ? attr.options.handler : handler;
 const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
 if (!file && attr.isHideEmpty()) {
 %>
-<div class="form-attr hidden" data-handler="<%- attrHandler %>">
-    <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
-</div>
+<%- include(_view.get('_meta/attr/empty')) %>
 <% } else { %>
 <div class="form-attr form-group row <%- attr.options.css %>"
-     data-handler="<%- attrHandler %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"

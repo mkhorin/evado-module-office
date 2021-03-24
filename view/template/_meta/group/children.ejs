@@ -16,15 +16,17 @@ for (const item of group.children) {
             template = _view.get('_meta/attr/noAccess');
         } else if (item.isHidden()) {
             template = _view.get('_meta/attr/hidden');
-        } else if (!template) {
-            template = _view.get(meta.canUpdateAttr(item, model)
-                ? '_meta/attr/edit/' + item.getTemplate()
-                : '_meta/attr/view/' + item.getTemplate());
+        } else if (template) {
+        } else if (meta.canUpdateAttr(item, model)) {
+            template = _view.get('_meta/attr/edit/' + item.getTemplate());
+        } else if (item.isHideEmpty() && !model.get(item)) {
+            template = _view.get('_meta/attr/empty');
+        } else {
+            template = _view.get('_meta/attr/view/' + item.getTemplate());
         }
         params = {
             attr: item,
             parent: group,
-            formAttrId: item.getFormId(_controller.timestamp), // for label
             formAttrName: item.getFormName(),
             required: item.isRequired() ? 'required' : '',
             defaultCssLabel: 'col-xl-2 col-lg-3',

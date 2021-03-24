@@ -1,6 +1,5 @@
 <!-- _meta/attr/view/relationSelect -->
 <%
-const attrHandler = typeof handler === 'undefined' ? attr.options.handler : handler;
 const update = `office/model/update?c=${attr.relation.refClass.id}&v=${attr.eagerView.editView.viewName}&id=`;
 const raw = model.get(attr);
 const related = model.related.get(attr);
@@ -34,12 +33,10 @@ if (attr.commandMap.edit) {
 }
 if (!items.length && attr.isHideEmpty()) {
 %>
-<div class="form-attr hidden" data-handler="<%- attrHandler %>">
-    <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
-</div>
+<%- include(_view.get('_meta/attr/empty')) %>
 <% } else { %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- attrHandler %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"

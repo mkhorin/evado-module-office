@@ -1,17 +1,10 @@
 <!-- _meta/attr/view/date -->
 <%
-const attrHandler = typeof handler === 'undefined' ? attr.options.handler : handler;
 const value = model.get(attr);
-if (!value && attr.isHideEmpty()) {
-%>
-<div class="form-attr hidden" data-handler="<%- attrHandler %>">
-    <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
-</div>
-<% } else {
-    const stringValue = value instanceof Date ? value.toISOString() : value;
+const stringValue = value instanceof Date ? value.toISOString() : value;
 %>
 <div class="form-attr form-group row <%- attr.options.css %>"
-     data-handler="<%- attrHandler %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
@@ -28,4 +21,3 @@ if (!value && attr.isHideEmpty()) {
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>
-<% } %>

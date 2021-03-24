@@ -1,7 +1,8 @@
 <!-- _meta/attr/view/select -->
 <%
 let value = model.get(attr);
-let text = attr.enum.getText(value) || value;
+console.error(attr.id);
+let text = attr.enum?.getText(value) || value;
 if (text) {
     if (attr.escaping) {
         text = _view.EscapeHelper.escapeTags(text);

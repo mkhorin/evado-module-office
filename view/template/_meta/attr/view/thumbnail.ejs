@@ -5,11 +5,9 @@ const values = Array.isArray(related) ? related : related ? [related] : [];
 const refView = attr.getEagerView();
 const extraData = extraMeta.getData(refView);
 const thumbnail = extraData.file?.thumbnail;
-if (attr.isHideEmpty() && (!values.length || !thumbnail)) {
+if ((!thumbnail || !values.length) && attr.isHideEmpty()) {
 %>
-<div class="form-attr hidden" data-handler="<%- attrHandler %>">
-    <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
-</div>
+<%- include(_view.get('_meta/attr/empty')) %>
 <% } else {
     const size = attr.options.thumbnail || '';
     const commands = attr.commandMap;
@@ -24,17 +22,17 @@ if (attr.isHideEmpty() && (!values.length || !thumbnail)) {
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
         <% if (thumbnail) {
-            const thumb = thumbnail + '&s=' + size + '&id='; %>
+            const image = thumbnail + '&s=' + size + '&id='; %>
         <div class="thumbnail-list">
             <% for (const value of values) {
                 const id = value.getId ? value.getId() : value;
                 const name = value.getTitle ? value.getTitle() : value;
             if (edit) { %>
             <a href="<%- edit + id %>" class="frame-link">
-                <img src="<%- thumb + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
+                <img src="<%- image + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
             </a>
             <% } else  { %>
-            <img src="<%- thumb + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
+            <img src="<%- image + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
             <% }} %>
         </div>
         <% } %>

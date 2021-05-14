@@ -13,9 +13,7 @@ const value = model.get(attr);
         <input name="<%- formAttrName %>" type="hidden" value="<%- value %>" class="form-value">
         <div class="input-group">
             <input type="text" <%- required %> class="datepicker form-control">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="far fa-clock"></i></span>
-            </div>
+            <span class="input-group-text"><i class="far fa-clock"></i></span>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>

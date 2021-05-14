@@ -21,7 +21,7 @@ const title = cls ? cls.title : value;
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
+        <select name="<%- formAttrName %>" <%- required %> class="form-select form-value">
             <option value=""></option>
             <% if (value) { %>
             <option selected value="<%- value %>"><%- title %></option>

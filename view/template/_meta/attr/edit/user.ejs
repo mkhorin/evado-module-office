@@ -17,21 +17,19 @@ const userUrl = _module.getParam('userUpdateUrl');
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <% if (userUrl) { %>
         <div class="input-group">
-            <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
+            <select name="<%- formAttrName %>" <%- required %> class="form-select form-value">
                 <option value=""></option>
                 <%- content %>
             </select>
-            <div class="input-group-append">
-                <button class="btn-outline-info btn" type="button" tabindex="-1"
-                        data-action="update"
-                        data-blank="true"
-                        data-url="<%- _url(userUrl) %>">
-                    <i class="fas fa-pencil-alt"></i>
-                </button>
-            </div>
+            <button class="btn-outline-primary btn" type="button" tabindex="-1"
+                    data-action="update"
+                    data-blank="true"
+                    data-url="<%- _url(userUrl) %>">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
         </div>
         <% } else { %>
-        <select name="<%- formAttrName %>" <%- required %> class="form-control form-value">
+        <select name="<%- formAttrName %>" <%- required %> class="form-select form-value">
             <option value=""></option>
             <%- content %>
         </select>

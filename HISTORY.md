@@ -1,3 +1,8 @@
+## 3.0.0
+
+* migration to Bootstrap 5
+* option to hide empty attribute
+
 ## 2.2.0
 
 * change adaptive CSS classes

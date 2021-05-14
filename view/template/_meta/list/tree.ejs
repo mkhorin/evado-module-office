@@ -32,7 +32,7 @@ const canCreate = commands.create && data.create && security.access.canCreate();
             <i class="fas fa-plus"></i>
         </button>
         <% } if (commands.edit && data.update && security.access.canRead()) { %>
-        <button data-command="update" class="btn-outline-info btn" type="button" title="Edit">
+        <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
             <i class="fas fa-pencil-alt"></i>
         </button>
         <% } if (commands.delete && data.delete && security.access.canDelete()) { %>

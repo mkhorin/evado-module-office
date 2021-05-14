@@ -11,8 +11,8 @@
     <% if (model.transitions.length > 1) { %>
     <div class="btn-group" role="group">
         <button type="button" class="dropdown-toggle btn-outline-secondary btn" title="Transitions"
-                data-toggle="dropdown" data-t=""></button>
-        <div class="dropdown-menu dropdown-menu-right">
+                data-bs-toggle="dropdown" data-t=""></button>
+        <div class="dropdown-menu dropdown-menu-end">
             <% for (let i = 1; i < model.transitions.length; ++i) {
                 item = model.transitions[i]; %>
             <a class="dropdown-item" href="#" title="<%= item.hint || item.title %>"

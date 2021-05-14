@@ -57,7 +57,7 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
                 <%- sortCommands %>
             </div>
             <div class="input-group">
-                <select class="form-control" <% if (p.multiple) { %>multiple<% } %>
+                <select class="form-select" <% if (p.multiple) { %>multiple<% } %>
                         data-params="<%= JSON.stringify(p) %>">
                     <% if (Array.isArray(related)) {
                             for (const item of related) { %>
@@ -72,11 +72,9 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
                     <% } %>
                 </select>
                 <% if (p.update) { %>
-                <div class="input-group-append">
-                    <button data-command="update" class="btn-outline-info btn" type="button" title="Edit">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                </div>
+                <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
                 <% } %>
             </div>
         </div>

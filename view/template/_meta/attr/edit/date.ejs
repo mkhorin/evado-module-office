@@ -15,9 +15,7 @@ value = value instanceof Date ? value.toISOString() : value;
         <input name="<%- formAttrName %>" type="hidden" value="<%- value %>" class="form-value">
         <div class="input-group">
             <input type="text" <%- required %> class="datepicker form-control">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="far fa-calendar"></i></span>
-            </div>
+            <span class="input-group-text"><i class="far fa-calendar"></i></span>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>

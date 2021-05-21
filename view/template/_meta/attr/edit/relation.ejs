@@ -45,7 +45,7 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
         <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
-            <button class="btn-lazy-load btn-outline-primary btn" type="button" data-t>Load</button>
+            <button class="btn-demand-load btn-outline-primary btn" type="button" data-t>Load</button>
             <div class="hidden-commands commands">
                 <% if (p.link) { %>
                 <div class="nav-group">

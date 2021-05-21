@@ -38,8 +38,11 @@ module.exports = class ModelController extends Base {
     }
 
     async actionCreate () {
-        await this.setMetaParams('create');
         const meta = this.meta;
+        this.setClassMetaParams();
+        meta.view = meta.class = meta.class.getLastVersion();
+        this.setViewMetaParams(this.getQueryParam('v'), 'create');
+        await this.setMasterMetaParams();
         if (meta.class.isAbstract()) {
             return this.renderMeta('selectClass', this.getMetaParams());
         }

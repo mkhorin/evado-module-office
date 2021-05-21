@@ -1,3 +1,10 @@
+## 3.1.0
+
+* controller/ModelController
+    - add version resolving when creating a model  
+* view/template/_meta/attr/edit/boolean
+    - fix checkbox label translation
+
 ## 3.0.0
 
 * migration to Bootstrap 5

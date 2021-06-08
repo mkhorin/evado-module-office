@@ -20,7 +20,7 @@ module.exports = class ServiceController extends Base {
     async actionNavSearch () {
         const section = this.navMeta.getSection('main');
         const value = this.getPostParam('search');
-        if (typeof value !== 'string' || value.length < 2 || value.length > 16) {
+        if (typeof value !== 'string' || value.length < 2 || value.length > 32) {
             throw new BadRequest('Invalid search value');
         }
         const nodes = section.search(value);

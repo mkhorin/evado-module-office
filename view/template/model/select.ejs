@@ -1,8 +1,10 @@
 <!-- office/model/select -->
-<% layout(_view.get('_layout/frame/select')) %>
-<% block('tab', 'Select') %>
-<% block('title', meta.class.title) %>
-<% block('titleTranslation', 'meta') %>
+<%
+layout(_view.get('_layout/frame/select'));
+block('tab', 'Select');
+block('title', meta.class.title);
+block('titleTranslation', 'meta');
+%>
 
 <%- include(_view.get('_meta/list/grid'), {
     data: {

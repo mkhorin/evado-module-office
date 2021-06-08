@@ -1,8 +1,9 @@
-<% layout(_view.get('_layout/frame/list')) %>
-
-<% block('tab', 'Data history') %>
-<% block('title', owner.class.title) %>
-<% block('titleTranslation', 'meta') %>
+<%
+layout(_view.get('_layout/frame/list'));
+block('tab', 'Data history');
+block('title', owner.class.title);
+block('titleTranslation', 'meta');
+%>
 
 <%- include(_view.get('_part/list/grid'), {
     data: {

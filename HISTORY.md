@@ -1,3 +1,11 @@
+## 4.0.0
+
+* add digital signature
+* add S3 view
+* controller/ServiceController
+    - add pass-through search to navigation
+* loadable groups and tabs
+
 ## 3.1.0
 
 * controller/ModelController

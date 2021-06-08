@@ -91,7 +91,8 @@ module.exports = class ModelController extends Base {
             await transit.resolve(model, forbiddenUpdate);
             await this.meta.view.resolveEnums();
             await model.resolveReadOnlyAttrTitles();
-            return this.renderMeta('update', this.getMetaParams({model}));
+            const canSign = await model.createSignatureBehavior()?.canSign(this.createMetaSecurity());
+            return this.renderModel('update', this.getMetaParams({model, canSign}));
         }
         this.checkCsrfToken();
         if (!forbiddenUpdate && !model.readOnly) {
@@ -265,7 +266,14 @@ module.exports = class ModelController extends Base {
         await model.related.resolveEmbeddedModels();
         await this.meta.view.resolveEnums();
         await model.resolveCalcValues();
-        return this.renderMeta('create', this.getMetaParams({model}));
+        return this.renderModel('create', this.getMetaParams({model}));
+    }
+
+    renderModel (template, data) {
+        const {groups, group} = this.getQueryParams();
+        data.loadedGroups = Array.isArray(groups) ? groups : null;
+        data.group = group ? data.model.view.grouping.getGroup(group) : null;
+        return this.renderMeta(data.group ? 'group' : template, data);
     }
 
     resolveMasterAttr ({refView, access}) {

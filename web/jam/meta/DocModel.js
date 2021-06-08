@@ -9,6 +9,7 @@ Jam.DocModel = class DocModel extends Jam.Model {
         if (this.isTransiting()) {
             this.setTransiting();
         }
+        this.signature = new Jam.ModelSignature(this);
         this.workflow = new Jam.ModelWorkflow(this);
         super.init();
     }

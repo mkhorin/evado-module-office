@@ -5,7 +5,7 @@ const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'File' : handler %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || options.attrHandler : handler %>"
      data-name-attr="<%- options.nameAttr %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
@@ -45,7 +45,9 @@ const file = data ? data.file : null;
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
         <% if (data?.size) { %>
         <div class="file-download">
-            <a class="download-link" href="<%- data.download %>" target="_blank" title="<%= data.name %>" data-t="">Download</a>
+            <a class="download-link" href="<%- data.download %>" target="_blank" title="<%= data.name %>"
+               data-preload="<%- options.preload %>"
+               data-t="">Download</a>
             <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
             <% if (data.thumbnail) { %>
             <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>"

@@ -18,13 +18,18 @@
         <div class="ms-auto"></div>
 
         <%- _view.placeWidget('notifications') %>
+
         <%- include(_view.get('_part/nav/user')) %>
         <%- include(_view.get('_part/nav/language')) %>
     </nav>
 </header>
 
 <aside class="main-sidebar">
+
+    <%- include(_view.get('_part/nav/search')) %>
+
     <%- _view.placeWidget('sideMenu') %>
+
 </aside>
 
 <section class="main-content">
@@ -36,7 +41,7 @@
         <div class="alert-danger alert" data-t="">Invalid metadata</div>
         <% } %>
 
-        <h1 class="content-header" data-t=""><%- blocks.title %></h1>
+        <h1 class="content-header" data-t="<%- blocks.titleTranslation %>"><%- blocks.title %></h1>
 
         <%- body %>
 

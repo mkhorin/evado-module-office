@@ -1,5 +1,6 @@
 <!-- _meta/attr/view/file -->
 <%
+const options = extraMeta.getData(model.class).file;
 const data = extraMeta.getModelFileData(model, attr.options.thumbnail);
 const file = data ? data.file : null;
 if (!file && attr.isHideEmpty()) {
@@ -16,8 +17,9 @@ if (!file && attr.isHideEmpty()) {
         <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
         <div class="form-control-plaintext">
             <% if (data?.size) { %>
-            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>"
-               target="_blank" tabindex="-1" data-t="">Download</a>
+            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" tabindex="-1"
+               data-preload="<%- options.preload %>"
+               data-t="">Download</a>
             <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
             <% if (data.thumbnail) { %>
             <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>"

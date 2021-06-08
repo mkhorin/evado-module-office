@@ -4,7 +4,7 @@ for (const item of items) {
         continue;
     }
     let translation = item.isSystem() ? 'null' : `meta.${item.translationKey}`;
-    let css = item.options.css;
+    let css = item.options.css || '';
     if (item.data.type === 'divider') {
 %>
 <div class="nav-divider"></div>

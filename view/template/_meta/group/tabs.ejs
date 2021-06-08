@@ -11,12 +11,22 @@
     </div>
     <div class="tab-content">
         <% for (const tab of group.children) {
-           if (tab.isGroup()) { %>
-        <div class="form-base-group tab-pane <%- tab.isActive() ? 'active' : '' %> <%- group.data.css %>"
+            if (tab.isGroup()) {
+                const loaded = !tab.isLoadable() || (loadedGroups ? loadedGroups.includes(tab.name) : tab.isActive());
+        %>
+        <div class="tab-pane model-group <%- tab.isActive() ? 'active' : '' %> <%- tab.data.css %>"
              data-id="<%- tab.name %>"
-             data-action-binder="<%= tab.actionBinder.stringified %>">
-            <div class="form-base-group-body">
-            <%- include(_view.get('_meta/group/children'), {group: tab}) %>
+             data-action-binder="<%= tab.actionBinder.stringified %>"
+             data-loadable="<%- tab.isLoadable() %>"
+             data-loaded="<%- loaded %>">
+            <div class="model-group-body">
+            <% if (loaded) { %>
+                <%- include(_view.get('_meta/group/children'), {group: tab}) %>
+            <% } else { %>
+                <div class="model-group-loader">
+                    <i class="fa fa-spinner fa-spin"></i>
+                </div>
+            <% } %>
             </div>
         </div>
         <% }} %>

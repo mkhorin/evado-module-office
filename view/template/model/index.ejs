@@ -1,17 +1,18 @@
 <%
-const extra = extraMeta.getData(meta.view);
+layout(_view.get('_layout/list'));
+block('title', extraMeta.getPageTitle(meta));
+block('titleTranslation', `meta.${meta.view.translationKey}`);
+block('description', extraMeta.getPageDescription(meta))
+
+const extraData = extraMeta.getData(meta.view);
 const template = meta.view.treeView.isActive() ? 'tree' : 'grid';
 %>
-<% layout(_view.get('_layout/list')) %>
-
-<% block('title', extraMeta.getPageTitle(meta)) %>
-<% block('description', extraMeta.getPageDescription(meta)) %>
 
 <%- include(_view.get(`_meta/list/${template}`), {
     data: {
-        modalSort: extra.modalSortNames.length ? {
+        modalSort: extraData.modalSortNames.length ? {
             url: `office/model/sort?n=${meta.node.id}&column=`,
-            columns: extra.modalSortNames
+            columns: extraData.modalSortNames
         } : null
     }
 }) %>

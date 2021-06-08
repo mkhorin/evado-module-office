@@ -1,7 +1,12 @@
 <!-- _meta/group/set -->
-<fieldset class="form-base-group form-set <%- group.isActive() ? 'active' : '' %> <%- group.data.css %>"
+<%
+const loaded = !group.isLoadable() || (loadedGroups ? loadedGroups.includes(group.name) : group.isActive());
+%>
+<fieldset class="form-set model-group <%- group.isActive() ? 'active' : '' %> <%- group.data.css %>"
           data-id="<%- group.name %>"
-          data-action-binder="<%= group.actionBinder.stringified  %>">
+          data-action-binder="<%= group.actionBinder.stringified %>"
+          data-loadable="<%- group.isLoadable() %>"
+          data-loaded="<%- loaded %>">
     <legend>
         <div class="form-set-toggle">
             <span class="icon fas fa-chevron-right"></span>
@@ -9,7 +14,13 @@
                   title="<%= group.hint %>"><%- group.title %></span>
         </div>
     </legend>
-    <div class="form-set-body form-base-group-body">
+    <div class="form-set-body model-group-body">
+        <% if (loaded) { %>
         <%- include(_view.get('_meta/group/children')) %>
+        <% } else { %>
+        <div class="model-group-loader">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+        <% } %>
     </div>
 </fieldset>

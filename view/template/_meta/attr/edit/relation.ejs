@@ -35,7 +35,6 @@ if (p.showTop && p.filter === undefined) {
 if (p.filter && !p.filter.url) {
     p.filter.url = `office/model/filter?c=${relation.refClass.id}`;
 }
-const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Relation' : handler %>"
@@ -82,7 +81,13 @@ const sortCommands = include(_view.get('_meta/attr/sort'), {p, extraData, access
                         <i class="fa fa-redo-alt"></i>
                     </button>
                 </div>
-                <%- sortCommands %>
+                <%- include(_view.get('_meta/attr/sort'), {p, extraData, access, params}) %>
+                <% if (attr.options.commands) { %>
+                <%- include(_view.get('_meta/customCommands'), {
+                    commands: attr.options.commands,
+                    translationKey: attr.view.translationKey
+                }) %>
+                <% } %>
             </div>
             <% if (p.filter) { %>
             <div class="list-filter">

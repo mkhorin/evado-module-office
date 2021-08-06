@@ -53,6 +53,11 @@ const canCreate = commands.create && data.create && security.access.canCreate();
         <button data-command="sort" class="btn-outline-secondary btn" type="button" title="Sort">
             <i class="fas fa-sort"></i>
         </button>
+        <% } if (meta.view.options.commands) { %>
+        <%- include(_view.get('_meta/customCommands'), {
+            commands: meta.view.options.commands,
+            translationKey: meta.view.translationKey
+        }) %>
         <% } %>
         <%- include(_view.get('_part/tool/utilities'), {params: {meta: meta.view.id}}) %>
     </div>

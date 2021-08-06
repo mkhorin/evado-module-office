@@ -1,0 +1,20 @@
+<!-- _meta/customCommands -->
+
+<div class="nav-group">
+    <% for (const name of Object.keys(commands)) {
+        const data = commands[name];
+        if (typeof data === 'object') { %>
+            <button class="btn <%- data.css %>" type="button" title="<%= data.title %>"
+                    data-command="<%- name %>"
+                    data-params="<%= data.params ? JSON.stringify(data.params) : '' %>"
+                    data-t="meta.<%- translationKey %>">
+                <% if (data.icon) { %>
+                <i class="<%- data.icon %>"></i>
+                <% } else { %>
+                <span data-t="meta.<%- translationKey %>"><%- data.label %></span>
+                <% } %>
+            </button>
+        <% } else { %>
+        <%- data %>
+    <% }} %>
+</div>

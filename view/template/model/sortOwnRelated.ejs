@@ -4,7 +4,7 @@
 
 <%- include(_view.get('_meta/list/sort'), {
     data: {
-        jam: 'RelationSortList',
+        jam: 'SortListRelation',
         id: `related-sort-${meta.master.attr.id}`,
         list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getMetaId()}`
     },
@@ -13,8 +13,8 @@
 
 <% if (meta.master.model.hasRelationOrder(meta.master.attr)) { %>
 <div class="append-commands">
-    <button data-command="deleteSort" class="btn-danger btn" type="button" title="Delete relation sorting">
-        <i class="fa fa-trash"></i>
+    <button data-command="deleteSort" class="btn-danger btn" type="button" title="Delete relation sorting order">
+        <i class="fas fa-ban"></i>
     </button>
 </div>
 <% } %>

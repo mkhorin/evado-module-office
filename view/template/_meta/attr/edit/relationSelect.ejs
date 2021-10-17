@@ -23,7 +23,8 @@ const p = {
 };
 if (commands.create && access.canCreate()) {
     p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
-};
+}
+const sort = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RelationSelect' : handler %>"
@@ -53,7 +54,9 @@ if (commands.create && access.canCreate()) {
                     <i class="far fa-trash-alt"></i>
                 </button>
                 <% } %>
-                <%- include(_view.get('_meta/attr/sort'), {p, extraData, access, params}) %>
+
+                <%- sort %>
+
                 <% if (attr.options.commands) { %>
                 <%- include(_view.get('_meta/customCommands'), {
                     commands: attr.options.commands,

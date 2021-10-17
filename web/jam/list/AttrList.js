@@ -1,9 +1,7 @@
 /**
  * @copyright Copyright (c) 2021 Maxim Khorin <maksimovichu@gmail.com>
  */
-'use strict';
-
-Jam.RelationSelectModelAttr = class RelationSelectModelAttr extends Jam.RelationSelectModelAttr {
+Jam.AttrList = class AttrList extends Jam.AttrList {
 
     init () {
         super.init();
@@ -15,7 +13,8 @@ Jam.RelationSelectModelAttr = class RelationSelectModelAttr extends Jam.Relation
         this.relationSort.init();
     }
 
-    onAfterRelationSort (data) {
-        this.sortByIdList(data.order);
+    onAfterRelationSort () {
+        this.grid.clearOrder();
+        this.reload();
     }
 };

@@ -6,13 +6,13 @@ block('description', extraMeta.getPageDescription(meta))
 
 const extraData = extraMeta.getData(meta.view);
 const template = meta.view.treeView.isActive() ? 'tree' : 'grid';
+
+const modalSort = extraData.modalSortNames.length ? {
+    url: `office/model/sort?n=${meta.node.id}&column=`,
+    columns: extraData.modalSortNames
+} : null;
 %>
 
 <%- include(_view.get(`_meta/list/${template}`), {
-    data: {
-        modalSort: extraData.modalSortNames.length ? {
-            url: `office/model/sort?n=${meta.node.id}&column=`,
-            columns: extraData.modalSortNames
-        } : null
-    }
+    data: {modalSort}
 }) %>

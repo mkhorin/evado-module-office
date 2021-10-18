@@ -13,7 +13,7 @@ Jam.SortListRelation = class SortListRelation extends Jam.SortListArray {
     }
 
     onDeleteSort () {
-        Jam.dialog.confirmDeletion('Delete relation sorting order?').then(this.deleteSorting.bind(this));
+        Jam.dialog.confirmDeletion('Remove sorting of related objects?').then(this.deleteSorting.bind(this));
     }
 
     deleteSorting () {

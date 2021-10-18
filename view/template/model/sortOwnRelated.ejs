@@ -1,6 +1,6 @@
 <!-- model/sortOwnRelated -->
 
-<% block('title', `Sort related ${meta.master.attr.title}`) %>
+<% block('title', `Sort related objects`) %>
 
 <%- include(_view.get('_meta/list/sort'), {
     data: {
@@ -11,9 +11,9 @@
     extraData: extraMeta.getData(meta.master.attr.listView)
 }) %>
 
-<% if (meta.master.model.hasRelationOrder(meta.master.attr)) { %>
+<% if (meta.master.model.isRelationSorted(meta.master.attr)) { %>
 <div class="append-commands">
-    <button data-command="deleteSort" class="btn-danger btn" type="button" title="Delete relation sorting order">
+    <button data-command="deleteSort" class="btn-danger btn" type="button" title="Remove sorting of related objects">
         <i class="fas fa-ban"></i>
     </button>
 </div>

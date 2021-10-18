@@ -1,6 +1,9 @@
 <!-- model/sortRelated -->
-
-<% block('title', `Sort by ${sortAttr.title}`) %>
+<%
+const title = _view.EscapeHelper.escapeTags(sortAttr.title);
+block('title', `<span data-t="">Sort by</span> <span data-t="meta.${sortAttr.view.translationKey}">${title}</span>`);
+block('htmlTitle', true);
+%>
 
 <%- include(_view.get('_meta/list/sort'), {
     data: {

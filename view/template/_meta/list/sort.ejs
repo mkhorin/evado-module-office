@@ -11,7 +11,8 @@ data = {
     ...data
 };
 %>
-<div class="frame-box scroll-container" data-tab="Sort" data-title="<%= blocks.title %>">
+<div class="frame-box scroll-container" data-tab="Sort" data-title="<%= blocks.title %>"
+     data-html-title="<%= blocks.htmlTitle %>">
     <div class="frame-box-header scroll-header"></div>
     <div class="frame-box-body scroll-body">
         <div class="data-grid" data-jam="<%- data.jam %>" data-params="<%= JSON.stringify(data) %>">

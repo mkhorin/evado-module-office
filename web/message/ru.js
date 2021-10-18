@@ -5,12 +5,13 @@
 
 Object.assign(Jam.I18n.defaults, {
 
-    'Delete relation sorting': 'Удалить сортировку отношения',
     'Digital signature created': 'Цифровая подпись создана',
+
+    'Remove sorting of related objects': 'Удалить сортировку связанных объектов',
+    'Remove sorting of related objects?': 'Удалить сортировку связанных объектов?',
 
     'Select class': 'Выберите класс',
     'Sign data': 'Подписать данные',
-    'Sort related objects': 'Сортировать связанные объекты',
     'Source data': 'Исходные данные',
 
     'Transition in progress...': 'Выполняется переход...'

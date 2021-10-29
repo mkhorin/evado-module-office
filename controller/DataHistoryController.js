@@ -30,8 +30,8 @@ module.exports = class DataHistoryController extends Base {
     }
 
     async checkAccess (owner) {
-        await this.security.resolveOnUpdate(owner);
-        if (!this.security.access.canUpdate()) {
+        await this.security.resolveOnHistory(owner);
+        if (!this.security.access.canReadHistory()) {
             throw new Forbidden;
         }
     }

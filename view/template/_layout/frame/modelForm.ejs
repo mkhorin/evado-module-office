@@ -11,7 +11,7 @@ const p = {
     hideEmptyGroups: true,
     readOnly: model.readOnly,
     transiting: model.isTransiting(),
-    hasHistory: model.hasHistory(),
+    hasHistory: security.access.canReadHistory() && model.hasHistory(),
     delete: `office/model/delete?c=${model.class.id}`,
     canSign: typeof canSign !== 'undefined' && canSign
 };

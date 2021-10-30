@@ -12,7 +12,7 @@ if (p.multiple && extraData.modalSortNames.length && access.canUpdate()) {
 <% } if (!model.isNew() && attr.relation.isSortable()) {
     p.relationSort = {
         url: `office/model/sort-own-related?${params}`,
-        active: model.hasRelationOrder(attr)
+        active: model.isRelationSorted(attr)
     };
     if (p.relationSort.active) {
         p.order = null; // clear default order

@@ -26,7 +26,7 @@ module.exports = class SortRelatedAction extends Base {
                 actions: [Rbac.UPDATE]
             }
         });
-        return this.executeView(meta.master.attr.listView);
+        return this.executeByView(meta.master.attr.listView);
     }
 };
 

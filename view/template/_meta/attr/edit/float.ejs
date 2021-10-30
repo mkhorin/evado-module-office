@@ -8,7 +8,7 @@
            title="<%= attr.extHint %>"><%- attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input name="<%- formAttrName %>" type="number" class="form-control form-value" <%- required %>
-               value="<%= model.get(attr) %>">
+               value="<%= model.get(attr) %>" step="any">
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>

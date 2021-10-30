@@ -70,7 +70,7 @@ module.exports = class ModelController extends Base {
         this.isGetRequest()
             ? await this.security.resolveOnEdit(model) // with additional actions
             : await this.security.resolveOnUpdate(model);
-        let forbidden = !this.security.access.canUpdate();
+        const forbidden = !this.security.access.canUpdate();
         if (forbidden && this.meta.view.forbiddenView) {
             query.view = this.meta.view.forbiddenView;
             model = await this.setModelMetaParams(query.withStateView(false));

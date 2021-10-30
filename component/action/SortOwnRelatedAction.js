@@ -21,19 +21,22 @@ module.exports = class SortOwnRelatedAction extends Base {
         if (!attr) {
             throw new BadRequest('Invalid master attribute');
         }
-        if (!attr.relation || !attr.relation.isSortable()) {
+        if (!attr.relation.isSortable()) {
             throw new BadRequest('Not sortable relation');
         }
         const model = meta.master.model;
         if (model.isNew()) {
             throw new BadRequest('Invalid master model');
         }
-        await this.controller.resolveMasterAttr({
-            refView: 'listView',
-            access: {
-                actions: [Rbac.UPDATE]
-            }
+        await this.controller.security.resolve({
+            targetType: Rbac.TARGET_OBJECT,
+            target: model,
+            actions: [Rbac.UPDATE]
         });
+        await this.controller.security.resolveAttrsOnUpdate(model);
+        if (!meta.canUpdateAttr(attr, model)) {
+            throw new Forbidden('Access denied for modification');
+        }
         if (this.isGetRequest()) {
             return this.controller.renderMeta(this.template, this.controller.getMetaParams());
         }
@@ -52,4 +55,5 @@ module.exports = class SortOwnRelatedAction extends Base {
 };
 
 const BadRequest = require('areto/error/http/BadRequest');
+const Forbidden = require('areto/error/http/Forbidden');
 const Rbac = require('evado/component/security/rbac/Rbac');

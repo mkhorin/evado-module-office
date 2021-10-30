@@ -1,3 +1,10 @@
+## 5.0.0
+
+* add HTML title to stack frames
+* add custom commands to lists
+* add view history of model changes as security action
+* fix related object sorting
+
 ## 4.0.0
 
 * add digital signature

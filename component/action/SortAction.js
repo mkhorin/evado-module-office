@@ -17,10 +17,10 @@ module.exports = class SortAction extends Base {
     async execute () {
         await this.controller.setViewNodeMetaParams();
         await this.controller.security.resolveOnSort(this.controller.meta.view);
-        return this.executeView(this.controller.meta.view);
+        return this.executeByView(this.controller.meta.view);
     }
 
-    async executeView (view) {
+    async executeByView (view) {
         const attrName = this.getQueryParam('column');
         const names = this.controller.extraMeta.getData(view).modalSortNames;
         if (!names.includes(attrName)) {
@@ -31,12 +31,9 @@ module.exports = class SortAction extends Base {
             return this.controller.renderMeta(this.template, this.controller.getMetaParams({sortAttr}));
         }
         const data = this.validateData(this.getPostParam('order'));
-        for (const config of view.behaviors.getAllByClassAndAttr(SortOrderBehavior, attrName)) {
-            const behavior = this.spawn(config, {
-                owner: this,
-                user: this.user
-            });
-            await behavior.update(data, view);
+        const behaviors = view.behaviors.getAllByClassAndAttr(SortOrderBehavior, attrName);
+        for (const config of behaviors) {
+            await this.updateByBehavior(config, data, view);
         }
         this.sendText('Done');
     }
@@ -52,6 +49,14 @@ module.exports = class SortAction extends Base {
             }
         }
         return data;
+    }
+
+    updateByBehavior (config, data, view) {
+        const behavior = this.spawn(config, {
+            owner: this,
+            user: this.user
+        });
+        return behavior.update(data, view);
     }
 };
 

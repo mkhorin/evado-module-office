@@ -176,7 +176,7 @@ module.exports = class ModelController extends Base {
         const name = attr.isRef() ? attr : attr.relation.linkAttrName;
         const value = master.model.get(name);
         if (value) {
-            query.and(['NOT IN', attr.relation.refAttrName, value]);
+            query.and(['notIn', attr.relation.refAttrName, value]);
         }
         const grid = this.spawn('meta/MetaGrid', {
             controller: this,

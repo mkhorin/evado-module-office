@@ -1,3 +1,7 @@
+## 5.1.0
+
+* update names of condition operators
+
 ## 5.0.0
 
 * add HTML title to stack frames

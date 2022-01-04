@@ -79,4 +79,8 @@ const canDelete = commands.delete && data.delete && security.access.canDelete();
     <div class="data-grid-content"></div>
 
     <%- include(_view.get('_part/list/bottom')) %>
+
+    <div class="overlay">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
 </div>

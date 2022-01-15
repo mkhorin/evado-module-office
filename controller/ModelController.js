@@ -40,11 +40,13 @@ module.exports = class ModelController extends Base {
     async actionCreate () {
         const meta = this.meta;
         this.setClassMetaParams();
-        meta.view = meta.class = meta.class.getLastVersion();
-        this.setViewMetaParams(this.getQueryParam('v'), 'create');
+        this.setCreationMetaParams(meta.class);
         await this.setMasterMetaParams();
-        if (meta.class.isAbstract()) {
+        if (this.resolveCreationClassSelection()) {
             return this.renderMeta('selectClass', this.getMetaParams());
+        }
+        if (meta.class.isAbstract()) {
+            throw new BadRequest('Unable to instantiate abstract class');
         }
         const model = meta.view.createModel(this.getSpawnConfig());
         meta.model = model;
@@ -87,24 +89,31 @@ module.exports = class ModelController extends Base {
         this.checkCsrfToken();
         await this.setMetaParams();
         const id = this.getPostParam('id');
-        await this.deleteById(id, this.meta.class);
-        this.sendText(id);
+        try {
+            await this.deleteById(id, this.meta.class);
+            this.sendText(id);
+        } catch (err) {
+            if (err instanceof HttpException) {
+                return this.sendJson([err.message, err.data?.params], err.status);
+            }
+            throw err;
+        }
     }
 
     async actionDeleteList () {
         this.checkCsrfToken();
         await this.setMetaParams();
         const ids = String(this.getPostParam('ids')).split(',');
-        const result = [];
+        const objects = [], errors = [];
         for (const id of ids) {
             try {
                 await this.deleteById(id, this.meta.class);
-                result.push(id);
+                objects.push(id);
             } catch (err) {
-                this.log('error', `Deletion failed: ${id}.${this.meta.class.id}:`, err);
+                errors.push(this.prepareDeletionError(err, id));
             }
         }
-        this.sendText(result.join());
+        this.sendJson({objects, errors});
     }
 
     async actionSelect () {
@@ -225,6 +234,17 @@ module.exports = class ModelController extends Base {
 
     // METHODS
 
+    resolveCreationClassSelection () {
+        if (this.getQueryParam('force')) {
+            return false;
+        }
+        const descendants = this.meta.class.getActiveDescendants();
+        if (descendants.length === 1) {
+            this.setCreationMetaParams(descendants[0]);
+        }
+        return descendants.length > 1 || this.meta.class.isAbstract();
+    }
+
     async renderUpdate (model) {
         const transit = this.createMetaTransit();
         await this.security.resolveRelations(this.meta.view, {model});
@@ -279,7 +299,6 @@ module.exports = class ModelController extends Base {
             : this.handleModelError(model);
     }
 
-
     renderModel (template, data) {
         const {groups, group} = this.getQueryParams();
         data.loadedGroups = Array.isArray(groups) ? groups : null;
@@ -302,7 +321,11 @@ module.exports = class ModelController extends Base {
 
     async deleteRelatedModels (owner) {
         for (const model of owner.related.getDeletedModels()) {
-            await this.deleteById(model.getId(), model.class);
+            try {
+                await this.deleteById(model.getId(), model.class);
+            } catch (err) {
+                this.log('error', `Deletion failed: ${model}`, err);
+            }
         }
     }
 
@@ -317,8 +340,17 @@ module.exports = class ModelController extends Base {
         }
         return model.delete();
     }
+
+    prepareDeletionError (err, id) {
+        if (err instanceof HttpException) {
+            return [err.message, err.data?.params];
+        }
+        this.log('error', `Deletion failed: ${id}.${this.meta.class.id}:`, err);
+        return ['Object {id}: {err}', {id, err}];
+    }
 };
 module.exports.init(module);
 
 const BadRequest = require('areto/error/http/BadRequest');
 const Forbidden = require('areto/error/http/Forbidden');
+const HttpException = require('areto/error/HttpException');

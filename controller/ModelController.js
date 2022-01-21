@@ -133,6 +133,8 @@ module.exports = class ModelController extends Base {
         const sample = await this.setModelMetaParams(query);
         const model = this.meta.view.createModel(this.getSpawnConfig());
         this.meta.model = model;
+        model.readOnly = model.isReadOnlyState();
+        await model.setDefaultValues();
         model.clone(sample);
         await this.security.resolveOnCreate(model);
         await this.security.resolveAttrsOnCreate(model);

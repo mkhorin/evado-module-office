@@ -15,7 +15,7 @@ if (attr.translatable) {
 }
 displayValue = _format(displayValue, attrFormat, attrFormatParams);
 if (value && escape) {
-    displayValue = _view.EscapeHelper.escapeTags(displayValue);
+    displayValue = _escape(displayValue);
 }
 %>
 <div class="form-attr-static form-attr form-group row <%- required %> <%- attr.options.css %>"
@@ -23,11 +23,11 @@ if (value && escape) {
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
-           title="<%= attr.extHint %>"><%- attr.title %></label>
+           title="<%= attr.extHint %>"><%= attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%= value %>" class="form-value">
-        <p class="form-control-plaintext"><%- displayValue %></p>
+        <div class="form-control-plaintext"><%- displayValue %></div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>
 </div>

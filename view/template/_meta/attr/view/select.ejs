@@ -5,8 +5,8 @@ console.error(attr.id);
 let text = attr.enum?.getText(value) || value;
 if (text) {
     if (attr.escaping) {
-        text = _view.EscapeHelper.escapeTags(text);
-        value = value ? _view.EscapeHelper.escapeTags(value) : value;
+        text = _escape(text);
+        value = value ? _escape(value) : value;
     }
     text = `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>`;
 }

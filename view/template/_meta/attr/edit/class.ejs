@@ -19,15 +19,15 @@ const title = cls ? cls.title : value;
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
-           title="<%= attr.extHint %>"><%- attr.title %></label>
+           title="<%= attr.extHint %>"><%= attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <select name="<%- formAttrName %>" <%- required %> class="form-select form-value">
             <option value=""></option>
             <% if (value) { %>
-            <option selected value="<%- value %>"><%- title %></option>
+            <option selected value="<%- value %>"><%= title %></option>
             <% } %>
         </select>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>
 </div>

@@ -3,10 +3,10 @@
 <span class="list-tools">
     <% for (const tool of tools) {
        if (typeof tool === 'object') { %>
-        <button type="button" class="btn <%- tool.css %>" title="<%- tool.title %>"
+        <button type="button" class="btn <%- tool.css %>" title="<%= tool.title %>"
             data-handler="<%- tool.handler %>"
             data-url="<%- _url(tool.url) %>" >
-            <%- tool.label %>
+            <%= tool.label %>
         </button>
     <% } else { %>
     <%- tool %>

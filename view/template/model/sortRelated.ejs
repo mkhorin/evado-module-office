@@ -1,6 +1,6 @@
 <!-- model/sortRelated -->
 <%
-const title = _view.EscapeHelper.escapeTags(sortAttr.title);
+const title = _escape(sortAttr.title);
 block('title', `<span data-t="">Sort by</span> <span data-t="meta.${sortAttr.view.translationKey}">${title}</span>`);
 block('htmlTitle', true);
 %>

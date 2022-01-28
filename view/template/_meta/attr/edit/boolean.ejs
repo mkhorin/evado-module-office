@@ -8,10 +8,10 @@
         <div class="form-check" title="<%= attr.extHint %>">
             <input class="form-check-input" <%- model.get(attr) ? 'checked' : '' %> type="checkbox">
             <label class="form-check-label"
-                   data-t="meta.<%- attr.view.translationKey %>"><%- attr.title %></label>
+                   data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></label>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>
 </div>
 

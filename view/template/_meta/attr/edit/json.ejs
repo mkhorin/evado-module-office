@@ -4,7 +4,7 @@
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
-           title="<%= attr.extHint %>"><%- attr.title %></label>
+           title="<%= attr.extHint %>"><%= attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <div class="input-group">
             <input name="<%- formAttrName %>" type="text" class="form-control form-value" <%- required %>
@@ -14,7 +14,7 @@
             </button>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>
     <div class="json-editor modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl">

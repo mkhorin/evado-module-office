@@ -7,26 +7,26 @@ const items = [];
 if (attr.commandMap.edit) {
     if (Array.isArray(related)) {
         for (const item of related) {
-            items.push(`<a href="${update}${item.getId()}" class="frame-link">${item.getEscapedTitle()}</a>`);
+            items.push(`<a href="${update}${item.getId()}" class="frame-link value-item">${item.getEscapedTitle()}</a>`);
         }
     } else if (related) {
         items.push(`<a href="${update}${related.getId()}" class="frame-link">${related.getEscapedTitle()}</a>`);
     } else if (Array.isArray(raw)) {
         for (const value of raw) {
-            items.push(`<a href="${update}${value}" class="frame-link">${value}</a>`);
+            items.push(`<a href="${update}${value}" class="frame-link value-item">${value}</a>`);
         }
     } else if (raw) {
         items.push(`<a href="${update}${raw}" class="frame-link">${raw}</a>`);
     }
 } else if (Array.isArray(related)) {
     for (const item of related) {
-        items.push(item.getEscapedTitle());
+        items.push(`<div class="value-item">${item.getEscapedTitle()}</div>`);
     }
 } else if (related) {
     items.push(related.getEscapedTitle());
 } else if (Array.isArray(raw)) {
     for (const value of raw) {
-        items.push(value);
+        items.push(`<div class="value-item">${value}</div>`);
     }
 } else if (raw) {
     items.push(raw);
@@ -40,16 +40,16 @@ if (!items.length && attr.isHideEmpty()) {
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
-           title="<%= attr.extHint %>"><%- attr.title %></label>
+           title="<%= attr.extHint %>"><%= attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%= raw %>" class="form-value">
         <div class="relation-select">
-            <p class="form-control-plaintext">
-                <%- items.length ? items.join('<br>') : _format(null) %>
-            </p>
+            <div class="form-control-plaintext">
+                <%- items.length ? items.join('') : _format(null) %>
+            </div>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>
 </div>
 <% } %>

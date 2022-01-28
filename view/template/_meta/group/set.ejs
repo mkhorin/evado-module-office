@@ -11,7 +11,7 @@ const loaded = !group.isLoadable() || (loadedGroups ? loadedGroups.includes(grou
         <span class="form-set-toggle">
             <span class="icon fas fa-chevron-right"></span>
             <span data-t="meta.<%- group.translationKey %>"
-                  title="<%= group.hint %>"><%- group.title %></span>
+                  title="<%= group.hint %>"><%= group.title %></span>
         </span>
     </legend>
     <div class="form-set-body model-group-body">

@@ -1,0 +1,15 @@
+<!-- _meta/attr/view/classes -->
+<%
+const names = model.get(attr);
+if (Array.isArray(names)) {
+    let result = '';
+    for (const name of names) {
+        const cls = model.class.meta.getClass(name);
+        result += cls
+            ? `<div data-t="meta.${cls.translationKey}" title="${name}">${_escape(cls.title)}</div>`
+            : `<div>${name}</div>`;
+    }
+    model.setDisplayValue(attr, result);
+}
+%>
+<%- include(_view.get('_meta/attr/static'), {formatted: true}) %>

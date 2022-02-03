@@ -2,7 +2,7 @@
 <%
 const loaded = !group.isLoadable() || (loadedGroups ? loadedGroups.includes(group.name) : group.isActive());
 %>
-<fieldset class="form-set model-group <%- group.isActive() ? 'active' : '' %> <%- group.data.css %>"
+<fieldset class="form-set model-group <%- group.isActive() ? 'active' : '' %> <%- group.options.css %>"
           data-id="<%- group.name %>"
           data-action-binder="<%= group.actionBinder.stringified %>"
           data-loadable="<%- group.isLoadable() %>"

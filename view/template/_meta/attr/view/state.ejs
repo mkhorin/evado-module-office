@@ -2,8 +2,8 @@
 <%
 const state = model.class.getState(model.get(attr));
 if (state) {
-    const value = `<span data-t="meta.${state.class.translationKey}" title="${state.name}">${state.title}</span>`;
+    const value = `<span data-t="meta.${state.class.translationKey}" title="${state.name}">${_escape(state.title)}</span>`;
     model.setDisplayValue(attr, value);
 }
 %>
-<%- include(_view.get('_meta/attr/static')) %>
+<%- include(_view.get('_meta/attr/static'), {formatted: true}) %>

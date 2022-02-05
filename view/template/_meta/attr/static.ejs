@@ -1,21 +1,23 @@
 <!-- _meta/attr/static -->
 <%
-let value = model.get(attr);
-let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
-let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
-let escape = typeof escaping === 'undefined' ? attr.escaping : escaping;
 let displayValue = model.getDisplayValue(attr);
-if (attr.translatable) {
-    if (displayValue) {
-        displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
-        escape = false;
-    } else {
+let value = model.get(attr);
+if (typeof formatted === 'undefined') {
+    let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
+    let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
+    if (!displayValue) {
         displayValue = value;
     }
-}
-displayValue = _format(displayValue, attrFormat, attrFormatParams);
-if (value && escape) {
-    displayValue = _escape(displayValue);
+    displayValue = _format(displayValue, attrFormat, attrFormatParams);
+    if (Array.isArray(displayValue)) {
+        displayValue = displayValue.join(', ');
+    }
+    if (value && attr.escaping) {
+        displayValue = _escape(displayValue);
+    }
+    if (attr.translatable && displayValue) {
+        displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
+    }
 }
 %>
 <div class="form-attr-static form-attr form-group row <%- required %> <%- attr.options.css %>"

@@ -1,5 +1,5 @@
 <%
-layout(_view.get('_layout/list'));
+layout(_view.get('_layout/content'));
 block('title', extraMeta.getPageTitle(meta));
 block('titleTranslation', `meta.${meta.view.translationKey}`);
 block('description', extraMeta.getPageDescription(meta))
@@ -11,8 +11,18 @@ const modalSort = extraData.modalSortNames.length ? {
     url: `office/model/sort?n=${meta.node.id}&column=`,
     columns: extraData.modalSortNames
 } : null;
-%>
 
-<%- include(_view.get(`_meta/list/${template}`), {
-    data: {modalSort}
-}) %>
+if (meta.node.options.showDescription) {
+%>
+<div class="content-description" data-t="meta.<%- meta.node.translationKey %>"><%- meta.node.data.description %></div>
+<% } %>
+
+<div class="box">
+    <div class="box-body">
+
+        <%- include(_view.get(`_meta/list/${template}`), {
+            data: {modalSort}
+        }) %>
+
+    </div>
+</div>

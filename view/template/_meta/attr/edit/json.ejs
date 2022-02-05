@@ -1,4 +1,7 @@
 <!-- _meta/attr/edit/json -->
+<%
+const value = model.get(attr);
+%>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Json' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
@@ -8,7 +11,7 @@
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <div class="input-group">
             <input name="<%- formAttrName %>" type="text" class="form-control form-value" <%- required %>
-                   value="<%= model.get(attr) %>">
+                   value="<%= value !== null ? JSON.stringify(value, null, 1) : null %>">
             <button class="btn-outline-secondary btn" type="button" title="Editor" data-command="edit">
                 <i class="fas fa-code"></i>
             </button>

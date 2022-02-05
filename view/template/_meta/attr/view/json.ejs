@@ -1,3 +1,6 @@
 <!-- _meta/attr/view/json -->
-
+<%
+const value = model.get(attr);
+model.setDisplayValue(attr, value !== null ? JSON.stringify(value, null, 1) : null);
+%>
 <%- include(_view.get('_meta/attr/static')) %>

@@ -1,7 +1,6 @@
 <!-- _meta/attr/view/select -->
 <%
 let value = model.get(attr);
-console.error(attr.id);
 let text = attr.enum?.getText(value) || value;
 if (text) {
     if (attr.escaping) {
@@ -12,4 +11,4 @@ if (text) {
 }
 model.setDisplayValue(attr, text);
 %>
-<%- include(_view.get('_meta/attr/static'), {escaping: false}) %>
+<%- include(_view.get('_meta/attr/static'), {formatted: true}) %>

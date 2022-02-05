@@ -16,7 +16,7 @@
             if (tab.isGroup()) {
                 const loaded = !tab.isLoadable() || (loadedGroups ? loadedGroups.includes(tab.name) : tab.isActive());
         %>
-        <div class="tab-pane model-group <%- tab.isActive() ? 'active' : '' %> <%- tab.data.css %>"
+        <div class="tab-pane model-group <%- tab.isActive() ? 'active' : '' %> <%- tab.options.css %>"
              data-id="<%- tab.name %>"
              data-action-binder="<%= tab.actionBinder.stringified %>"
              data-loadable="<%- tab.isLoadable() %>"

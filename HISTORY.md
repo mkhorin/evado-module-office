@@ -1,3 +1,17 @@
+## 5.2.0
+
+* add classes view type
+* add loading overlay
+* controller/ModelController
+    - protect a linked object from deletion
+    - set default values when cloning an object
+* escape labels by default
+* fix custom group css
+* view/template/_meta/attr/edit/boolean
+    - move extended hint to boolean attribute wrapper
+* view/template/_meta/attr/edit/text
+    - auto adjust text field height
+
 ## 5.1.0
 
 * update names of condition operators
@@ -20,7 +34,7 @@
 ## 3.1.0
 
 * controller/ModelController
-    - add version resolving when creating a model  
+    - add version resolving when creating a model
 * view/template/_meta/attr/edit/boolean
     - fix checkbox label translation
 
@@ -50,13 +64,13 @@
     - refactor transition solver
     - fix query creation
 * view/template/_part/nav/sideMenu
-    - fix path to template         
-    
+    - fix path to template
+
 ## 1.7.1
 
 * controller/ModelController
     - fix relation view to resolve access
-    
+
 ## 1.7.0
 
 * model/DataHistory
@@ -65,4 +79,4 @@
     - fix attribute with forbidden related object
 * view/template/_meta/attr/noAccess
     - add optional hiding of forbidden attributes
-    - fix forbidden hidden attribute     
+    - fix forbidden hidden attribute

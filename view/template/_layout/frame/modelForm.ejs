@@ -1,10 +1,9 @@
 <!-- office/_layouts/frame/modelForm -->
 <%
-const id = model.getId();
 const p = {
     url: _controller.getOriginalUrl(),
     key: model.class.getKey(),
-    id: model.isNew() ? '' : id,
+    id: model.isNew() ? '' : model.getId(),
     className: model.class.name,
     viewName: model.view.viewName,
     timestamp: _controller.timestamp,
@@ -28,43 +27,13 @@ const jam = _data.get('jam') || model.view.options.jam || 'DocModel';
      data-csrf="<%- _controller.getCsrfToken() %>">
 
     <div class="frame-box-header scroll-header">
-        <div class="commands">
-            <div class="nav-group">
-                <button data-command="saveClose" class="btn-primary btn" type="button" title="Save and close">
-                    <i class="fas fa-check"></i>
-                </button>
-                <button data-command="save" class="btn-outline-success btn" type="button" title="Save">
-                    <i class="fas fa-download"></i>
-                </button>
-            </div>
-            <div class="nav-group">
-                <button data-command="reload" class="btn-outline-secondary btn" type="button" title="Reload form">
-                    <i class="fa fa-redo-alt"></i>
-                </button>
-            </div>
-            <% if (id) { %>
-            <button data-command="copyId" class="btn-outline-secondary btn" type="button"
-                    title="Copy <%- p.id %>">ID</button>
-            <% } if (p.hasHistory) { %>
-            <%- include(_view.get('_part/tool/history')) %>
-            <% } if (p.canSign) { %>
-            <%- include(_view.get('_part/tool/sign')) %>
-            <% } %>
-            <%- include(_view.get('_meta/transition/group')) %>
-            <%- include(_view.get('_part/tool/utilities'), {
-                params: {
-                    meta: model.view.id,
-                    model: id
-                }
-            }) %>
-            <% if (id && security.access.canDelete()) { %>
-            <button data-command="delete" class="ms-auto btn-outline-danger btn" type="button" title="Delete">
-                <i class="far fa-trash-alt"></i>
-            </button>
-            <% } %>
-        </div>
+        <%- include(_view.get('_part/model/commands'), {p}) %>
     </div>
+
     <div class="frame-box-body scroll-body">
+
+        <%- include(_view.get('_part/model/description')) %>
+
         <form class="model form" autocomplete="off" enctype="multipart/form-data"
               data-jam="<%- jam %>"
               data-params="<%= JSON.stringify(p) %>">
@@ -74,6 +43,7 @@ const jam = _data.get('jam') || model.view.options.jam || 'DocModel';
 
         </form>
     </div>
+
     <div class="overlay">
         <i class="fa fa-spinner fa-spin"></i>
     </div>

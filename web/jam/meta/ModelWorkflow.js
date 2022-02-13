@@ -23,7 +23,7 @@ Jam.ModelWorkflow = class ModelWorkflow {
         event.preventDefault();
         this.createTransition($(event.target)).execute();
     }
-    
+
     createTransition ($control) {
         const options = $control.data('options') || {};
         const Transition = options.jam

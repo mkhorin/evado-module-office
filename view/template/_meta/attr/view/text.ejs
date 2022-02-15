@@ -1,14 +1,14 @@
 <!-- _meta/attr/view/text -->
 
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Text' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
     <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
            data-t="meta.<%- attr.view.translationKey %>"
            title="<%= attr.extHint %>"><%= attr.title %></label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <textarea name="<%- formAttrName %>" rows="<%- attr.options.rows || 3 %>" readonly
-                  class="form-control form-value"><%- model.get(attr) %></textarea>
+        <textarea name="<%- formAttrName %>" rows="<%- attr.options.rows || 18 %>" readonly
+                  class="form-control form-value"><%= model.get(attr) %></textarea>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>

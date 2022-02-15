@@ -6,7 +6,7 @@ if (Array.isArray(names)) {
     for (const name of names) {
         const cls = model.class.meta.getClass(name);
         result += cls
-            ? `<div data-t="meta.${cls.translationKey}" title="${name}">${_escape(cls.title)}</div>`
+            ? `<div title="${name}">${_escape(cls.title)}</div>`
             : `<div>${name}</div>`;
     }
     model.setDisplayValue(attr, result);

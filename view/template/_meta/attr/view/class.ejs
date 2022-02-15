@@ -2,7 +2,7 @@
 <%
 const cls = model.class.meta.getClass(model.get(attr));
 if (cls) {
-    const value = `<span data-t="meta.${cls.translationKey}" title="${cls.name}">${_escape(cls.title)}</span>`;
+    const value = `<span title="${cls.name}">${_escape(cls.title)}</span>`;
     model.setDisplayValue(attr, value);
 }
 %>

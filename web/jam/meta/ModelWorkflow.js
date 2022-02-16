@@ -7,16 +7,8 @@ Jam.ModelWorkflow = class ModelWorkflow {
 
     constructor (model) {
         this.model = model;
+        this.url = model.findCommand('transitions').data('url');
         model.findCommand('transit').click(this.onTransit.bind(this));
-        model.events.on('beforeValidate', this.onBeforeValidate.bind(this));
-    }
-
-    onBeforeValidate () {
-        this.setTransitionValue('');
-    }
-
-    setTransitionValue (value) {
-        this.model.$form.find('[name="transition"]').val(value);
     }
 
     onTransit (event) {
@@ -30,5 +22,29 @@ Jam.ModelWorkflow = class ModelWorkflow {
             ? Jam.getClass(`${options.jam}ModelTransition`)
             : Jam.ModelTransition;
         return new Transition(this, $control);
+    }
+
+    transit (transition, data) {
+        if (this.model.isChanged()) {
+            return Jam.dialog.alert('Save changes first');
+        }
+        this.toggleLoader(true);
+        return Jam.post(this.url, {transition, ...data})
+            .done(this.onDone.bind(this))
+            .fail(this.onFail.bind(this));
+    }
+
+    onDone () {
+        this.model.reload();
+    }
+
+    onFail (data) {
+        this.toggleLoader(false);
+        this.model.error.parseXhr(data);
+    }
+
+    toggleLoader (state) {
+        this.model.findCommand('transiting').toggle(state);
+        this.model.toggleLoader(state);
     }
 };

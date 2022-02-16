@@ -23,16 +23,11 @@ Jam.ModelTransition = class ModelTransition {
     }
 
     execute () {
-        return $.when(this.confirm()).then(()=> {
-            if (this.model.validate()) {
-                return this.forceExecute();
-            }
-        });
+        return $.when(this.confirm()).then(this.forceExecute.bind(this));
     }
 
     forceExecute () {
-        this.workflow.setTransitionValue(this.name);
-        return this.model.forceSave(true);
+        return this.workflow.transit(this.name, ...arguments);
     }
 
     translate (message) {

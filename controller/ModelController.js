@@ -50,18 +50,21 @@ module.exports = class ModelController extends Base {
         }
         const model = meta.view.createModel(this.getSpawnConfig());
         meta.model = model;
-        model.readOnly = model.isReadOnlyState();
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
+        model.readOnly = model.isReadOnlyState();
         await this.security.resolveOnCreate(model);
         await this.security.resolveAttrsOnCreate(model);
         if (this.isGetRequest()) {
             await this.security.resolveRelations(meta.view, {model});
-            const transit = this.createMetaTransit();
-            await transit.resolve(model);
             return this.renderCreation(model);
         }
-        return this.executeCreation(model);
+        this.checkCsrfToken();
+        const excludes = this.security.getForbiddenAttrs('create') || [];
+        if (this.meta.master.refAttr) {
+            excludes.push(this.meta.master.refAttr.name);
+        }
+        return this.save(model, excludes);
     }
 
     async actionUpdate () {
@@ -80,9 +83,30 @@ module.exports = class ModelController extends Base {
             model.readOnly = forbidden || model.readOnly;
         }
         await this.security.resolveAttrsOnUpdate(model);
-        return this.isGetRequest()
-            ? this.renderUpdate(model)
-            : this.executeUpdate(model, forbidden);
+        if (this.isGetRequest()) {
+            return this.renderUpdate(model);
+        }
+        if (forbidden) {
+            throw new Forbidden('Updating is forbidden');
+        }
+        const excludes = this.security.getForbiddenAttrs('update');
+        return this.save(model, excludes);
+    }
+
+    async actionTransit () {
+        this.checkCsrfToken();
+        this.setMetaParams();
+        const query = this.getModelQuery().withFormData();
+        query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
+        const model = await this.setModelMetaParams(query);
+        await this.security.resolveOnUpdate(model);
+        const transition = this.getPostParam('transition');
+        const transit = this.createMetaTransit();
+        await transit.execute(model, transition);
+        if (model.hasError()) {
+            return this.handleModelError(model);
+        }
+        this.sendText(model.getId());
     }
 
     async actionDelete () {
@@ -236,6 +260,19 @@ module.exports = class ModelController extends Base {
 
     // METHODS
 
+    async save (model, excludes) {
+        if (model.readOnly) {
+            throw new Forbidden('Object is read-only');
+        }
+        this.checkCsrfToken();
+        model.load(this.getPostParam('data'), excludes);
+        if (!await model.save()) {
+            return this.handleModelError(model);
+        }
+        await this.deleteRelatedModels(model);
+        this.sendText(model.getId());
+    }
+
     resolveCreationClassSelection () {
         if (this.getQueryParam('force')) {
             return false;
@@ -257,48 +294,12 @@ module.exports = class ModelController extends Base {
         return this.renderModel('update', this.getMetaParams({model, canSign}));
     }
 
-    async executeUpdate (model, forbidden) {
-        this.checkCsrfToken();
-        if (!forbidden && !model.readOnly) {
-            const excludes = this.security.getForbiddenAttrs('update');
-            model.load(this.getPostParam('data'), excludes);
-            if (!await model.save()) {
-                return this.handleModelError(model);
-            }
-            await this.deleteRelatedModels(model); // to check access
-        }
-        return this.resolveTransit(this.createMetaTransit(), model);
-    }
-
-    async resolveTransit (transit, model) {
-        const transition = this.getPostParam('transition');
-        if (transition) {
-            await transit.execute(model, transition);
-            if (model.hasError()) {
-                return this.handleModelError(model);
-            }
-        }
-        this.sendText(model.getId());
-    }
-
     async renderCreation (model) {
         await model.related.resolveEagers();
         await model.related.resolveEmbeddedModels();
         await this.meta.view.resolveEnums();
         await model.resolveCalcValues();
         return this.renderModel('create', this.getMetaParams({model}));
-    }
-
-    async executeCreation (model) {
-        this.checkCsrfToken();
-        const excludes = this.security.getForbiddenAttrs('create') || [];
-        if (this.meta.master.refAttr) {
-            excludes.push(this.meta.master.refAttr.name);
-        }
-        model.load(this.getPostParam('data'), excludes);
-        return await model.save()
-            ? this.resolveTransit(this.createMetaTransit(), model)
-            : this.handleModelError(model);
     }
 
     renderModel (template, data) {

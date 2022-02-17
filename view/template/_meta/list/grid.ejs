@@ -12,7 +12,9 @@ data = {
     create: `office/model/create?c=${meta.class.id}&v=${meta.view.creationView.viewName}&m=${meta.getMasterId()}`,
     update: `office/model/update?c=${meta.class.id}&v=${meta.view.editView.viewName}`,
     delete: `office/model/delete-list?c=${meta.class.id}`,
-    filter: {url: `office/model/filter?c=${meta.class.id}`},
+    filter: {
+        url: `office/model/filter?c=${meta.class.id}`
+    },
     clone: `office/model/clone`,
     showTop: true,
     dependency: meta.dependency,

@@ -2,7 +2,7 @@
 <%
 const extraData = extraMeta.getData(meta.view);
 data = {
-    jam: meta.view.options.jam || 'MainTreeList',
+    jam: meta.view.options.jam || 'TreeList',
     key: meta.class.getKey(),
     multiple: true,
     order: meta.view.order || {[meta.class.getKey()]: -1},
@@ -13,6 +13,7 @@ data = {
     filter: {
         url: `office/model/filter?c=${meta.class.id}`
     },
+    clone: `office/model/clone`,
     showTop: true,
     ...data
 };

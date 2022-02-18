@@ -69,7 +69,9 @@ module.exports = class BaseMetaController extends Base {
 
     setCreationMetaParams (cls) {
         this.meta.view = this.meta.class = cls.getLastVersion();
-        this.setViewMetaParams(this.getQueryParam('v'), 'create');
+        const defaultView = this.meta.class.getViewWithPrefix(this.module.name, 'create')
+            || this.meta.class.getDefaultState()?.view;
+        this.setViewMetaParams(this.getQueryParam('v'), defaultView?.name);
     }
 
     setViewMetaParams (name, defaultName) {

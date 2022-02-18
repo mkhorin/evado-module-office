@@ -37,7 +37,6 @@ const jam = _data.get('jam') || model.view.options.jam || 'DocModel';
         <form class="model form" autocomplete="off" enctype="multipart/form-data"
               data-jam="<%- jam %>"
               data-params="<%= JSON.stringify(p) %>">
-            <input name="transition" type="hidden" class="form-value">
 
             <%- body %>
 

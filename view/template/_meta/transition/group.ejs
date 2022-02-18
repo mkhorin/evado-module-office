@@ -1,6 +1,8 @@
 <!-- _meta/transition/group -->
 <% if (model.transitions?.length) { %>
-<div data-command="transitions" class="transitions btn-group nav-group" role="group">
+<div data-command="transitions"
+     data-url="office/model/transit?c=<%- model.class.name %>&id=<%- model.getId() %>"
+     class="transitions btn-group nav-group" role="group">
     <% let item = model.transitions[0]; %>
     <button class="btn-outline-primary btn" type="button"
             title="<%= item.hint || item.title %>"

@@ -17,8 +17,10 @@ if ((!thumbnail || !values.length) && attr.isHideEmpty()) {
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>">
-    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label" title="<%= attr.extHint %>"
-           data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></label>
+    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label">
+        <span class="col-form-label-text" title="<%= attr.extHint %>"
+              data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></span>
+    </label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
         <% if (thumbnail) {

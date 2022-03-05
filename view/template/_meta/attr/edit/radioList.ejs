@@ -5,9 +5,10 @@
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : ''%>"
      data-t-sets="meta.<%- attr.translationKey %>">
-    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label"
-           data-t="meta.<%- attr.view.translationKey %>"
-           title="<%= attr.extHint %>"><%= attr.title %></label>
+    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label">
+        <span class="col-form-label-text" title="<%= attr.extHint %>"
+              data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></span>
+    </label>
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
         <div class="form-check-list-inline form-check-list"></div>
@@ -15,9 +16,9 @@
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
     </div>
     <template data-id="radio">
-        <div class="form-check form-check-inline" title="{{hint}}">
+        <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="{{value}}">
-            <label class="form-check-label">{{text}}</label>
+            <label class="form-check-label" title="{{hint}}">{{text}}</label>
         </div>
     </template>
 </div>

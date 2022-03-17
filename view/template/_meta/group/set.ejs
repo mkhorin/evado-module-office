@@ -8,11 +8,9 @@ const loaded = !group.isLoadable() || (loadedGroups ? loadedGroups.includes(grou
           data-loadable="<%- group.isLoadable() %>"
           data-loaded="<%- loaded %>">
     <legend>
-        <span class="form-set-toggle">
-            <span class="icon fas fa-chevron-right"></span>
-            <span data-t="meta.<%- group.translationKey %>"
-                  title="<%= group.hint %>"><%= group.title %></span>
-        </span>
+        <span class="form-set-toggle"><span class="icon fas fa-chevron-right"></span>
+            <span data-t="meta.<%- group.translationKey %>"><%= group.title %></span></span><% if (group.hint) {
+            %><i class="hint-icon" title="<%= group.hint %>" data-t="meta.<%- group.translationKey %>"></i><% } %>
     </legend>
     <div class="form-set-body model-group-body">
         <% if (loaded) { %>

@@ -18,7 +18,7 @@ data = {
     ...data
 };
 if (!data.list) {
-    data.list = `office/model/list-tree?n=${meta.node.id}`;
+    data.list = `office/model/list-tree?n=${meta.node.id}${meta.node.serializeUrlParams()}`;
 }
 const commands = extraData.commands;
 const canCreate = commands.create && data.create && security.access.canCreate();

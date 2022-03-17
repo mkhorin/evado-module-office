@@ -8,10 +8,9 @@ value = value instanceof Date ? value.toISOString() : value;
      data-utc="<%- attr.isUTC() %>"
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-params="<%= JSON.stringify(attr.options) %>">
-    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label">
-        <span class="col-form-label-text" title="<%= attr.extHint %>"
-              data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></span>
-    </label>
+
+    <%- include(_view.get('_meta/attr/label')) %>
+
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%- value %>" class="form-value">
         <div class="input-group">

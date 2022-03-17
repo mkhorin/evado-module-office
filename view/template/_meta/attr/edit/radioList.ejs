@@ -1,14 +1,12 @@
 <!-- _meta/attr/edit/radioList -->
-
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RadioEnum' : handler %>"
      data-action-binder="<%= attr.actionBinder.stringified %>"
      data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : ''%>"
      data-t-sets="meta.<%- attr.translationKey %>">
-    <label class="<%- attr.options.cssLabel || defaultCssLabel %> col-form-label">
-        <span class="col-form-label-text" title="<%= attr.extHint %>"
-              data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></span>
-    </label>
+
+    <%- include(_view.get('_meta/attr/label')) %>
+
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
         <div class="form-check-list-inline form-check-list"></div>
@@ -18,7 +16,7 @@
     <template data-id="radio">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="{{value}}">
-            <label class="form-check-label" title="{{hint}}">{{text}}</label>
+            <label class="form-check-label">{{text}}</label><i class="hint-icon" title="{{hint}}" data-title="{{hint}}"></i>
         </div>
     </template>
 </div>

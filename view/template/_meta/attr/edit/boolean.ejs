@@ -7,8 +7,8 @@
         <input name="<%- formAttrName %>" type="hidden" value="<%- model.get(attr) %>" class="form-value">
         <div class="form-check">
             <input class="form-check-input" <%- model.get(attr) ? 'checked' : '' %> type="checkbox">
-            <label class="form-check-label" title="<%= attr.extHint %>"
-                   data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></label>
+            <label class="form-check-label" data-t="meta.<%- attr.view.translationKey %>"><%= attr.title %></label><% if (attr.extHint) {
+                %><i class="hint-icon" title="<%= attr.extHint %>" data-t="meta.<%- attr.view.translationKey %>"></i><% } %>
         </div>
         <div class="error-block"></div>
         <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>

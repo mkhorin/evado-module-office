@@ -20,6 +20,7 @@ module.exports = class ModelController extends Base {
     async actionIndex () {
         await this.setViewNodeMetaParams();
         await this.security.resolveOnIndex(this.meta);
+        await this.setDynamicNodeMetaParam();
         return this.renderMeta('index', this.getMetaParams());
     }
 
@@ -173,6 +174,7 @@ module.exports = class ModelController extends Base {
         await this.security.resolveOnList(this.meta.view);
         await this.security.resolveAttrsOnList(this.meta.view);
         const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData();
+        await this.meta.node.applyFilter(query);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
         this.sendJson(await grid.getList());
@@ -188,6 +190,7 @@ module.exports = class ModelController extends Base {
         await this.security.resolveOnList(this.meta.view);
         await this.security.resolveAttrsOnList(this.meta.view);
         const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData();
+        await this.meta.node.applyFilter(query);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const master = this.meta.master;
         if (master.attr) {

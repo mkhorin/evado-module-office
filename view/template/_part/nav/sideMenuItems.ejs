@@ -3,6 +3,10 @@ for (const item of items) {
     if (forbiddenAccess[item.id] === true) {
         continue;
     }
+    if (dynamicItems[item.id]) { %>
+    <%- include('sideMenuDynamicItems', {items: dynamicItems[item.id]}) %>
+<%
+    continue; }
     let translation = item.isSystem() ? 'null' : `meta.${item.translationKey}`;
     let css = item.options.css || '';
     if (item.isDivider()) {
@@ -15,7 +19,7 @@ for (const item of items) {
     if (item.children) {
         css += ' tree';
     }
-    const opened = item.data.opened || item === activeItem || openedItems.includes(item);
+    const opened = item.opened || item === activeItem || openedItems.includes(item);
     if (opened) {
         css += ' loaded open';
     }

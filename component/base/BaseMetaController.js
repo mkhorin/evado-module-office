@@ -172,7 +172,15 @@ module.exports = class BaseMetaController extends Base {
         this.meta.node = node;
         this.meta.class = cls;
         this.meta.view = cls?.getView(node.data.view || 'list') || cls;
-        return node;
+    }
+
+    async setDynamicNodeMetaParam () {
+        if (this.meta.node?.provider) {
+            this.meta.node = await this.meta.node.provider.resolveNode(this.getQueryParams());
+            if (!this.meta.node) {
+                throw new NotFound('Dynamic node not found');
+            }
+        }
     }
 
     async resolveTreeMetaParams (node, depth, viewName) {

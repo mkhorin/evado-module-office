@@ -1,0 +1,16 @@
+<!-- _part/nav/sideMenuDynamicItems -->
+<%
+const activeId = _controller.meta.node.objectId?.toString();
+for (const item of items) {
+    let translation = `meta.${item.translationKey}`;
+    let css = item.options.css || '';
+    if (item.objectId.toString() === activeId) {
+        css += ' active';
+    }
+%>
+<div class="nav-item <%- css %>" data-id="<%- item.id %>">
+    <a href="<%- _widget.getItemUrl(item) %>" class="nav-link">
+        <span data-t="<%- translation %>"><%= item.label %></span>
+    </a>
+</div>
+<% } %>

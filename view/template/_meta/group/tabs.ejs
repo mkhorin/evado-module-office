@@ -5,10 +5,9 @@
     <div class="nav nav-tabs" role="tablist">
     <% for (const tab of group.children) {
        if (tab.isGroup()) { %>
-        <a class="nav-item nav-link <%- tab.isActive() ? 'active' : '' %>"
-           title="<%= tab.hint %>" href="#" role="tab"
-           data-id="<%- tab.name %>"
-           data-t="meta.<%- tab.translationKey %>"><%= tab.title %></a>
+        <a class="nav-item nav-link <%- tab.isActive() ? 'active' : '' %>" href="#" role="tab"
+           data-id="<%- tab.name %>"><span data-t="meta.<%- tab.translationKey %>"><%= tab.title %></span><% if (tab.hint) {
+            %><i class="hint-icon" title="<%= tab.hint %>" data-t="meta.<%- tab.translationKey %>"></i><% } %></a>
     <% }} %>
     </div>
     <div class="tab-content">

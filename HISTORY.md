@@ -1,3 +1,15 @@
+## 5.3.0
+
+* add dynamic navigation nodes
+* controller/ModelController
+    - separate transition action from save action
+* escape text value
+* fix tree list view
+* refactor extended hint
+* remove class name translation
+* view/template/model/selectClass
+    - add pagination to class list
+
 ## 5.2.0
 
 * add classes view type

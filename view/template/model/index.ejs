@@ -1,22 +1,25 @@
 <%
 layout(_view.get('_layout/content'));
-block('title', extraMeta.getPageTitle(meta));
-block('titleTranslation', `meta.${meta.view.translationKey}`);
-block('description', extraMeta.getPageDescription(meta))
+
+const ptd = extraMeta.getPageTitleData(meta);
+
+block('title', ptd.label);
+block('titleTranslation', `meta.${ptd.translationKey}`);
 
 const extraData = extraMeta.getData(meta.view);
 const template = meta.view.treeView.isActive() ? 'tree' : 'grid';
+const pdd = extraMeta.getPageDescriptionData(meta);
 
+if (pdd) {
+%>
+<div class="content-description" data-t="meta.<%- pdd.translationKey %>"><%- pdd.description %></div>
+
+<% }
 const modalSort = extraData.modalSortNames.length ? {
     url: `office/model/sort?n=${meta.node.id}&column=`,
     columns: extraData.modalSortNames
 } : null;
-
-if (meta.node.options.showDescription) {
 %>
-<div class="content-description" data-t="meta.<%- meta.node.translationKey %>"><%- meta.node.data.description %></div>
-<% } %>
-
 <div class="box">
     <div class="box-body">
 

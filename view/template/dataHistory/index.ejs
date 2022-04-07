@@ -11,17 +11,22 @@ block('titleTranslation', 'meta');
             name: 'createdAt',
             format: 'timestamp'
         },{
-            name: 'data'
+            name: 'data',
+            format: 'json'
         },{
             name: 'user',
             format: 'relation'
         }],
         order: {[model.PK]: -1},
-        list: _url('list', {c: owner.class.id, id: owner.getId()}),
+        list: _url('list', {
+            c: owner.class.id,
+            id: owner.getId()
+        }),
         jam: 'FrameList',
         create: null,
         update: null,
         delete: null,
+        multiple: false,
         showTop: false
     }
 }) %>

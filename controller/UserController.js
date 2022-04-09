@@ -12,7 +12,7 @@ module.exports = class UserController extends Base {
     }
 
     actionListSelect () {
-        return this.sendSelectList(this.createModel().createQuery(), {});
+        return this.sendSelectList(this.createModel().createQuery());
     }
 };
 module.exports.init(module);

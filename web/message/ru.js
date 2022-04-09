@@ -11,6 +11,7 @@ Object.assign(Jam.I18n.defaults, {
     'Remove sorting of related objects?': 'Удалить сортировку связанных объектов?',
 
     'Select class': 'Выберите класс',
+    'Service is unavailable. Try again later': 'Сервис недоступен. Попробуйте повторить позже',
     'Sign data': 'Подписать данные',
     'Source data': 'Исходные данные',
 

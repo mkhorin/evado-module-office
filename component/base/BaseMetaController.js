@@ -176,7 +176,10 @@ module.exports = class BaseMetaController extends Base {
 
     async setDynamicNodeMetaParam () {
         if (this.meta.node?.provider) {
-            this.meta.node = await this.meta.node.provider.resolveNode(this.getQueryParams());
+            this.meta.node = await this.meta.node.provider.resolveNode({
+                controller: this,
+                request: this.getQueryParams()
+            });
             if (!this.meta.node) {
                 throw new NotFound('Dynamic node not found');
             }

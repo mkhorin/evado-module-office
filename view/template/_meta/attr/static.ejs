@@ -4,11 +4,10 @@ let displayValue = model.getDisplayValue(attr);
 let value = model.get(attr);
 if (typeof formatted === 'undefined') {
     let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
-    let attrFormatParams = typeof formatParams === 'undefined' ? attr.getFormatParams() : formatParams;
     if (!displayValue) {
         displayValue = value;
     }
-    displayValue = _format(displayValue, attrFormat, attrFormatParams);
+    displayValue = _format(displayValue, attrFormat);
     if (Array.isArray(displayValue)) {
         displayValue = displayValue.join(', ');
     }

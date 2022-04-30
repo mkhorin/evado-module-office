@@ -1,7 +1,11 @@
 <!-- _meta/attr/edit/string -->
+<%
+const mask = attr.options.mask;
+%>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+     data-action-binder="<%= attr.actionBinder.stringified %>"
+     data-mask="<%= mask && typeof mask !== 'string' ? JSON.stringify(mask) : mask %>">
 
     <%- include(_view.get('_meta/attr/label')) %>
 

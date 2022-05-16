@@ -34,7 +34,8 @@ const jam = _data.get('jam') || model.view.options.jam || 'DocModel';
 
         <%- include(_view.get('_part/model/description')) %>
 
-        <form class="model form" autocomplete="off" enctype="multipart/form-data"
+        <form class="model form" enctype="multipart/form-data"
+              autocomplete="<%- model.view.options.autocomplete || 'off' %>"
               data-jam="<%- jam %>"
               data-params="<%= JSON.stringify(p) %>">
 

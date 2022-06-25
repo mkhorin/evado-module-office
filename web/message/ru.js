@@ -7,6 +7,8 @@ Object.assign(Jam.I18n.defaults, {
 
     'Digital signature created': 'Цифровая подпись создана',
 
+    'Here, perform custom actions after the transition': 'Здесь выполните пользовательские действия после перехода',
+
     'Remove sorting of related objects': 'Удалить сортировку связанных объектов',
     'Remove sorting of related objects?': 'Удалить сортировку связанных объектов?',
 

@@ -2,7 +2,7 @@
 <%
 let displayValue = model.getDisplayValue(attr);
 let value = model.get(attr);
-if (typeof formatted === 'undefined') {
+if (typeof formatted === 'undefined' || !formatted) {
     let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
     if (!displayValue) {
         displayValue = value;

@@ -14,7 +14,7 @@ const stringValue = value instanceof Date ? value.toISOString() : value;
         <div class="form-control-plaintext">
             <%- _format(value, 'clientDate', {
                 utc: attr.isUTC(),
-                format: attr.options.momentFormat
+                format: attr.options.dateFormat
             }) %>
         </div>
         <div class="error-block"></div>

@@ -1,3 +1,17 @@
+## 5.4.0
+
+* view/template/_layout/frame/modelForm
+    - add autocomplete param
+* view/template/_meta/attr/edit/string
+    - add autocomplete param
+    - add input mask
+* view/template/_meta/attr/view/date
+    - fix date format
+* view/template/_meta/attr/view/state
+    - fix state template
+* view/template/dataHistory/index
+    - fix source data view    
+
 ## 5.3.0
 
 * add dynamic navigation nodes

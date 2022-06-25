@@ -1,9 +1,10 @@
 <!-- _meta/attr/view/state -->
 <%
-const state = model.class.getState(model.get(attr));
+let formatted = false;
+let state = model.class.getState(model.get(attr));
 if (state) {
-    const value = `<span data-t="meta.${state.class.translationKey}" title="${state.name}">${_escape(state.title)}</span>`;
-    model.setDisplayValue(attr, value);
+    model.setDisplayValue(attr, `<span data-t="meta.${state.class.translationKey}" title="${state.name}">${_escape(state.title)}</span>`);
+    formatted = true;
 }
 %>
-<%- include(_view.get('_meta/attr/static'), {formatted: true}) %>
+<%- include(_view.get('_meta/attr/static'), {formatted}) %>

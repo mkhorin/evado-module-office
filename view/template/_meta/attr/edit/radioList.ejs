@@ -11,7 +11,7 @@
         <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
         <div class="form-check-list-inline form-check-list"></div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
     <template data-id="radio">
         <div class="form-check form-check-inline">

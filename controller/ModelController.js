@@ -227,7 +227,7 @@ module.exports = class ModelController extends Base {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'listView'});
         await this.security.resolveAttrsOnList(this.meta.view);
-        const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData();
+        const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData().withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         await this.meta.master.attr.relation.setQueryByModel(query, this.meta.master.model);
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});

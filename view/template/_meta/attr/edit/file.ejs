@@ -42,7 +42,7 @@ const file = data ? data.file : null;
             </div>
         </div>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
         <% if (data?.size) { %>
         <div class="file-download">
             <a class="download-link" href="<%- data.download %>" target="_blank" title="<%= data.name %>"

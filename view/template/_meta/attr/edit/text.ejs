@@ -10,6 +10,6 @@
                   rows="<%- attr.options.rows || 20 %>" <%- required %>
                   class="form-control form-value"><%= model.get(attr) %></textarea>
         <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%= attr.hint %></div>
+        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>

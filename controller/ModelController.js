@@ -53,7 +53,7 @@ module.exports = class ModelController extends Base {
         meta.model = model;
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
-        model.readOnly = model.isReadOnlyState();
+        model.readOnly = meta.view.isReadOnly();
         await this.security.resolveOnCreate(model);
         await this.security.resolveAttrsOnCreate(model);
         if (this.isGetRequest()) {
@@ -158,7 +158,7 @@ module.exports = class ModelController extends Base {
         const sample = await this.setModelMetaParams(query);
         const model = this.meta.view.createModel(this.getSpawnConfig());
         this.meta.model = model;
-        model.readOnly = model.isReadOnlyState();
+        model.readOnly = model.view.isReadOnly();
         await model.setDefaultValues();
         model.clone(sample);
         await this.security.resolveOnCreate(model);

@@ -1,0 +1,55 @@
+<!-- _meta/attr/edit/relationCheckboxList -->
+<%
+const relation = attr.relation;
+const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
+const value = model.get(attr);
+const defaultValue = model.isNew() ? model.get(attr) : null;
+const commands = attr.commandMap;
+const p = {
+    key: relation.refClass.getKey(),
+    backRef: attr.isBackRef(),
+    update: commands.edit
+        ? `office/model/update?${params}&v=${attr.selectListView.editView.viewName}&id=`
+        : false,
+    ...attr.options.relation
+};
+const selectableModels = viewModel.getAttrData(attr, 'selectableModels');
+const attrHandler = typeof handler === 'undefined'
+    ? attr.options.handler || 'RelationCheckboxList'
+    : handler;
+const cssList = attr.options.inline ? 'form-check-list-inline' : '';
+const cssItem = attr.options.inline ? 'form-check-inline' : ''
+const t = `meta.${attr.view.translationKey}`;
+%>
+<div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
+     data-handler="<%- attrHandler %>"
+     data-action-binder="<%= attr.actionBinder.stringified %>"
+     data-value="<%- value %>">
+
+    <%- include(_view.get('_meta/attr/label')) %>
+
+    <div class="<%- attr.options.cssValue || defaultCssValue %>">
+        <input type="hidden" name="<%- formAttrName %>" value="<%- defaultValue %>" class="form-value">
+        <div class="<%- cssList %> form-check-list">
+            <% if (Array.isArray(selectableModels)) {
+                    for (const model of selectableModels) {
+                        const id = model.getId();
+                        const title = model.getEscapedTitle();
+            %>
+            <div class="<%- cssItem %> form-check">
+                <input class="form-check-input" value="<%- id %>" type="checkbox">
+                <% if (p.update) { %>
+                <div class="form-check-label-wrapper">
+                    <label class="form-check-label" data-t="<%- t %>"><%- title %></label><a
+                           href="<%- p.update + id %>" class="frame-link"><i class="action-icon fas fa-angle-right"></i></a>
+                </div>
+                <% } else { %>
+                <label class="form-check-label" data-t="<%- t %>"><%- title %></label>
+                <% } %>
+            </div>
+            <% }} %>
+        </div>
+        <div class="error-block"></div>
+        <div class="hint-block" data-t="<%- t %>"><%- attr.hint %></div>
+    </div>
+</div>

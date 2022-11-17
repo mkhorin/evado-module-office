@@ -18,7 +18,9 @@ const p = {
     list: `office/model/list-related?${params}`,
     link: commands.add ? `office/model/select?${params}` : false,
     unlink: commands.remove,
-    update: commands.edit ? `office/model/update?${params}&v=${attr.listView.editView.viewName}` : false,
+    update: commands.edit
+        ? `office/model/update?${params}&v=${attr.listView.editView.viewName}`
+        : false,
     create: false,
     delete: commands.delete && access.canDelete(),
     ...attr.options.relation

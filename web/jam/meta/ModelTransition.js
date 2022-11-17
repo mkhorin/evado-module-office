@@ -19,7 +19,9 @@ Jam.ModelTransition = class ModelTransition {
 
     confirm () {
         const message = this.getOption('confirmation');
-        return message ? Jam.dialog.confirm(this.translate(message)) : true;
+        return message
+            ? Jam.dialog.confirm(this.translate(message))
+            : true;
     }
 
     execute () {

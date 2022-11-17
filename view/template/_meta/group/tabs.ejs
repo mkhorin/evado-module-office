@@ -4,16 +4,16 @@
      data-action-binder="<%= group.actionBinder.stringified %>">
     <div class="nav nav-tabs" role="tablist">
     <% for (const tab of group.children) {
-       if (tab.isGroup()) { %>
-        <a class="nav-item nav-link <%- tab.isActive() ? 'active' : '' %>" href="#" role="tab"
+       if (tab.isGroup() && !tab.isHidden()) { %>
+        <a class="nav-item nav-link <%- tab.isActive() ? 'active' : '' %>" href="javascript:void 0" role="tab"
            data-id="<%- tab.name %>"><span data-t="meta.<%- tab.translationKey %>"><%= tab.title %></span><% if (tab.hint) {
             %><i class="hint-icon" title="<%= tab.hint %>" data-t="meta.<%- tab.translationKey %>"></i><% } %></a>
     <% }} %>
     </div>
     <div class="tab-content">
         <% for (const tab of group.children) {
-            if (tab.isGroup()) {
-                const loaded = !tab.isLoadable() || (loadedGroups ? loadedGroups.includes(tab.name) : tab.isActive());
+            if (tab.isGroup() && !tab.isHidden()) {
+                const loaded = viewModel.isLoadedGroup(tab);
         %>
         <div class="tab-pane model-group <%- tab.isActive() ? 'active' : '' %> <%- tab.options.css %>"
              data-id="<%- tab.name %>"

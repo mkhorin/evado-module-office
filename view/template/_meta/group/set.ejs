@@ -1,6 +1,6 @@
 <!-- _meta/group/set -->
 <%
-const loaded = !group.isLoadable() || (loadedGroups ? loadedGroups.includes(group.name) : group.isActive());
+const loaded = viewModel.isLoadedGroup(group);
 %>
 <fieldset class="form-set model-group <%- group.isActive() ? 'active' : '' %> <%- group.options.css %>"
           data-id="<%- group.name %>"

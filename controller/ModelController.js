@@ -101,7 +101,7 @@ module.exports = class ModelController extends Base {
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const model = await this.setModelMetaParams(query);
         await this.security.resolveOnUpdate(model);
-        const transition = this.getPostParam('transition');
+        const {transition} = this.getPostParams();
         const transit = this.createMetaTransit();
         await transit.execute(model, transition);
         if (model.hasError()) {
@@ -113,7 +113,7 @@ module.exports = class ModelController extends Base {
     async actionDelete () {
         this.checkCsrfToken();
         await this.setMetaParams();
-        const id = this.getPostParam('id');
+        const {id} = this.getPostParams();
         try {
             await this.deleteById(id, this.meta.class);
             this.sendText(id);
@@ -128,7 +128,8 @@ module.exports = class ModelController extends Base {
     async actionDeleteList () {
         this.checkCsrfToken();
         await this.setMetaParams();
-        const ids = String(this.getPostParam('ids')).split(',');
+        let {ids} = this.getPostParams();
+        ids = String(ids).split(',');
         const objects = [], errors = [];
         for (const id of ids) {
             try {
@@ -177,7 +178,8 @@ module.exports = class ModelController extends Base {
         await this.meta.node.applyFilter(query);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
-        this.sendJson(await grid.getList());
+        const data = await grid.getList();
+        this.sendJson(data);
     }
 
     async actionListTree () {
@@ -197,7 +199,8 @@ module.exports = class ModelController extends Base {
             await master.attr.relation.setQueryByModel(query, master.model);
         }
         const grid = this.spawn('meta/MetaTreeGrid', {controller: this, query, depth});
-        this.sendJson(await grid.getList());
+        const data = await grid.getList();
+        this.sendJson(data);
     }
 
     async actionListSelect () {
@@ -205,10 +208,12 @@ module.exports = class ModelController extends Base {
         await this.resolveMasterAttr({refView: 'selectListView'});
         await this.security.resolveAttrsOnList(this.meta.view);
         const master = this.meta.master;
-        const query = this.meta.view.createQuery(this.getSpawnConfig({
+        const {dependency} = this.getPostParams();
+        const config = this.getSpawnConfig({
             model: master.model,
-            dependency: this.getPostParam('dependency')
-        }));
+            dependency
+        });
+        const query = this.meta.view.createQuery(config);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const attr = master.attr;
         const name = attr.isRef() ? attr : attr.relation.linkAttrName;
@@ -220,34 +225,41 @@ module.exports = class ModelController extends Base {
             controller: this,
             query: query.withListData()
         });
-        this.sendJson(await grid.getList());
+        const data = await grid.getList();
+        this.sendJson(data);
     }
 
     async actionListRelated () {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'listView'});
         await this.security.resolveAttrsOnList(this.meta.view);
-        const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData().withTitle();
+        const config = this.getSpawnConfig();
+        const query = this.meta.view.createQuery(config).withListData().withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         await this.meta.master.attr.relation.setQueryByModel(query, this.meta.master.model);
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
-        this.sendJson(await grid.getList());
+        const data = await grid.getList();
+        this.sendJson(data);
     }
 
     async actionListRelatedSelect () {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
-        const query = this.meta.view.createQuery(this.getSpawnConfig({
+        const {dependency} = this.getPostParams();
+        const config = this.getSpawnConfig({
             model: this.meta.master.model,
-            dependency: this.getPostParam('dependency')
-        })).withTitle();
+            dependency
+        });
+        const query = this.meta.view.createQuery(config).withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const select = this.spawn('meta/MetaSelect2', {controller: this, query});
-        this.sendJson(await select.getList());
+        const data = await select.getList();
+        this.sendJson(data);
     }
 
     async actionListFilterSelect () {
-        const attr = this.baseMeta.getAttr(this.getPostParam('id'));
+        const {id} = this.getPostParams();
+        const attr = this.baseMeta.getAttr(id);
         if (!attr) {
             throw new BadRequest('Meta attribute not found');
         }
@@ -255,10 +267,12 @@ module.exports = class ModelController extends Base {
         this.meta.class = attr.class;
         this.meta.view = attr.getSelectListView();
         await this.security.resolveOnList(this.meta.view);
-        const query = this.meta.view.createQuery(this.getSpawnConfig()).withTitle();
+        const config = this.getSpawnConfig();
+        const query = this.meta.view.createQuery(config).withTitle();
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const select = this.spawn('meta/MetaSelect2', {controller: this, query});
-        this.sendJson(await select.getList());
+        const data = await select.getList();
+        this.sendJson(data);
     }
 
     // METHODS
@@ -268,7 +282,8 @@ module.exports = class ModelController extends Base {
             throw new Forbidden('Object is read-only');
         }
         this.checkCsrfToken();
-        model.load(this.getPostParam('data'), excludes);
+        const {data} = this.getPostParams();
+        model.load(data, excludes);
         if (!await model.save()) {
             return this.handleModelError(model);
         }
@@ -277,7 +292,8 @@ module.exports = class ModelController extends Base {
     }
 
     resolveCreationClassSelection () {
-        if (this.getQueryParam('force')) {
+        const {force} = this.getQueryParams();
+        if (force) {
             return false;
         }
         const descendants = this.meta.class.getActiveDescendants();
@@ -293,8 +309,10 @@ module.exports = class ModelController extends Base {
         await transit.resolve(model);
         await this.meta.view.resolveEnums();
         await model.resolveReadOnlyAttrTitles();
-        const canSign = await model.createSignatureBehavior()?.canSign(this.createMetaSecurity());
-        return this.renderModel('update', this.getMetaParams({model, canSign}));
+        const signature = model.createSignatureBehavior();
+        const canSign = await signature?.canSign(this.createMetaSecurity());
+        const params = this.getMetaParams({model, canSign});
+        return this.renderModel('update', params);
     }
 
     async renderCreation (model) {
@@ -308,8 +326,13 @@ module.exports = class ModelController extends Base {
     renderModel (template, data) {
         const {groups, group} = this.getQueryParams();
         data.loadedGroups = Array.isArray(groups) ? groups : null;
-        data.group = group ? data.model.view.grouping.getGroup(group) : null;
-        return this.renderMeta(data.group ? 'group' : template, data);
+        data.group = group
+            ? data.model.view.grouping.getGroup(group)
+            : null;
+        if (data.group) {
+            template = 'group';
+        }
+        return this.renderMeta(template, data);
     }
 
     resolveMasterAttr ({refView, access}) {
@@ -335,10 +358,11 @@ module.exports = class ModelController extends Base {
         }
     }
 
-    async deleteById (id, cls) {
-        const model = await cls.createQuery(this.getSpawnConfig()).byId(id).withStateView().one();
+    async deleteById (id, modelClass) {
+        const query = modelClass.createQuery(this.getSpawnConfig()).byId(id);
+        const model = await query.withStateView().one();
         if (!model) {
-            throw new BadRequest(`Object not found: ${id}.${cls.id}`);
+            throw new BadRequest(`Object not found: ${id}.${modelClass.id}`);
         }
         const access = await this.security.resolveAccessOnDelete(model);
         if (!access.canDelete()) {

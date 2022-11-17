@@ -55,7 +55,8 @@ module.exports = class BaseMetaController extends Base {
 
     setMetaParams (defaultView) {
         this.setClassMetaParams();
-        this.setViewMetaParams(this.getQueryParam('v'), defaultView);
+        const {v: view} = this.getQueryParams();
+        this.setViewMetaParams(view, defaultView);
         return this.setMasterMetaParams();
     }
 
@@ -71,7 +72,8 @@ module.exports = class BaseMetaController extends Base {
         this.meta.view = this.meta.class = cls.getLastVersion();
         const defaultView = this.meta.class.getViewWithPrefix(this.module.name, 'create')
             || this.meta.class.getDefaultState()?.view;
-        this.setViewMetaParams(this.getQueryParam('v'), defaultView?.name);
+        const {v: view} = this.getQueryParams();
+        this.setViewMetaParams(view, defaultView?.name);
     }
 
     setViewMetaParams (name, defaultName) {
@@ -108,7 +110,9 @@ module.exports = class BaseMetaController extends Base {
         if (!master.class) {
             throw new BadRequest(`Master class not found: ${data}`);
         }
-        master.view = viewName ? master.class.getView(viewName) : master.class;
+        master.view = viewName
+            ? master.class.getView(viewName)
+            : master.class;
         if (!master.view) {
             throw new BadRequest(`Master view not found: ${data}`);
         }
@@ -130,7 +134,8 @@ module.exports = class BaseMetaController extends Base {
             master.model = master.view.createModel(this.getSpawnConfig());
             return master;
         }
-        master.model = await master.view.createQuery(this.getSpawnConfig()).byId(id).one();
+        const config = this.getSpawnConfig();
+        master.model = await master.view.createQuery(config).byId(id).one();
         if (!master.model) {
             throw new BadRequest(`Master object not found: ${data}`);
         }
@@ -163,7 +168,9 @@ module.exports = class BaseMetaController extends Base {
     }
 
     setNodeMetaParams ({node} = {}) {
-        node = node || this.getQueryParam('n');
+        if (!node) {
+            node = this.getQueryParam('n');
+        }
         node = this.navMeta.getNode(node);
         if (!node) {
             throw new NotFound('Node not found');
@@ -195,7 +202,9 @@ module.exports = class BaseMetaController extends Base {
         master.class = level.sourceClass;
         master.view = master.class;
         master.attr = level.refAttr;
-        master.model = await master.view.createQuery(this.getSpawnConfig()).byId(node).one();
+        const config = this.getSpawnConfig();
+        const query = master.view.createQuery(config).byId(node);
+        master.model = await query.one();
         if (!master.model) {
             throw new BadRequest('Tree view node not found');
         }
@@ -213,7 +222,8 @@ module.exports = class BaseMetaController extends Base {
     }
 
     handleModelError (model) {
-        this.send({[model.class.name]: this.translateMessageMap(model.getFirstErrorMap())}, 400);
+        const errors = model.getFirstErrorMap();
+        this.send({[model.class.name]: this.translateMessageMap(errors)}, 400);
     }
 
     async renderMeta (template, params) {
@@ -233,7 +243,9 @@ module.exports = class BaseMetaController extends Base {
     }
 
     log (type, message, data) {
-        message = this.meta.view ? `${this.meta.view.id}: ${message}` : message;
+        if (this.meta.view) {
+            message = `${this.meta.view.id}: ${message}`;
+        }
         this.baseMeta.log(type, message, data);
     }
 };

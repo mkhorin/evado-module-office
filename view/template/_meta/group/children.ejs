@@ -4,7 +4,9 @@ let template, params;
 for (const item of group.children) {
     template = _view.getMetaItemTemplate(item);
     if (item.isGroup()) {
-        if (!template) {
+        if (item.isHidden()) {
+            template = _view.get(`_meta/group/hidden`);
+        } else if (!template) {
             template = _view.get(`_meta/group/${item.type}`);
         }
         params = {
@@ -19,7 +21,7 @@ for (const item of group.children) {
         } else if (template) {
         } else if (meta.canUpdateAttr(item, model)) {
             template = _view.get('_meta/attr/edit/' + item.getTemplate());
-        } else if (item.isHideEmpty() && !model.get(item)) {
+        } else if (item.isHideEmpty() && model.isEmptyValue(item)) {
             template = _view.get('_meta/attr/empty');
         } else {
             template = _view.get('_meta/attr/view/' + item.getTemplate());
@@ -33,6 +35,11 @@ for (const item of group.children) {
             defaultCssValue: group.options.cssValue || 'col-xl-10 col-lg-9'
         };
     }
+    if (template) {
 %>
+
 <%- include(template, params) %>
-<% } %>
+
+<% } else {
+    model.log('error', `Invalid template for ${item.name}`);
+}} %>

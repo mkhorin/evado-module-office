@@ -15,18 +15,21 @@ module.exports = class ServiceController extends Base {
     }
 
     async actionNav () {
-        this.setNodeMetaParams({node: this.getQueryParam('id')});
-        if (!this.meta.node.children) {
+        const {id} = this.getQueryParams();
+        this.setNodeMetaParams({node: id});
+        const {children, section} = this.meta.node;
+        if (!children) {
             throw new BadRequest('No child nodes');
         }
         const view = this.createView();
         const menu = this.spawn(SideMenu, {view});
-        this.send(await menu.renderItems(this.meta.node.children, this.meta.node.section));
+        const data = await menu.renderItems(children, section);
+        this.send(data);
     }
 
     async actionNavSearch () {
         const section = this.navMeta.getSection('main');
-        const value = this.getPostParam('search');
+        const {search: value} = this.getPostParams();
         if (!this.validateNavSearch(value)) {
             throw new BadRequest('Invalid search value');
         }

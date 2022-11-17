@@ -1,3 +1,10 @@
+## 5.5.0
+
+* add checkbox list view
+* controller/ModelController
+    - remove read-only state from creation
+* unescape attribute hints for formatted output
+
 ## 5.4.0
 
 * view/template/_layout/frame/modelForm

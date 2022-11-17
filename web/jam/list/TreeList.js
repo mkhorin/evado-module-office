@@ -6,11 +6,13 @@
 Jam.TreeList = class TreeList extends Jam.TreeList {
 
     getCreateUrl () {
-        return Jam.TreeListHelper.getCreateUrl(this.params.create, this.findSelectedItems());
+        const items = this.findSelectedItems();
+        return Jam.TreeListHelper.getCreateUrl(this.params.create, items);
     }
 
     getUpdateUrl () {
-        return Jam.TreeListHelper.getUpdateUrl(this.params.update, this.findSelectedItems());
+        const items = this.findSelectedItems();
+        return Jam.TreeListHelper.getUpdateUrl(this.params.update, items);
     }
 
     getDeleteUrl ($items) {
@@ -25,7 +27,8 @@ Jam.TreeList = class TreeList extends Jam.TreeList {
         if (super.onClickItem(event)) {
             return true;
         }
-        const $items = Jam.TreeListHelper.filterItemsByEvent(event, this.findSelectedItems());
+        const items = this.findSelectedItems();
+        const $items = Jam.TreeListHelper.filterItemsByEvent(event, items);
         this.toggleItemSelect($items, false);
     }
 

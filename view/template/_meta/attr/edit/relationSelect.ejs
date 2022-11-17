@@ -15,14 +15,16 @@ const p = {
     maxSelectionLength: relation.maxItems,
     list: commands.add ? `office/model/list-related-select?${params}` : false,
     unlink: commands.remove,
-    update: commands.edit ? `office/model/update?${params}&v=${attr.eagerView.editView.viewName}` : false,
+    update: commands.edit
+        ? `office/model/update?${params}&v=${attr.selectListView.editView.viewName}`
+        : false,
     create: false,
     delete: commands.delete && access.canDelete(),
     viewTitle: `office/model/title?${params}`,
     ...attr.options.relation
 };
 if (commands.create && access.canCreate()) {
-    p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
+    p.create = `office/model/create?${params}&v=${attr.selectListView.creationView.viewName}`;
 }
 const sort = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>

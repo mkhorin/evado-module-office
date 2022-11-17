@@ -19,7 +19,10 @@ Jam.DocModel = class DocModel extends Jam.Model {
     }
 
     formatAttrName (name) {
-        return typeof name !== 'string' || name.includes('[') ? name : `data[${name}]`;
+        if (typeof name !== 'string' || name.includes('[')) {
+            return name;
+        }
+        return `data[${name}]`;
     }
 
     setTransiting () {

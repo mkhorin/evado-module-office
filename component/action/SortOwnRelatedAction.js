@@ -38,11 +38,13 @@ module.exports = class SortOwnRelatedAction extends Base {
             throw new Forbidden('Access denied for modification');
         }
         if (this.isGetRequest()) {
-            return this.controller.renderMeta(this.template, this.controller.getMetaParams());
+            const params = this.controller.getMetaParams();
+            return this.controller.renderMeta(this.template, params);
         }
-        this.getPostParam('delete')
+        const params = this.getPostParams();
+        params.delete
             ? await model.related.deleteOrder(attr)
-            : await model.related.updateOrder(attr, this.validateData(this.getPostParam('order')));
+            : await model.related.updateOrder(attr, this.validateData(params.order));
         this.sendText('Done');
     }
 

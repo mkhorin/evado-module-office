@@ -5,7 +5,7 @@ let content = '';
 if (model.has(attr)) {
     content = `<option selected value="${model.get(attr)}">${model.related.getTitle(attr)}</option>`;
 }
-const userUrl = _module.getParam('userUpdateUrl');
+const {userUpdateUrl} = _module.params;
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
      data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Select' : handler %>"
@@ -15,7 +15,7 @@ const userUrl = _module.getParam('userUpdateUrl');
     <%- include(_view.get('_meta/attr/label')) %>
 
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <% if (userUrl) { %>
+        <% if (userUpdateUrl) { %>
         <div class="input-group">
             <select name="<%- formAttrName %>" <%- required %> class="form-select form-value">
                 <option value=""></option>
@@ -24,7 +24,7 @@ const userUrl = _module.getParam('userUpdateUrl');
             <button class="btn-outline-primary btn" type="button" tabindex="-1"
                     data-action="update"
                     data-blank="true"
-                    data-url="<%- _url(userUrl) %>">
+                    data-url="<%- _url(userUpdateUrl) %>">
                 <i class="fas fa-pencil-alt"></i>
             </button>
         </div>

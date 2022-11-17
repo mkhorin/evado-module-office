@@ -4,7 +4,7 @@
      data-action-binder="<%= group.actionBinder.stringified  %>">
     <%
     for (const column of group.children) {
-        if (column.isGroup()) {
+        if (column.isGroup() && !column.isHidden()) {
             const template = _view.getMetaItemTemplate(column) || _view.get('_meta/group/column');
     %>
     <%- include(template || baseTemplate, {group: column}) %>

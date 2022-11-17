@@ -7,6 +7,7 @@ Jam.MainList = class MainList extends Jam.MainList {
 
     getCloneParams ($item) {
         const id = $item.data('id');
-        return {c: this.grid.getData(id)._class, id};
+        const c = this.grid.getData(id);
+        return {c, id};
     }
 };

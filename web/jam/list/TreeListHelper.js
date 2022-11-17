@@ -36,20 +36,4 @@ Jam.TreeListHelper = class TreeListHelper {
         const name = $(event.currentTarget).data('class');
         return $items.not(`[data-class="${name}"]`);
     }
-
-    static processCreation (params) {
-        Jam.TreeListHelper.onCreate({
-            handler: super.onCreate.bind(this, event),
-            $item: this.findSelectedItems(),
-            grid: this.grid
-        });
-        if ($item.length !== 1) {
-            return handler();
-        }
-        const node = grid.getNodeByItem($item);
-        handler({
-            node: node.getId(),
-            depth: node.getDepth()
-        });
-    }
 };

@@ -1,7 +1,7 @@
 <!-- _meta/attr/view/relationSelect -->
 <%
-const update = `office/model/update?c=${attr.relation.refClass.id}&v=${attr.eagerView.editView.viewName}&id=`;
-const raw = model.get(attr);
+const update = `office/model/update?c=${attr.relation.refClass.id}&v=${attr.selectListView.editView.viewName}&id=`;
+const value = model.get(attr);
 const related = model.related.get(attr);
 const items = [];
 if (attr.commandMap.edit) {
@@ -11,12 +11,12 @@ if (attr.commandMap.edit) {
         }
     } else if (related) {
         items.push(`<a href="${update}${related.getId()}" class="frame-link">${related.getEscapedTitle()}</a>`);
-    } else if (Array.isArray(raw)) {
-        for (const value of raw) {
-            items.push(`<a href="${update}${value}" class="frame-link value-item">${value}</a>`);
+    } else if (Array.isArray(value)) {
+        for (const id of value) {
+            items.push(`<a href="${update}${id}" class="frame-link value-item">${id}</a>`);
         }
-    } else if (raw) {
-        items.push(`<a href="${update}${raw}" class="frame-link">${raw}</a>`);
+    } else if (value) {
+        items.push(`<a href="${update}${value}" class="frame-link">${value}</a>`);
     }
 } else if (Array.isArray(related)) {
     for (const item of related) {
@@ -24,12 +24,12 @@ if (attr.commandMap.edit) {
     }
 } else if (related) {
     items.push(related.getEscapedTitle());
-} else if (Array.isArray(raw)) {
-    for (const value of raw) {
-        items.push(`<div class="value-item">${value}</div>`);
+} else if (Array.isArray(value)) {
+    for (const id of value) {
+        items.push(`<div class="value-item">${id}</div>`);
     }
-} else if (raw) {
-    items.push(raw);
+} else if (value) {
+    items.push(value);
 }
 if (!items.length && attr.isHideEmpty()) {
 %>
@@ -42,14 +42,14 @@ if (!items.length && attr.isHideEmpty()) {
     <%- include(_view.get('_meta/attr/label')) %>
 
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%= raw %>" class="form-value">
-        <div class="relation-select">
-            <div class="form-control-plaintext">
+        <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
+        <div class="form-control-plaintext">
+            <div class="value-items">
                 <%- items.length ? items.join('') : _format(null) %>
             </div>
+            <div class="error-block"></div>
+            <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
         </div>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
 </div>
 <% } %>

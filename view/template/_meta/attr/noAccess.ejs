@@ -1,7 +1,8 @@
 <!-- _meta/attr/noAccess -->
 
 <% if (_module.params.hideForbiddenAttr || attr.isHidden()) { %>
-<div class="form-attr hidden" data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
+<div class="form-attr hidden"
+     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
     <input type="hidden" name="<%- formAttrName %>" class="form-value">
 </div>
 <% } else { %>
@@ -13,9 +14,9 @@
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input type="hidden" name="<%- formAttrName %>" class="form-value">
         <div class="form-control-plaintext">
-            <%- _controller.format(null, 'noAccess') %>
+            <%- _format(null, 'noAccess') %>
+            <div class="error-block"></div>
         </div>
-        <div class="error-block"></div>
     </div>
 </div>
 <% } %>

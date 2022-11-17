@@ -9,7 +9,8 @@ module.exports = class BaseController extends Base {
 
     async getModel () {
         let model = this.createModel();
-        let id = model.getDb().normalizeId(this.getQueryParam('id'));
+        let {id} = this.getQueryParams();
+        id = model.getDb().normalizeId(id);
         if (!id) {
             throw new BadRequest('Invalid ID');
         }

@@ -27,8 +27,10 @@ if (typeof formatted === 'undefined' || !formatted) {
 
     <div class="<%- attr.options.cssValue || defaultCssValue %>">
         <input name="<%- formAttrName %>" type="hidden" value="<%= value %>" class="form-value">
-        <div class="form-control-plaintext"><%- displayValue %></div>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <div class="form-control-plaintext">
+            <div><%- displayValue %></div>
+            <div class="error-block"></div>
+            <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        </div>
     </div>
 </div>

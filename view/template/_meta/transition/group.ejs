@@ -17,7 +17,7 @@
         <div class="dropdown-menu dropdown-menu-end">
             <% for (let i = 1; i < model.transitions.length; ++i) {
                 item = model.transitions[i]; %>
-            <a class="dropdown-item" href="#" title="<%= item.hint || item.title %>"
+            <a class="dropdown-item" href="javascript:void 0" title="<%= item.hint || item.title %>"
                data-command="transit"
                data-transition="<%- item.name %>"
                data-options="<%= JSON.stringify(item.options) %>"

@@ -21,16 +21,18 @@ module.exports = class SortAction extends Base {
     }
 
     async executeByView (view) {
-        const attrName = this.getQueryParam('column');
+        const {column: attrName} = this.getQueryParams();
         const names = this.controller.extraMeta.getData(view).modalSortNames;
         if (!names.includes(attrName)) {
             throw new BadRequest(`Not modal sortable attribute`);
         }
         const sortAttr = view.getAttr(attrName);
         if (this.isGetRequest()) {
-            return this.controller.renderMeta(this.template, this.controller.getMetaParams({sortAttr}));
+            const params = this.controller.getMetaParams({sortAttr});
+            return this.controller.renderMeta(this.template, params);
         }
-        const data = this.validateData(this.getPostParam('order'));
+        const {order} = this.getPostParams();
+        const data = this.validateData(order);
         const behaviors = view.behaviors.getAllByClassAndAttr(SortOrderBehavior, attrName);
         for (const config of behaviors) {
             await this.updateByBehavior(config, data, view);

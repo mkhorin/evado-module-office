@@ -1,7 +1,10 @@
 <!-- _meta/list/tree -->
 <%
 const extraData = extraMeta.getData(meta.view);
-const creationParams = `c=${meta.class.id}&v=${meta.view.creationView.viewName}`;
+const nodeUrlParams = meta.node.serializeUrlParams();
+const className = meta.class.name;
+const creationView = meta.view.creationView.viewName;
+const creationParams = `c=${className}&v=${creationView}${nodeUrlParams}`;
 data = {
     jam: meta.view.options.jam || 'TreeList',
     key: meta.class.getKey(),
@@ -12,7 +15,7 @@ data = {
     update: `office/model/update`,
     delete: `office/model/delete-list`,
     filter: {
-        url: `office/model/filter?c=${meta.class.id}`
+        url: `office/model/filter?c=${className}`
     },
     clone: `office/model/clone?${creationParams}`,
     showTop: true,

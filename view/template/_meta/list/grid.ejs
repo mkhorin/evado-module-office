@@ -1,7 +1,10 @@
 <!-- _meta/list/grid -->
 <%
 const extraData = extraMeta.getData(meta.view);
-const creationParams = `c=${meta.class.id}&v=${meta.view.creationView.viewName}&m=${meta.getMasterId()}`;
+const nodeUrlParams = meta.node.serializeUrlParams();
+const className = meta.class.name;
+const creationView = meta.view.creationView.viewName;
+const creationParams = `c=${className}&v=${creationView}&m=${meta.getMasterId()}${nodeUrlParams}`;
 data = {
     jam: meta.view.options.jam || 'MainList',
     key: meta.class.getKey(),
@@ -12,9 +15,9 @@ data = {
     columns: extraData.columns,
     create: `office/model/create?${creationParams}`,
     update: `office/model/update?c=${meta.class.id}&v=${meta.view.editView.viewName}`,
-    delete: `office/model/delete-list?c=${meta.class.id}`,
+    delete: `office/model/delete-list?c=${className}`,
     filter: {
-        url: `office/model/filter?c=${meta.class.id}`
+        url: `office/model/filter?c=${className}`
     },
     clone: `office/model/clone?${creationParams}`,
     showTop: true,
@@ -23,7 +26,7 @@ data = {
     ...data
 };
 if (!data.list) {
-    data.list = `office/model/list?n=${meta.node.id}${meta.node.serializeUrlParams()}`;
+    data.list = `office/model/list?n=${meta.node.id}${nodeUrlParams}`;
 }
 const commands = extraData.commands;
 const canCreate = commands.create && data.create && security.access.canCreate();

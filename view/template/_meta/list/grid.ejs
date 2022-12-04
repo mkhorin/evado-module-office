@@ -1,7 +1,7 @@
 <!-- _meta/list/grid -->
 <%
 const extraData = extraMeta.getData(meta.view);
-const nodeUrlParams = meta.node.serializeUrlParams();
+const nodeUrlParams = meta.node?.serializeUrlParams() || '';
 const className = meta.class.name;
 const creationView = meta.view.creationView.viewName;
 const creationParams = `c=${className}&v=${creationView}&m=${meta.getMasterId()}${nodeUrlParams}`;

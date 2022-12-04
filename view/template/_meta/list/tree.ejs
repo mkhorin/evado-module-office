@@ -1,7 +1,7 @@
 <!-- _meta/list/tree -->
 <%
 const extraData = extraMeta.getData(meta.view);
-const nodeUrlParams = meta.node.serializeUrlParams();
+const nodeUrlParams = meta.node?.serializeUrlParams() || '';
 const className = meta.class.name;
 const creationView = meta.view.creationView.viewName;
 const creationParams = `c=${className}&v=${creationView}${nodeUrlParams}`;
@@ -22,7 +22,7 @@ data = {
     ...data
 };
 if (!data.list) {
-    data.list = `office/model/list-tree?n=${meta.node.id}${meta.node.serializeUrlParams()}`;
+    data.list = `office/model/list-tree?n=${meta.node.id}${nodeUrlParams}`;
 }
 const commands = extraData.commands;
 const canCreate = commands.create && data.create && security.access.canCreate();

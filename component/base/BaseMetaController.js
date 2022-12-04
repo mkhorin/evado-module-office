@@ -153,7 +153,7 @@ module.exports = class BaseMetaController extends Base {
     async setModelMetaParams (query) {
         const model = await query.one();
         if (!model) {
-            throw new BadRequest('Object not found');
+            throw new NotFound('Object not found');
         }
         this.meta.model = model;
         model.readOnly = model.isTransiting() || model.isReadOnlyState();
@@ -163,7 +163,7 @@ module.exports = class BaseMetaController extends Base {
     setViewNodeMetaParams (data) {
         this.setNodeMetaParams(data);
         if (!this.meta.view) {
-            throw new BadRequest(`Node view not found`);
+            throw new NotFound('Node view not found');
         }
     }
 
@@ -196,7 +196,7 @@ module.exports = class BaseMetaController extends Base {
     async resolveTreeMetaParams (node, depth, viewName) {
         const level = this.meta.view.treeView.getLevel(depth);
         if (!level) {
-            throw new BadRequest(`Tree view level not found`);
+            throw new BadRequest('Tree view level not found');
         }
         const master = this.meta.master;
         master.class = level.sourceClass;

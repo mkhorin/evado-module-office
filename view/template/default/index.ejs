@@ -2,29 +2,33 @@
 layout(_view.get('_layout/content'));
 block('title', 'Operate application');
 %>
-
 <%- include(_view.get('_meta/alert')) %>
 
 <div class="folder card">
-    <div class="card-body">
-        <p>
-            The Office module creates and edits objects based on metadata.
-            <br>
-            For example, article objects are created for the Article class.
-        </p>
-    </div>
+  <div class="card-body">
+    <p>
+      The Office module creates and edits objects based on metadata.
+      <br>
+      For example, article objects are created for the Article class.
+    </p>
+    <p>
+      See
+      <a href="https://mkhorin.github.io/evado-site/"
+         target="_blank">creating a web app without programming</a>.
+    </p>
+  </div>
 </div>
 
 <div class="card-info card mt-3">
-    <div class="card-header">
-        Navigation
-    </div>
-    <div class="card-body">
-        <p>
-            The sidebar menu is defined from the navigation section codenamed <code>main</code>.
-        </p>
-        <p>
-            By default, in development mode, a service menu section is displayed with a list of all application classes.
-        </p>
-    </div>
+  <div class="card-header">
+    Navigation
+  </div>
+  <div class="card-body">
+    <p>
+      The sidebar menu is defined from the navigation section codenamed <code>main</code>.
+    </p>
+    <p>
+      By default, in development mode, a service menu section is displayed with a list of all application classes.
+    </p>
+  </div>
 </div>

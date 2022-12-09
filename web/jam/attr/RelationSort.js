@@ -24,8 +24,8 @@ Jam.RelationSort = class RelationSort {
             .toggleClass('btn-primary', !!ordered)
             .toggleClass('btn-outline-secondary', !ordered);
     }
-    onSortRelation () {
 
+    onSortRelation () {
         this.owner.openFrame(this.params.url, null, this.onAfterFrameClose.bind(this));
     }
 

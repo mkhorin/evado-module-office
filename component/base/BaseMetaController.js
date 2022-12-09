@@ -130,11 +130,11 @@ module.exports = class BaseMetaController extends Base {
         if (master.attr.relation.refClass !== this.meta.class) {
             throw new BadRequest(`Invalid master: ${data}`);
         }
+        const config = this.getSpawnConfig();
         if (!id) {
-            master.model = master.view.createModel(this.getSpawnConfig());
+            master.model = master.view.createModel(config);
             return master;
         }
-        const config = this.getSpawnConfig();
         master.model = await master.view.createQuery(config).byId(id).one();
         if (!master.model) {
             throw new BadRequest(`Master object not found: ${data}`);
@@ -145,7 +145,8 @@ module.exports = class BaseMetaController extends Base {
         const master = this.meta.master;
         const attr = master.attr?.relation.refAttr;
         if (attr?.relation && !model.has(attr)) {
-            model.set(attr, master.model.get(attr.relation.refAttrName));
+            const value = master.model.get(attr.relation.refAttrName);
+            model.set(attr, value);
             master.refAttr = attr;
         }
     }
@@ -223,7 +224,8 @@ module.exports = class BaseMetaController extends Base {
 
     handleModelError (model) {
         const errors = model.getFirstErrorMap();
-        this.send({[model.class.name]: this.translateMessageMap(errors)}, 400);
+        const messages = this.translateMessageMap(errors);
+        this.send({[model.class.name]: messages}, Response.BAD_REQUEST);
     }
 
     async renderMeta (template, params) {
@@ -252,3 +254,4 @@ module.exports = class BaseMetaController extends Base {
 
 const BadRequest = require('areto/error/http/BadRequest');
 const NotFound = require('areto/error/http/NotFound');
+const Response = require('areto/web/Response');

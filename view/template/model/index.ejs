@@ -3,7 +3,7 @@ layout(_view.get('_layout/content'));
 
 const ptd = extraMeta.getPageTitleData(meta);
 
-block('title', ptd.label);
+block('title', ptd.title);
 block('titleTranslation', `meta.${ptd.translationKey}`);
 
 const extraData = extraMeta.getData(meta.view);

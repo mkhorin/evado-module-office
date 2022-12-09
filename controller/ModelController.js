@@ -21,13 +21,15 @@ module.exports = class ModelController extends Base {
         await this.setViewNodeMetaParams();
         await this.security.resolveOnIndex(this.meta);
         await this.setDynamicNodeMetaParam();
-        return this.renderMeta('index', this.getMetaParams());
+        const params = this.getMetaParams();
+        return this.renderMeta('index', params);
     }
 
     async actionFilter () {
         await this.setMetaParams();
         await this.meta.view.resolveEnums();
-        return this.renderMeta('filter', this.getMetaParams());
+        const params = this.getMetaParams();
+        return this.renderMeta('filter', params);
     }
 
     async actionTitle () {
@@ -44,12 +46,14 @@ module.exports = class ModelController extends Base {
         this.setCreationMetaParams(meta.class);
         await this.setMasterMetaParams();
         if (this.resolveCreationClassSelection()) {
-            return this.renderMeta('selectClass', this.getMetaParams());
+            const params = this.getMetaParams();
+            return this.renderMeta('selectClass', params);
         }
         if (meta.class.isAbstract()) {
             throw new BadRequest('Unable to instantiate abstract class');
         }
-        const model = meta.view.createModel(this.getSpawnConfig());
+        const config = this.getSpawnConfig();
+        const model = meta.view.createModel(config);
         meta.model = model;
         await model.setDefaultValues();
         this.setDefaultMasterValue(model);
@@ -79,7 +83,8 @@ module.exports = class ModelController extends Base {
         const forbidden = !this.security.access.canUpdate();
         if (forbidden && this.meta.view.forbiddenView) {
             query.view = this.meta.view.forbiddenView;
-            model = await this.setModelMetaParams(query.withStateView(false));
+            query.withStateView(false);
+            model = await this.setModelMetaParams(query);
         } else {
             model.readOnly = forbidden || model.readOnly;
         }
@@ -136,7 +141,8 @@ module.exports = class ModelController extends Base {
                 await this.deleteById(id, this.meta.class);
                 objects.push(id);
             } catch (err) {
-                errors.push(this.prepareDeletionError(err, id));
+                err = this.prepareDeletionError(err, id);
+                errors.push(err);
             }
         }
         this.sendJson({objects, errors});
@@ -147,7 +153,8 @@ module.exports = class ModelController extends Base {
         await this.resolveMasterAttr({refView: 'selectListView'});
         await this.security.resolveAttrsOnList(this.meta.view);
         this.meta.dependency = this.getQueryParam('d');
-        return this.render('select', this.getMetaParams());
+        const params = this.getMetaParams();
+        return this.render('select', params);
     }
 
     async actionClone () {
@@ -157,7 +164,8 @@ module.exports = class ModelController extends Base {
         await this.setMetaParams('create');
         const query = this.getModelQuery();
         const sample = await this.setModelMetaParams(query);
-        const model = this.meta.view.createModel(this.getSpawnConfig());
+        const config = this.getSpawnConfig();
+        const model = this.meta.view.createModel(config);
         this.meta.model = model;
         model.readOnly = model.view.isReadOnly();
         await model.setDefaultValues();
@@ -174,7 +182,8 @@ module.exports = class ModelController extends Base {
         await this.setViewNodeMetaParams();
         await this.security.resolveOnList(this.meta.view);
         await this.security.resolveAttrsOnList(this.meta.view);
-        const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData();
+        const config = this.getSpawnConfig();
+        const query = this.meta.view.createQuery(config).withListData();
         await this.meta.node.applyFilter(query);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const grid = this.spawn('meta/MetaGrid', {controller: this, query});
@@ -191,14 +200,19 @@ module.exports = class ModelController extends Base {
         }
         await this.security.resolveOnList(this.meta.view);
         await this.security.resolveAttrsOnList(this.meta.view);
-        const query = this.meta.view.createQuery(this.getSpawnConfig()).withListData();
+        const config = this.getSpawnConfig();
+        const query = this.meta.view.createQuery(config).withListData();
         await this.meta.node.applyFilter(query);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
         const master = this.meta.master;
         if (master.attr) {
             await master.attr.relation.setQueryByModel(query, master.model);
         }
-        const grid = this.spawn('meta/MetaTreeGrid', {controller: this, query, depth});
+        const grid = this.spawn('meta/MetaTreeGrid', {
+            controller: this,
+            query,
+            depth
+        });
         const data = await grid.getList();
         this.sendJson(data);
     }
@@ -296,11 +310,11 @@ module.exports = class ModelController extends Base {
         if (force) {
             return false;
         }
-        const descendants = this.meta.class.getActiveDescendants();
-        if (descendants.length === 1) {
-            this.setCreationMetaParams(descendants[0]);
+        const classes = this.meta.class.getActiveDescendants();
+        if (classes.length === 1) {
+            this.setCreationMetaParams(classes[0]);
         }
-        return descendants.length > 1 || this.meta.class.isAbstract();
+        return classes.length > 1 || this.meta.class.isAbstract();
     }
 
     async renderUpdate (model) {
@@ -310,7 +324,8 @@ module.exports = class ModelController extends Base {
         await this.meta.view.resolveEnums();
         await model.resolveReadOnlyAttrTitles();
         const signature = model.createSignatureBehavior();
-        const canSign = await signature?.canSign(this.createMetaSecurity());
+        const security = this.createMetaSecurity();
+        const canSign = await signature?.canSign(security);
         const params = this.getMetaParams({model, canSign});
         return this.renderModel('update', params);
     }
@@ -320,7 +335,8 @@ module.exports = class ModelController extends Base {
         await model.related.resolveEmbeddedModels();
         await this.meta.view.resolveEnums();
         await model.resolveCalcValues();
-        return this.renderModel('create', this.getMetaParams({model}));
+        const params = this.getMetaParams({model});
+        return this.renderModel('create', params);
     }
 
     renderModel (template, data) {
@@ -359,7 +375,8 @@ module.exports = class ModelController extends Base {
     }
 
     async deleteById (id, modelClass) {
-        const query = modelClass.createQuery(this.getSpawnConfig()).byId(id);
+        const config = this.getSpawnConfig();
+        const query = modelClass.createQuery(config).byId(id);
         const model = await query.withStateView().one();
         if (!model) {
             throw new BadRequest(`Object not found: ${id}.${modelClass.id}`);

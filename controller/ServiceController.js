@@ -39,7 +39,8 @@ module.exports = class ServiceController extends Base {
         }
         const view = this.createView();
         const menu = this.spawn(SideMenu, {view});
-        this.send(await menu.renderItems(nodes, section));
+        const data = await menu.renderItems(nodes, section);
+        this.send(data);
     }
 
     validateNavSearch (value) {

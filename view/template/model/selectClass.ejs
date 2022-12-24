@@ -1,53 +1,53 @@
 <%
 const items = [];
 for (const cls of meta.class.getActiveDescendants()) {
-    items.push({
-        label: cls.title,
-        name: cls.name,
-        description: cls.description
-    });
+  items.push({
+    label: cls.title,
+    name: cls.name,
+    description: cls.description
+  });
 }
 const p = {
-    key: 'name',
-    multiple: false,
-    order: {label: 1},
-    columns: [{
-        name: 'label',
-        label: 'Label',
-        searchable: true,
-        sortable: true
-    },{
-        name: 'name',
-        label: 'Name',
-        searchable: true,
-        sortable: true
-    },{
-        name: 'description',
-        label: 'Description'
-    }],
-    data: items,
-    create: 'office/model/create'
+  key: 'name',
+  multiple: false,
+  order: {label: 1},
+  columns: [{
+    name: 'label',
+    label: 'Label',
+    searchable: true,
+    sortable: true
+  },{
+    name: 'name',
+    label: 'Name',
+    searchable: true,
+    sortable: true
+  },{
+    name: 'description',
+    label: 'Description'
+  }],
+  data: items,
+  create: 'office/model/create'
 };
 %>
 <div class="frame-box scroll-container" data-title="Select class">
-    <div class="frame-box-header scroll-header"></div>
-    <div class="frame-box-body scroll-body">
-        <div class="data-grid" data-jam="SelectClassList" data-params="<%= JSON.stringify(p) %>">
-            <div class="commands">
-                <button data-command="select" class="btn-primary btn" type="button" title="Select">
-                    <i class="fas fa-check"></i>
-                </button>
-            </div>
-            <% if (items.length > 10) { %>
-            <%- include(_view.get('_part/list/top')) %>
-            <% } %>
-            <div class="data-grid-content"></div>
+  <div class="frame-box-header scroll-header"></div>
+  <div class="frame-box-body scroll-body">
+    <div class="data-grid" data-jam="SelectClassList" data-params="<%= JSON.stringify(p) %>">
+      <div class="commands">
+        <button data-command="select" class="btn-primary btn" type="button" title="Select">
+          <i class="fas fa-check"></i>
+        </button>
+      </div>
+      <% if (items.length > 10) { %>
+      <%- include(_view.get('_part/list/top')) %>
+      <% } %>
+      <div class="data-grid-content"></div>
 
-            <%- include(_view.get('_part/list/bottom')) %>
+      <%- include(_view.get('_part/list/bottom')) %>
 
-            <div class="overlay">
-                <i class="fa fa-spinner fa-spin"></i>
-            </div>
-        </div>
+      <div class="overlay">
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
     </div>
+  </div>
 </div>

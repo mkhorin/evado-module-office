@@ -6,27 +6,27 @@ block('titleTranslation', 'meta');
 %>
 
 <%- include(_view.get('_part/list/grid'), {
-    data: {
-        columns: [{
-            name: 'createdAt',
-            format: 'timestamp'
-        },{
-            name: 'data',
-            format: 'json'
-        },{
-            name: 'user',
-            format: 'relation'
-        }],
-        order: {[model.PK]: -1},
-        list: _url('list', {
-            c: owner.class.id,
-            id: owner.getId()
-        }),
-        jam: 'FrameList',
-        create: null,
-        update: null,
-        delete: null,
-        multiple: false,
-        showTop: false
-    }
+  data: {
+    columns: [{
+      name: 'createdAt',
+      format: 'timestamp'
+    },{
+      name: 'data',
+      format: 'json'
+    },{
+      name: 'user',
+      format: 'relation'
+    }],
+    order: {[model.PK]: -1},
+    list: _url('list', {
+      c: owner.class.id,
+      id: owner.getId()
+    }),
+    jam: 'FrameList',
+    create: null,
+    update: null,
+    delete: null,
+    multiple: false,
+    showTop: false
+  }
 }) %>

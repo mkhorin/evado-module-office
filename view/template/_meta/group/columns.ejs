@@ -1,12 +1,12 @@
 <!-- office/_part/group/columns -->
 <div class="form-columns form-group row <%- group.options.css %>"
-     data-id="<%- group.name %>"
-     data-action-binder="<%= group.actionBinder.stringified  %>">
-    <%
-    for (const column of group.children) {
-        if (column.isGroup() && !column.isHidden()) {
-            const template = _view.getMetaItemTemplate(column) || _view.get('_meta/group/column');
-    %>
-    <%- include(template || baseTemplate, {group: column}) %>
-    <% }} %>
+   data-id="<%- group.name %>"
+   data-action-binder="<%= group.actionBinder.stringified  %>">
+  <%
+  for (const column of group.children) {
+    if (column.isGroup() && !column.isHidden()) {
+      const template = _view.getMetaItemTemplate(column) || _view.get('_meta/group/column');
+  %>
+  <%- include(template || baseTemplate, {group: column}) %>
+  <% }} %>
 </div>

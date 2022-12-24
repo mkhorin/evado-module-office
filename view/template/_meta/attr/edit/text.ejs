@@ -1,15 +1,15 @@
 <!-- _meta/attr/edit/text -->
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Text' : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Text' : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <textarea name="<%- formAttrName %>"
-                  rows="<%- attr.options.rows || 20 %>" <%- required %>
-                  class="form-control form-value"><%= model.get(attr) %></textarea>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
-    </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <textarea name="<%- formAttrName %>"
+        rows="<%- attr.options.rows || 20 %>" <%- required %>
+        class="form-control form-value"><%= model.get(attr) %></textarea>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
 </div>

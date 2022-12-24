@@ -6,10 +6,10 @@ block('htmlTitle', true);
 %>
 
 <%- include(_view.get('_meta/list/sort'), {
-    data: {
-        order: {[sortAttr.name]: 1},
-        id: `sort-${meta.master.attr.id}`,
-        list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getMetaId()}`
-    },
-    extraData: extraMeta.getData(meta.master.attr.listView)
+  data: {
+    order: {[sortAttr.name]: 1},
+    id: `sort-${meta.master.attr.id}`,
+    list: `office/model/list-related?m=${meta.master.attr.name}.${meta.master.model.getMetaId()}`
+  },
+  extraData: extraMeta.getData(meta.master.attr.listView)
 }) %>

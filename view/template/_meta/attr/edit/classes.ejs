@@ -1,37 +1,37 @@
 <!-- _meta/attr/edit/classes -->
 <%
 const select2 = {
-    ajax: {
-        url: _url('/api/base/meta/list-class-select')
-    },
-    queryData: {
-        ancestor: attr.options.ancestorClass
-    },
-    ...attr.options.select2
+  ajax: {
+    url: _url('/api/base/meta/list-class-select')
+  },
+  queryData: {
+    ancestor: attr.options.ancestorClass
+  },
+  ...attr.options.select2
 };
 let content = '';
 let names = model.get(attr);
 if (Array.isArray(names)) {
-    for (const name of names) {
-        const cls = model.class.meta.getClass(name);
-        content += cls
-            ? `<option value="${name}" title="${name}" selected>${_escape(cls.title)}</option>`
-            : `<option value="${name}" selected>${name}</option>`;
-    }
+  for (const name of names) {
+    const cls = model.class.meta.getClass(name);
+    content += cls
+      ? `<option value="${name}" title="${name}" selected>${_escape(cls.title)}</option>`
+      : `<option value="${name}" selected>${name}</option>`;
+  }
 }
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Select' : handler %>"
-     data-select2="<%= JSON.stringify(select2) %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Select' : handler %>"
+   data-select2="<%= JSON.stringify(select2) %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <select name="<%- formAttrName %>" <%- required %> class="form-select form-value" multiple>
-            <%- content %>
-        </select>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
-    </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <select name="<%- formAttrName %>" <%- required %> class="form-select form-value" multiple>
+      <%- content %>
+    </select>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
 </div>

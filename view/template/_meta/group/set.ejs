@@ -3,22 +3,22 @@
 const loaded = viewModel.isLoadedGroup(group);
 %>
 <fieldset class="form-set model-group <%- group.isActive() ? 'active' : '' %> <%- group.options.css %>"
-          data-id="<%- group.name %>"
-          data-action-binder="<%= group.actionBinder.stringified %>"
-          data-loadable="<%- group.isLoadable() %>"
-          data-loaded="<%- loaded %>">
-    <legend>
-        <span class="form-set-toggle"><span class="icon fas fa-chevron-right"></span>
-            <span data-t="meta.<%- group.translationKey %>"><%= group.title %></span></span><% if (group.hint) {
-            %><i class="hint-icon" title="<%= group.hint %>" data-t="meta.<%- group.translationKey %>"></i><% } %>
-    </legend>
-    <div class="form-set-body model-group-body">
-        <% if (loaded) { %>
-        <%- include(_view.get('_meta/group/children')) %>
-        <% } else { %>
-        <div class="model-group-loader">
-            <i class="fa fa-spinner fa-spin"></i>
-        </div>
-        <% } %>
+      data-id="<%- group.name %>"
+      data-action-binder="<%= group.actionBinder.stringified %>"
+      data-loadable="<%- group.isLoadable() %>"
+      data-loaded="<%- loaded %>">
+  <legend>
+    <span class="form-set-toggle"><span class="icon fas fa-chevron-right"></span>
+      <span data-t="meta.<%- group.translationKey %>"><%= group.title %></span></span><% if (group.hint) {
+      %><i class="hint-icon" title="<%= group.hint %>" data-t="meta.<%- group.translationKey %>"></i><% } %>
+  </legend>
+  <div class="form-set-body model-group-body">
+    <% if (loaded) { %>
+    <%- include(_view.get('_meta/group/children')) %>
+    <% } else { %>
+    <div class="model-group-loader">
+      <i class="fa fa-spinner fa-spin"></i>
     </div>
+    <% } %>
+  </div>
 </fieldset>

@@ -1,6 +1,5 @@
-
 body {
-    --nav-item-acsent-color: var(--dark-info);
-    --navbar-color: #328cc0;
-    --super-navbar-color: #1a72a4;
+  --nav-item-acsent-color: var(--dark-info);
+  --navbar-color: #328cc0;
+  --super-navbar-color: #1a72a4;
 }

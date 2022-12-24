@@ -1,33 +1,33 @@
 <!-- _meta/transition/group -->
 <% if (model.transitions?.length) { %>
 <div data-command="transitions"
-     data-url="office/model/transit?c=<%- model.class.name %>&id=<%- model.getId() %>"
-     class="transitions btn-group nav-group" role="group">
-    <% let item = model.transitions[0]; %>
-    <button class="btn-outline-primary btn" type="button"
-            title="<%= item.hint || item.title %>"
-            data-command="transit"
-            data-transition="<%- item.name %>"
-            data-options="<%= JSON.stringify(item.options) %>"
-            data-t="meta.<%- item.translationKey %>"><%= item.title %></button>
-    <% if (model.transitions.length > 1) { %>
-    <div class="btn-group" role="group">
-        <button type="button" class="dropdown-toggle btn-outline-secondary btn" title="Transitions"
-                data-bs-toggle="dropdown" data-t=""></button>
-        <div class="dropdown-menu dropdown-menu-end">
-            <% for (let i = 1; i < model.transitions.length; ++i) {
-                item = model.transitions[i]; %>
-            <a class="dropdown-item" href="javascript:void 0" title="<%= item.hint || item.title %>"
-               data-command="transit"
-               data-transition="<%- item.name %>"
-               data-options="<%= JSON.stringify(item.options) %>"
-               data-t="meta.<%- item.translationKey %>"><%= item.title %></a>
-            <% } %>
-        </div>
+   data-url="office/model/transit?c=<%- model.class.name %>&id=<%- model.getId() %>"
+   class="transitions btn-group nav-group" role="group">
+  <% let item = model.transitions[0]; %>
+  <button class="btn-outline-primary btn" type="button"
+      title="<%= item.hint || item.title %>"
+      data-command="transit"
+      data-transition="<%- item.name %>"
+      data-options="<%= JSON.stringify(item.options) %>"
+      data-t="meta.<%- item.translationKey %>"><%= item.title %></button>
+  <% if (model.transitions.length > 1) { %>
+  <div class="btn-group" role="group">
+    <button type="button" class="dropdown-toggle btn-outline-secondary btn" title="Transitions"
+        data-bs-toggle="dropdown" data-t=""></button>
+    <div class="dropdown-menu dropdown-menu-end">
+      <% for (let i = 1; i < model.transitions.length; ++i) {
+        item = model.transitions[i]; %>
+      <a class="dropdown-item" href="javascript:void 0" title="<%= item.hint || item.title %>"
+         data-command="transit"
+         data-transition="<%- item.name %>"
+         data-options="<%= JSON.stringify(item.options) %>"
+         data-t="meta.<%- item.translationKey %>"><%= item.title %></a>
+      <% } %>
     </div>
-    <% } %>
+  </div>
+  <% } %>
 </div>
 <% } %>
 <div data-command="transiting" class="nav-group text-secondary" style="display: none;">
-    <span data-t="">Transition in progress...</span>
+  <span data-t="">Transition in progress...</span>
 </div>

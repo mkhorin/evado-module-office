@@ -4,26 +4,26 @@ const cssList = attr.options.inline ? 'form-check-list-inline' : '';
 const cssItem = attr.options.inline ? 'form-check-inline' : '';
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RadioEnum' : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>"
-     data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
-     data-t-sets="meta.<%- attr.translationKey %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RadioEnum' : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>"
+   data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
+   data-t-sets="meta.<%- attr.translationKey %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
-        <div class="<%- cssList %> form-check-list"></div>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
+    <div class="<%- cssList %> form-check-list"></div>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
+  <template data-id="radio">
+    <div class="<%- cssItem %> form-check">
+      <input class="form-check-input" type="radio" value="{{value}}">
+      <div class="form-check-label-wrapper">
+        <label class="form-check-label">{{text}}</label><i
+             class="hint-icon" title="{{hint}}" data-title="{{hint}}"></i>
+      </div>
     </div>
-    <template data-id="radio">
-        <div class="<%- cssItem %> form-check">
-            <input class="form-check-input" type="radio" value="{{value}}">
-            <div class="form-check-label-wrapper">
-                <label class="form-check-label">{{text}}</label><i
-                       class="hint-icon" title="{{hint}}" data-title="{{hint}}"></i>
-            </div>
-        </div>
-    </template>
+  </template>
 </div>

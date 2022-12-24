@@ -9,86 +9,86 @@ const related = model.related.get(attr);
 const access = security.relationAccessMap[attr.name];
 const commands = attr.commandMap;
 const p = {
-    key: relation.refClass.getKey(),
-    backRef: attr.isBackRef(),
-    multiple: relation.multiple,
-    maxSelectionLength: relation.maxItems,
-    list: commands.add ? `office/model/list-related-select?${params}` : false,
-    unlink: commands.remove,
-    update: commands.edit
-        ? `office/model/update?${params}&v=${attr.selectListView.editView.viewName}`
-        : false,
-    create: false,
-    delete: commands.delete && access.canDelete(),
-    viewTitle: `office/model/title?${params}`,
-    ...attr.options.relation
+  key: relation.refClass.getKey(),
+  backRef: attr.isBackRef(),
+  multiple: relation.multiple,
+  maxSelectionLength: relation.maxItems,
+  list: commands.add ? `office/model/list-related-select?${params}` : false,
+  unlink: commands.remove,
+  update: commands.edit
+    ? `office/model/update?${params}&v=${attr.selectListView.editView.viewName}`
+    : false,
+  create: false,
+  delete: commands.delete && access.canDelete(),
+  viewTitle: `office/model/title?${params}`,
+  ...attr.options.relation
 };
 if (commands.create && access.canCreate()) {
-    p.create = `office/model/create?${params}&v=${attr.selectListView.creationView.viewName}`;
+  p.create = `office/model/create?${params}&v=${attr.selectListView.creationView.viewName}`;
 }
 const sort = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RelationSelect' : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'RelationSelect' : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <div class="relation-select">
-            <input type="hidden" name="<%- formAttrName %>" value="<%= defaultValue %>" class="form-value">
-            <div class="hidden-commands commands">
-                <% if (p.unlink) { %>
-                <div class="nav-group">
-                    <button data-command="unlink" type="button" title="Remove"
-                            class="btn-white btn-outline-danger btn">
-                        <i class="fa fa-unlink"></i>
-                    </button>
-                </div>
-                <% } if (p.create) { %>
-                <button data-command="create" type="button" title="Create"
-                        class="btn-white btn-outline-success btn">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <% } if (p.delete) { %>
-                <button data-command="delete" type="button" title="Delete"
-                        class="btn-white btn-outline-danger btn">
-                    <i class="far fa-trash-alt"></i>
-                </button>
-                <% } %>
-
-                <%- sort %>
-
-                <% if (attr.options.commands) { %>
-                <%- include(_view.get('_meta/customCommands'), {
-                    commands: attr.options.commands,
-                    translationKey: attr.view.translationKey
-                }) %>
-                <% } %>
-            </div>
-            <div class="input-group">
-                <select class="form-select" <% if (p.multiple) { %>multiple<% } %>
-                        data-params="<%= JSON.stringify(p) %>">
-                    <% if (Array.isArray(related)) {
-                            for (const item of related) { %>
-                    <option value="<%- item.getId() %>" selected><%- item.getEscapedTitle() %></option>
-                    <% }} else if (related) { %>
-                    <option value="<%- related.getId() %>" selected><%- related.getEscapedTitle() %></option>
-                    <% } else if (Array.isArray(value)) {
-                            for (const item of value) { %>
-                    <option value="<%= item %>" selected><%= item %></option>
-                    <% }} else if (value) { %>
-                    <option value="<%= value %>" selected><%= value %></option>
-                    <% } %>
-                </select>
-                <% if (p.update) { %>
-                <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
-                    <i class="fas fa-pencil-alt"></i>
-                </button>
-                <% } %>
-            </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <div class="relation-select">
+      <input type="hidden" name="<%- formAttrName %>" value="<%= defaultValue %>" class="form-value">
+      <div class="hidden-commands commands">
+        <% if (p.unlink) { %>
+        <div class="nav-group">
+          <button data-command="unlink" type="button" title="Remove"
+              class="btn-white btn-outline-danger btn">
+            <i class="fa fa-unlink"></i>
+          </button>
         </div>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <% } if (p.create) { %>
+        <button data-command="create" type="button" title="Create"
+            class="btn-white btn-outline-success btn">
+          <i class="fas fa-plus"></i>
+        </button>
+        <% } if (p.delete) { %>
+        <button data-command="delete" type="button" title="Delete"
+            class="btn-white btn-outline-danger btn">
+          <i class="far fa-trash-alt"></i>
+        </button>
+        <% } %>
+
+        <%- sort %>
+
+        <% if (attr.options.commands) { %>
+        <%- include(_view.get('_meta/customCommands'), {
+          commands: attr.options.commands,
+          translationKey: attr.view.translationKey
+        }) %>
+        <% } %>
+      </div>
+      <div class="input-group">
+        <select class="form-select" <% if (p.multiple) { %>multiple<% } %>
+            data-params="<%= JSON.stringify(p) %>">
+          <% if (Array.isArray(related)) {
+              for (const item of related) { %>
+          <option value="<%- item.getId() %>" selected><%- item.getEscapedTitle() %></option>
+          <% }} else if (related) { %>
+          <option value="<%- related.getId() %>" selected><%- related.getEscapedTitle() %></option>
+          <% } else if (Array.isArray(value)) {
+              for (const item of value) { %>
+          <option value="<%= item %>" selected><%= item %></option>
+          <% }} else if (value) { %>
+          <option value="<%= value %>" selected><%= value %></option>
+          <% } %>
+        </select>
+        <% if (p.update) { %>
+        <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+        <% } %>
+      </div>
     </div>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
 </div>

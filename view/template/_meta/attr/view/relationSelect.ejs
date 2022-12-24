@@ -5,51 +5,51 @@ const value = model.get(attr);
 const related = model.related.get(attr);
 const items = [];
 if (attr.commandMap.edit) {
-    if (Array.isArray(related)) {
-        for (const item of related) {
-            items.push(`<a href="${update}${item.getId()}" class="frame-link value-item">${item.getEscapedTitle()}</a>`);
-        }
-    } else if (related) {
-        items.push(`<a href="${update}${related.getId()}" class="frame-link">${related.getEscapedTitle()}</a>`);
-    } else if (Array.isArray(value)) {
-        for (const id of value) {
-            items.push(`<a href="${update}${id}" class="frame-link value-item">${id}</a>`);
-        }
-    } else if (value) {
-        items.push(`<a href="${update}${value}" class="frame-link">${value}</a>`);
-    }
-} else if (Array.isArray(related)) {
+  if (Array.isArray(related)) {
     for (const item of related) {
-        items.push(`<div class="value-item">${item.getEscapedTitle()}</div>`);
+      items.push(`<a href="${update}${item.getId()}" class="frame-link value-item">${item.getEscapedTitle()}</a>`);
     }
-} else if (related) {
-    items.push(related.getEscapedTitle());
-} else if (Array.isArray(value)) {
+  } else if (related) {
+    items.push(`<a href="${update}${related.getId()}" class="frame-link">${related.getEscapedTitle()}</a>`);
+  } else if (Array.isArray(value)) {
     for (const id of value) {
-        items.push(`<div class="value-item">${id}</div>`);
+      items.push(`<a href="${update}${id}" class="frame-link value-item">${id}</a>`);
     }
+  } else if (value) {
+    items.push(`<a href="${update}${value}" class="frame-link">${value}</a>`);
+  }
+} else if (Array.isArray(related)) {
+  for (const item of related) {
+    items.push(`<div class="value-item">${item.getEscapedTitle()}</div>`);
+  }
+} else if (related) {
+  items.push(related.getEscapedTitle());
+} else if (Array.isArray(value)) {
+  for (const id of value) {
+    items.push(`<div class="value-item">${id}</div>`);
+  }
 } else if (value) {
-    items.push(value);
+  items.push(value);
 }
 if (!items.length && attr.isHideEmpty()) {
 %>
 <%- include(_view.get('_meta/attr/empty')) %>
 <% } else { %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
-        <div class="form-control-plaintext">
-            <div class="value-items">
-                <%- items.length ? items.join('') : _format(null) %>
-            </div>
-            <div class="error-block"></div>
-            <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
-        </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%= value %>" class="form-value">
+    <div class="form-control-plaintext">
+      <div class="value-items">
+        <%- items.length ? items.join('') : _format(null) %>
+      </div>
+      <div class="error-block"></div>
+      <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
+  </div>
 </div>
 <% } %>

@@ -1,20 +1,19 @@
 <!-- _meta/attr/edit/select -->
-
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Enum' : handler %>"
-     data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
-     data-t-sets="meta.<%- attr.translationKey %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>"
-     data-select2="<%= attr.options.select2 ? JSON.stringify(attr.options.select2) : '{}' %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Enum' : handler %>"
+   data-sets="<%= attr.enum ? JSON.stringify(attr.enum.getSets()) : '' %>"
+   data-t-sets="meta.<%- attr.translationKey %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>"
+   data-select2="<%= attr.options.select2 ? JSON.stringify(attr.options.select2) : '{}' %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
-        <select <%- required %> class="form-select">
-            <option value></option>
-        </select>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
-    </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
+    <select <%- required %> class="form-select">
+      <option value></option>
+    </select>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
 </div>

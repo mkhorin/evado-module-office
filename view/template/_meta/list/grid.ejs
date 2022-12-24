@@ -6,87 +6,87 @@ const className = meta.class.name;
 const creationView = meta.view.creationView.viewName;
 const creationParams = `c=${className}&v=${creationView}&m=${meta.getMasterId()}${nodeUrlParams}`;
 data = {
-    jam: meta.view.options.jam || 'MainList',
-    key: meta.class.getKey(),
-    id: 'meta.view.' + meta.view.id,
-    multiple: true,
-    order: meta.view.order || {[meta.class.getKey()]: -1},
-    grouping: meta.view.data.grouping,
-    columns: extraData.columns,
-    create: `office/model/create?${creationParams}`,
-    update: `office/model/update?c=${meta.class.id}&v=${meta.view.editView.viewName}`,
-    delete: `office/model/delete-list?c=${className}`,
-    filter: {
-        url: `office/model/filter?c=${className}`
-    },
-    clone: `office/model/clone?${creationParams}`,
-    showTop: true,
-    dependency: meta.dependency,
-    ...meta.view.options.grid,
-    ...data
+  jam: meta.view.options.jam || 'MainList',
+  key: meta.class.getKey(),
+  id: 'meta.view.' + meta.view.id,
+  multiple: true,
+  order: meta.view.order || {[meta.class.getKey()]: -1},
+  grouping: meta.view.data.grouping,
+  columns: extraData.columns,
+  create: `office/model/create?${creationParams}`,
+  update: `office/model/update?c=${meta.class.id}&v=${meta.view.editView.viewName}`,
+  delete: `office/model/delete-list?c=${className}`,
+  filter: {
+    url: `office/model/filter?c=${className}`
+  },
+  clone: `office/model/clone?${creationParams}`,
+  showTop: true,
+  dependency: meta.dependency,
+  ...meta.view.options.grid,
+  ...data
 };
 if (!data.list) {
-    data.list = `office/model/list?n=${meta.node.id}${nodeUrlParams}`;
+  data.list = `office/model/list?n=${meta.node.id}${nodeUrlParams}`;
 }
 const commands = extraData.commands;
 const canCreate = commands.create && data.create && security.access.canCreate();
 const canDelete = commands.delete && data.delete && security.access.canDelete();
 %>
 <div class="data-grid <%- meta.view.options.css %>"
-     data-jam="<%- data.jam %>"
-     data-params="<%= JSON.stringify(data) %>">
+   data-jam="<%- data.jam %>"
+   data-params="<%= JSON.stringify(data) %>">
 
-    <div class="commands">
-        <% if (data.multiple) { %>
-        <button data-command="selectAll" class="btn-outline-secondary btn" type="button" title="Select all">
-            <i class="fas fa-list"></i>
-        </button>
-        <% } if (canCreate) { %>
-        <button data-command="create" class="btn-outline-success btn" type="button" title="Create">
-            <i class="fas fa-plus"></i>
-        </button>
-        <% } if (commands.edit && data.update) { %>
-        <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
-            <i class="fas fa-pencil-alt"></i>
-        </button>
-        <% } if (canDelete) { %>
-        <button data-command="delete" class="btn-outline-danger btn" type="button" title="Delete">
-            <i class="far fa-trash-alt"></i>
-        </button>
-        <% } %>
-        <div class="nav-group">
-            <button data-command="reload" class="btn-outline-secondary btn" type="button" title="Reload">
-                <i class="fa fa-redo-alt"></i>
-            </button>
-        </div>
-        <% if (canCreate) { %>
-        <button data-command="clone" class="btn-outline-success btn" type="button" title="Clone">
-            <i class="far fa-clone"></i>
-        </button>
-        <% } if (data.modalSort && security.access.canUpdate()) { %>
-        <button data-command="sort" class="btn-outline-secondary btn" type="button" title="Sort">
-            <i class="fas fa-sort"></i>
-        </button>
-        <% } if (meta.view.options.commands) { %>
-        <%- include(_view.get('_meta/customCommands'), {
-            commands: meta.view.options.commands,
-            translationKey: meta.view.translationKey
-        }) %>
-        <% } %>
-        <%- include(_view.get('_part/tool/utilities'), {params: {meta: meta.view.id}}) %>
-    </div>
-    <% if (extraData.filterColumns.length) { %>
-    <div class="list-filter">
-        <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
-    </div>
-    <% } if (data.showTop) { %>
-    <%- include(_view.get('_part/list/top')) %>
+  <div class="commands">
+    <% if (data.multiple) { %>
+    <button data-command="selectAll" class="btn-outline-secondary btn" type="button" title="Select all">
+      <i class="fas fa-list"></i>
+    </button>
+    <% } if (canCreate) { %>
+    <button data-command="create" class="btn-outline-success btn" type="button" title="Create">
+      <i class="fas fa-plus"></i>
+    </button>
+    <% } if (commands.edit && data.update) { %>
+    <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
+      <i class="fas fa-pencil-alt"></i>
+    </button>
+    <% } if (canDelete) { %>
+    <button data-command="delete" class="btn-outline-danger btn" type="button" title="Delete">
+      <i class="far fa-trash-alt"></i>
+    </button>
     <% } %>
-    <div class="data-grid-content"></div>
-
-    <%- include(_view.get('_part/list/bottom')) %>
-
-    <div class="overlay">
-        <i class="fa fa-spinner fa-spin"></i>
+    <div class="nav-group">
+      <button data-command="reload" class="btn-outline-secondary btn" type="button" title="Reload">
+        <i class="fa fa-redo-alt"></i>
+      </button>
     </div>
+    <% if (canCreate) { %>
+    <button data-command="clone" class="btn-outline-success btn" type="button" title="Clone">
+      <i class="far fa-clone"></i>
+    </button>
+    <% } if (data.modalSort && security.access.canUpdate()) { %>
+    <button data-command="sort" class="btn-outline-secondary btn" type="button" title="Sort">
+      <i class="fas fa-sort"></i>
+    </button>
+    <% } if (meta.view.options.commands) { %>
+    <%- include(_view.get('_meta/customCommands'), {
+      commands: meta.view.options.commands,
+      translationKey: meta.view.translationKey
+    }) %>
+    <% } %>
+    <%- include(_view.get('_part/tool/utilities'), {params: {meta: meta.view.id}}) %>
+  </div>
+  <% if (extraData.filterColumns.length) { %>
+  <div class="list-filter">
+    <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
+  </div>
+  <% } if (data.showTop) { %>
+  <%- include(_view.get('_part/list/top')) %>
+  <% } %>
+  <div class="data-grid-content"></div>
+
+  <%- include(_view.get('_part/list/bottom')) %>
+
+  <div class="overlay">
+    <i class="fa fa-spinner fa-spin"></i>
+  </div>
 </div>

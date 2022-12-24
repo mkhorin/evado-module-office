@@ -7,111 +7,111 @@ const defaultValue = model.isNew() ? model.get(attr) : null;
 const access = security.relationAccessMap[attr.name];
 const commands = attr.commandMap;
 const p = {
-    id: attr.id,
-    relName: attr.name,
-    backRef: attr.isBackRef(),
-    key: relation.refClass.getKey(),
-    pageSize: 10,
-    order: attr.listView.order,
-    multiple: relation.multiple,
-    columns:  extraData.columns,
-    list: `office/model/list-related?${params}`,
-    link: commands.add ? `office/model/select?${params}` : false,
-    unlink: commands.remove,
-    update: commands.edit
-        ? `office/model/update?${params}&v=${attr.listView.editView.viewName}`
-        : false,
-    create: false,
-    delete: commands.delete && access.canDelete(),
-    ...attr.options.relation
+  id: attr.id,
+  relName: attr.name,
+  backRef: attr.isBackRef(),
+  key: relation.refClass.getKey(),
+  pageSize: 10,
+  order: attr.listView.order,
+  multiple: relation.multiple,
+  columns:  extraData.columns,
+  list: `office/model/list-related?${params}`,
+  link: commands.add ? `office/model/select?${params}` : false,
+  unlink: commands.remove,
+  update: commands.edit
+    ? `office/model/update?${params}&v=${attr.listView.editView.viewName}`
+    : false,
+  create: false,
+  delete: commands.delete && access.canDelete(),
+  ...attr.options.relation
 };
 if (commands.create && access.canCreate()) {
-    p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
+  p.create = `office/model/create?${params}&v=${attr.listView.creationView.viewName}`;
 }
 if (p.showBottom === undefined) {
-    p.showBottom = p.multiple && p.pageSize > 0;
+  p.showBottom = p.multiple && p.pageSize > 0;
 }
 if (p.showTop && p.filter === undefined) {
-    p.filter = {};
+  p.filter = {};
 }
 if (p.filter && !p.filter.url) {
-    p.filter.url = `office/model/filter?c=${relation.refClass.id}`;
+  p.filter.url = `office/model/filter?c=${relation.refClass.id}`;
 }
 const sort = include(_view.get('_meta/attr/sort'), {p, extraData, access, params});
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Relation' : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler || 'Relation' : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
-        <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
-            <button class="btn-demand-load btn-outline-primary btn" type="button" data-t>Load</button>
-            <div class="hidden-commands commands">
-                <% if (p.link) { %>
-                <div class="nav-group">
-                    <button data-command="link" type="button" title="Add"
-                            class="btn-white btn-outline-success btn">
-                        <i class="fa fa-link"></i>
-                    </button>
-                    <% if (p.unlink) { %>
-                    <button data-command="unlink" type="button" title="Remove"
-                            class="btn-white btn-outline-danger btn">
-                        <i class="fa fa-unlink"></i>
-                    </button>
-                    <% } %>
-                </div>
-                <% } if (p.create) { %>
-                <button data-command="create" type="button" title="Create"
-                        class="btn-white btn-outline-success btn">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <% } if (p.update) { %>
-                <button data-command="update" type="button" title="Edit"
-                        class="btn-white btn-outline-primary btn">
-                    <i class="fas fa-pencil-alt"></i>
-                </button>
-                <% } if (p.delete) { %>
-                <button data-command="delete" type="button" title="Delete"
-                        class="btn-white btn-outline-danger btn">
-                    <i class="far fa-trash-alt"></i>
-                </button>
-                <% } %>
-                <div class="nav-group">
-                    <button data-command="reload" type="button" title="Reload"
-                            class="btn-white btn-outline-secondary btn">
-                        <i class="fa fa-redo-alt"></i>
-                    </button>
-                </div>
-
-                <%- sort %>
-
-                <% if (attr.options.commands) { %>
-                <%- include(_view.get('_meta/customCommands'), {
-                    commands: attr.options.commands,
-                    translationKey: attr.view.translationKey
-                }) %>
-                <% } %>
-            </div>
-            <% if (p.filter) { %>
-            <div class="list-filter">
-                <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
-            </div>
-            <% } if (p.showTop) { %>
-            <%- include(_view.get('_part/list/top')) %>
-            <% } %>
-            <div class="data-grid-content"></div>
-
-            <% if (p.showBottom) { %>
-            <%- include(_view.get('_part/list/bottom')) %>
-            <% } %>
-            <div class="overlay">
-                <i class="fa fa-spinner fa-spin"></i>
-            </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input name="<%- formAttrName %>" type="hidden" value="<%= defaultValue %>" class="form-value">
+    <div class="data-grid" data-params="<%= JSON.stringify(p) %>">
+      <button class="btn-demand-load btn-outline-primary btn" type="button" data-t>Load</button>
+      <div class="hidden-commands commands">
+        <% if (p.link) { %>
+        <div class="nav-group">
+          <button data-command="link" type="button" title="Add"
+              class="btn-white btn-outline-success btn">
+            <i class="fa fa-link"></i>
+          </button>
+          <% if (p.unlink) { %>
+          <button data-command="unlink" type="button" title="Remove"
+              class="btn-white btn-outline-danger btn">
+            <i class="fa fa-unlink"></i>
+          </button>
+          <% } %>
         </div>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+        <% } if (p.create) { %>
+        <button data-command="create" type="button" title="Create"
+            class="btn-white btn-outline-success btn">
+          <i class="fas fa-plus"></i>
+        </button>
+        <% } if (p.update) { %>
+        <button data-command="update" type="button" title="Edit"
+            class="btn-white btn-outline-primary btn">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+        <% } if (p.delete) { %>
+        <button data-command="delete" type="button" title="Delete"
+            class="btn-white btn-outline-danger btn">
+          <i class="far fa-trash-alt"></i>
+        </button>
+        <% } %>
+        <div class="nav-group">
+          <button data-command="reload" type="button" title="Reload"
+              class="btn-white btn-outline-secondary btn">
+            <i class="fa fa-redo-alt"></i>
+          </button>
+        </div>
+
+        <%- sort %>
+
+        <% if (attr.options.commands) { %>
+        <%- include(_view.get('_meta/customCommands'), {
+          commands: attr.options.commands,
+          translationKey: attr.view.translationKey
+        }) %>
+        <% } %>
+      </div>
+      <% if (p.filter) { %>
+      <div class="list-filter">
+        <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
+      </div>
+      <% } if (p.showTop) { %>
+      <%- include(_view.get('_part/list/top')) %>
+      <% } %>
+      <div class="data-grid-content"></div>
+
+      <% if (p.showBottom) { %>
+      <%- include(_view.get('_part/list/bottom')) %>
+      <% } %>
+      <div class="overlay">
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
     </div>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
 </div>

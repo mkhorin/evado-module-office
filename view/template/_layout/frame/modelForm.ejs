@@ -1,50 +1,50 @@
 <!-- office/_layouts/frame/modelForm -->
 <%
 const p = {
-    url: _controller.getOriginalUrl(),
-    key: model.class.getKey(),
-    id: model.isNew() ? '' : model.getId(),
-    className: model.class.name,
-    viewName: model.view.viewName,
-    timestamp: _controller.timestamp,
-    hideEmptyGroups: true,
-    readOnly: model.readOnly,
-    transiting: model.isTransiting(),
-    hasHistory: security.access.canReadHistory() && model.hasHistory(),
-    delete: `office/model/delete?c=${model.class.id}`,
-    canSign: typeof canSign !== 'undefined' && canSign
+  url: _controller.getOriginalUrl(),
+  key: model.class.getKey(),
+  id: model.isNew() ? '' : model.getId(),
+  className: model.class.name,
+  viewName: model.view.viewName,
+  timestamp: _controller.timestamp,
+  hideEmptyGroups: true,
+  readOnly: model.readOnly,
+  transiting: model.isTransiting(),
+  hasHistory: security.access.canReadHistory() && model.hasHistory(),
+  delete: `office/model/delete?c=${model.class.id}`,
+  canSign: typeof canSign !== 'undefined' && canSign
 };
 if (typeof params !== 'undefined') {
-    Object.assign(p, params);
+  Object.assign(p, params);
 }
 const jam = _data.get('jam') || model.view.options.jam || 'DocModel';
 %>
 <div class="frame-box scroll-container <%- model.view.options.css %>"
-     data-tab="<%= blocks.tab %>"
-     data-title="<%= blocks.title %>"
-     data-t-tab="<%- blocks.tabTranslation %>"
-     data-t-title="<%- blocks.titleTranslation %>"
-     data-csrf="<%- _controller.getCsrfToken() %>">
+   data-tab="<%= blocks.tab %>"
+   data-title="<%= blocks.title %>"
+   data-t-tab="<%- blocks.tabTranslation %>"
+   data-t-title="<%- blocks.titleTranslation %>"
+   data-csrf="<%- _controller.getCsrfToken() %>">
 
-    <div class="frame-box-header scroll-header">
-        <%- include(_view.get('_part/model/commands'), {p}) %>
-    </div>
+  <div class="frame-box-header scroll-header">
+    <%- include(_view.get('_part/model/commands'), {p}) %>
+  </div>
 
-    <div class="frame-box-body scroll-body">
+  <div class="frame-box-body scroll-body">
 
-        <%- include(_view.get('_part/model/description')) %>
+    <%- include(_view.get('_part/model/description')) %>
 
-        <form class="model form" enctype="multipart/form-data"
-              autocomplete="<%- model.view.options.autocomplete || 'off' %>"
-              data-jam="<%- jam %>"
-              data-params="<%= JSON.stringify(p) %>">
+    <form class="model form" enctype="multipart/form-data"
+        autocomplete="<%- model.view.options.autocomplete || 'off' %>"
+        data-jam="<%- jam %>"
+        data-params="<%= JSON.stringify(p) %>">
 
-            <%- body %>
+      <%- body %>
 
-        </form>
-    </div>
+    </form>
+  </div>
 
-    <div class="overlay">
-        <i class="fa fa-spinner fa-spin"></i>
-    </div>
+  <div class="overlay">
+    <i class="fa fa-spinner fa-spin"></i>
+  </div>
 </div>

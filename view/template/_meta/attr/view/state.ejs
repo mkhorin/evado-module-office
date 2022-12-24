@@ -3,8 +3,8 @@
 let formatted = false;
 let state = model.class.getState(model.get(attr));
 if (state) {
-    model.setDisplayValue(attr, `<span data-t="meta.${state.class.translationKey}" title="${state.name}">${_escape(state.title)}</span>`);
-    formatted = true;
+  model.setDisplayValue(attr, `<span data-t="meta.${state.class.translationKey}" title="${state.name}">${_escape(state.title)}</span>`);
+  formatted = true;
 }
 %>
 <%- include(_view.get('_meta/attr/static'), {formatted}) %>

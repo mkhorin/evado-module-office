@@ -2,15 +2,15 @@
 <%
 const value = model.get(attr);
 if (value) {
-    let text = model.related.getTitle(attr);
-    let {userUpdateUrl} = _module.params;
-    if (userUpdateUrl) {
-        text = _format(_url(userUpdateUrl) + value, 'url', {
-            target: '_blank',
-            text
-        });
-    }
-    model.setDisplayValue(attr, text);
+  let text = model.related.getTitle(attr);
+  let {userUpdateUrl} = _module.params;
+  if (userUpdateUrl) {
+    text = _format(_url(userUpdateUrl) + value, 'url', {
+      target: '_blank',
+      text
+    });
+  }
+  model.setDisplayValue(attr, text);
 }
 %>
 <%- include(_view.get('_meta/attr/static')) %>

@@ -3,11 +3,11 @@
 let value = model.get(attr);
 let text = attr.enum?.getText(value) || value;
 if (text) {
-    if (attr.escaping) {
-        text = _escape(text);
-        value = value ? _escape(value) : value;
-    }
-    text = `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>`;
+  if (attr.escaping) {
+    text = _escape(text);
+    value = value ? _escape(value) : value;
+  }
+  text = `<span data-t="meta.${attr.translationKey}" title="${value}">${text}</span>`;
 }
 model.setDisplayValue(attr, text);
 %>

@@ -6,78 +6,78 @@ const className = meta.class.name;
 const creationView = meta.view.creationView.viewName;
 const creationParams = `c=${className}&v=${creationView}${nodeUrlParams}`;
 data = {
-    jam: meta.view.options.jam || 'TreeList',
-    key: meta.class.getKey(),
-    multiple: true,
-    order: meta.view.order || {[meta.class.getKey()]: -1},
-    columns: extraData.columns,
-    create: `office/model/create?${creationParams}`,
-    update: `office/model/update`,
-    delete: `office/model/delete-list`,
-    filter: {
-        url: `office/model/filter?c=${className}`
-    },
-    clone: `office/model/clone?${creationParams}`,
-    showTop: true,
-    ...data
+  jam: meta.view.options.jam || 'TreeList',
+  key: meta.class.getKey(),
+  multiple: true,
+  order: meta.view.order || {[meta.class.getKey()]: -1},
+  columns: extraData.columns,
+  create: `office/model/create?${creationParams}`,
+  update: `office/model/update`,
+  delete: `office/model/delete-list`,
+  filter: {
+    url: `office/model/filter?c=${className}`
+  },
+  clone: `office/model/clone?${creationParams}`,
+  showTop: true,
+  ...data
 };
 if (!data.list) {
-    data.list = `office/model/list-tree?n=${meta.node.id}${nodeUrlParams}`;
+  data.list = `office/model/list-tree?n=${meta.node.id}${nodeUrlParams}`;
 }
 const commands = extraData.commands;
 const canCreate = commands.create && data.create && security.access.canCreate();
 %>
 <div class="tree-data-grid data-grid <%- meta.view.options.css %>"
-     data-jam="<%- data.jam %>"
-     data-params="<%= JSON.stringify(data) %>">
+   data-jam="<%- data.jam %>"
+   data-params="<%= JSON.stringify(data) %>">
 
-    <div class="commands">
-        <% if (canCreate) { %>
-        <button data-command="create" class="btn-outline-success btn" type="button" title="Create">
-            <i class="fas fa-plus"></i>
-        </button>
-        <% } if (commands.edit && data.update && security.access.canRead()) { %>
-        <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
-            <i class="fas fa-pencil-alt"></i>
-        </button>
-        <% } if (commands.delete && data.delete && security.access.canDelete()) { %>
-        <button data-command="delete" class="btn-outline-danger btn" type="button" title="Delete">
-            <i class="far fa-trash-alt"></i>
-        </button>
-        <% } %>
-        <div class="nav-group">
-            <button data-command="reload" class="btn-outline-secondary btn" type="button" title="Reload">
-                <i class="fa fa-redo-alt"></i>
-            </button>
-        </div>
-        <% if (canCreate) { %>
-        <button data-command="clone" class="btn-outline-success btn" type="button" title="Clone">
-            <i class="far fa-clone"></i>
-        </button>
-        <% } if (data.modalSort && security.access.canUpdate()) { %>
-        <button data-command="sort" class="btn-outline-secondary btn" type="button" title="Sort">
-            <i class="fas fa-sort"></i>
-        </button>
-        <% } if (meta.view.options.commands) { %>
-        <%- include(_view.get('_meta/customCommands'), {
-            commands: meta.view.options.commands,
-            translationKey: meta.view.translationKey
-        }) %>
-        <% } %>
-        <%- include(_view.get('_part/tool/utilities'), {params: {meta: meta.view.id}}) %>
-    </div>
-    <% if (extraData.filterColumns.length) { %>
-    <div class="list-filter">
-        <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
-    </div>
-    <% } if (data.showTop) { %>
-    <%- include(_view.get('_part/list/top')) %>
+  <div class="commands">
+    <% if (canCreate) { %>
+    <button data-command="create" class="btn-outline-success btn" type="button" title="Create">
+      <i class="fas fa-plus"></i>
+    </button>
+    <% } if (commands.edit && data.update && security.access.canRead()) { %>
+    <button data-command="update" class="btn-outline-primary btn" type="button" title="Edit">
+      <i class="fas fa-pencil-alt"></i>
+    </button>
+    <% } if (commands.delete && data.delete && security.access.canDelete()) { %>
+    <button data-command="delete" class="btn-outline-danger btn" type="button" title="Delete">
+      <i class="far fa-trash-alt"></i>
+    </button>
     <% } %>
-    <div class="data-grid-content"></div>
-
-    <%- include(_view.get('_part/list/bottom')) %>
-
-    <div class="overlay">
-        <i class="fa fa-spinner fa-spin"></i>
+    <div class="nav-group">
+      <button data-command="reload" class="btn-outline-secondary btn" type="button" title="Reload">
+        <i class="fa fa-redo-alt"></i>
+      </button>
     </div>
+    <% if (canCreate) { %>
+    <button data-command="clone" class="btn-outline-success btn" type="button" title="Clone">
+      <i class="far fa-clone"></i>
+    </button>
+    <% } if (data.modalSort && security.access.canUpdate()) { %>
+    <button data-command="sort" class="btn-outline-secondary btn" type="button" title="Sort">
+      <i class="fas fa-sort"></i>
+    </button>
+    <% } if (meta.view.options.commands) { %>
+    <%- include(_view.get('_meta/customCommands'), {
+      commands: meta.view.options.commands,
+      translationKey: meta.view.translationKey
+    }) %>
+    <% } %>
+    <%- include(_view.get('_part/tool/utilities'), {params: {meta: meta.view.id}}) %>
+  </div>
+  <% if (extraData.filterColumns.length) { %>
+  <div class="list-filter">
+    <div class="text-center"><i class="fa fa-spinner fa-spin"></i></div>
+  </div>
+  <% } if (data.showTop) { %>
+  <%- include(_view.get('_part/list/top')) %>
+  <% } %>
+  <div class="data-grid-content"></div>
+
+  <%- include(_view.get('_part/list/bottom')) %>
+
+  <div class="overlay">
+    <i class="fa fa-spinner fa-spin"></i>
+  </div>
 </div>

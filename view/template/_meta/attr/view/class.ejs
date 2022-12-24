@@ -2,8 +2,8 @@
 <%
 const cls = model.class.meta.getClass(model.get(attr));
 if (cls) {
-    const value = `<span title="${cls.name}">${_escape(cls.title)}</span>`;
-    model.setDisplayValue(attr, value);
+  const value = `<span title="${cls.name}">${_escape(cls.title)}</span>`;
+  model.setDisplayValue(attr, value);
 }
 %>
 <%- include(_view.get('_meta/attr/static'), {formatted: true}) %>

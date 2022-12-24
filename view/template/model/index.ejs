@@ -16,16 +16,14 @@ if (pdd) {
 
 <% }
 const modalSort = extraData.modalSortNames.length ? {
-    url: `office/model/sort?n=${meta.node.id}&column=`,
-    columns: extraData.modalSortNames
+  url: `office/model/sort?n=${meta.node.id}&column=`,
+  columns: extraData.modalSortNames
 } : null;
 %>
 <div class="box">
-    <div class="box-body">
-
-        <%- include(_view.get(`_meta/list/${template}`), {
-            data: {modalSort}
-        }) %>
-
-    </div>
+  <div class="box-body">
+    <%- include(_view.get(`_meta/list/${template}`), {
+      data: {modalSort}
+    }) %>
+  </div>
 </div>

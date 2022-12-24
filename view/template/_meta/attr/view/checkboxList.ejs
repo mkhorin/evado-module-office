@@ -2,33 +2,33 @@
 <%
 let values = model.get(attr);
 if (values && typeof values === 'string') {
-    values = values.split(',');
+  values = values.split(',');
 }
 if (Array.isArray(values)) {
-    let items = '';
-    let t = `meta.${attr.translationKey}`;
-    let css = attr.options.inline
-        ? 'value-item-inline'
-        : 'value-item';
-    for (let value of values) {
-        let item = attr.enum?.getItem(value);
-        let text = item?.text || value;
-        if (text) {
-            let hint = item?.hint || '';
-            if (attr.escaping) {
-                text = _escape(text);
-                value = value ? _escape(value) : value;
-            }
-            if (hint) {
-                hint = _escape(hint);
-                hint = `<i class="hint-icon" data-t="${t}" title="${hint}" data-title="${hint}"></i>`;
-            }
-            items += `<div class="${css}" data-t="${t}" title="${value}">${text}${hint}</div>`;
-        }
+  let items = '';
+  let t = `meta.${attr.translationKey}`;
+  let css = attr.options.inline
+    ? 'value-item-inline'
+    : 'value-item';
+  for (let value of values) {
+    let item = attr.enum?.getItem(value);
+    let text = item?.text || value;
+    if (text) {
+      let hint = item?.hint || '';
+      if (attr.escaping) {
+        text = _escape(text);
+        value = value ? _escape(value) : value;
+      }
+      if (hint) {
+        hint = _escape(hint);
+        hint = `<i class="hint-icon" data-t="${t}" title="${hint}" data-title="${hint}"></i>`;
+      }
+      items += `<div class="${css}" data-t="${t}" title="${value}">${text}${hint}</div>`;
     }
-    model.setDisplayValue(attr, items);
+  }
+  model.setDisplayValue(attr, items);
 } else {
-    model.setDisplayValue(attr, values);
+  model.setDisplayValue(attr, values);
 }
 %>
 <%- include(_view.get('_meta/attr/static'), {formatted: true}) %>

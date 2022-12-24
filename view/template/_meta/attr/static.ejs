@@ -3,34 +3,34 @@
 let displayValue = model.getDisplayValue(attr);
 let value = model.get(attr);
 if (typeof formatted === 'undefined' || !formatted) {
-    let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
-    if (!displayValue) {
-        displayValue = value;
-    }
-    displayValue = _format(displayValue, attrFormat);
-    if (Array.isArray(displayValue)) {
-        displayValue = displayValue.join(', ');
-    }
-    if (value && attr.escaping) {
-        displayValue = _escape(displayValue);
-    }
-    if (attr.translatable && displayValue) {
-        displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
-    }
+  let attrFormat = typeof format === 'undefined' ? attr.getFormat() : format;
+  if (!displayValue) {
+    displayValue = value;
+  }
+  displayValue = _format(displayValue, attrFormat);
+  if (Array.isArray(displayValue)) {
+    displayValue = displayValue.join(', ');
+  }
+  if (value && attr.escaping) {
+    displayValue = _escape(displayValue);
+  }
+  if (attr.translatable && displayValue) {
+    displayValue = `<span data-t="meta.${attr.translationKey}">${displayValue}</span>`;
+  }
 }
 %>
 <div class="form-attr-static form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input name="<%- formAttrName %>" type="hidden" value="<%= value %>" class="form-value">
-        <div class="form-control-plaintext">
-            <div><%- displayValue %></div>
-            <div class="error-block"></div>
-            <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
-        </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input name="<%- formAttrName %>" type="hidden" value="<%= value %>" class="form-value">
+    <div class="form-control-plaintext">
+      <div><%- displayValue %></div>
+      <div class="error-block"></div>
+      <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
+  </div>
 </div>

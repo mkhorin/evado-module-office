@@ -1,56 +1,56 @@
 <% layout(_view.get('_layout/main')) %>
 
 <header class="main-header">
-    <nav class="navbar-super navbar navbar-dark">
-        <%- include(_view.get('_part/nav/logo')) %>
-    </nav>
-    <nav class="navbar navbar-expand-md navbar-dark">
+  <nav class="navbar-super navbar navbar-dark">
+    <%- include(_view.get('_part/nav/logo')) %>
+  </nav>
+  <nav class="navbar navbar-expand-md navbar-dark">
 
-        <%- include(_view.get('_part/nav/logo')) %>
+    <%- include(_view.get('_part/nav/logo')) %>
 
-        <button class="sidebar-toggle nav-btn nav-btn-primary btn" type="button" data-jam="SidebarToggle">
-            <i class="fas fa-chevron-left"></i>
-        </button>
+    <button class="sidebar-toggle nav-btn nav-btn-primary btn" type="button" data-jam="SidebarToggle">
+      <i class="fas fa-chevron-left"></i>
+    </button>
 
-        <%- include(_view.get('_part/nav/commonMenu')) %>
-        <%- include(_view.get('_part/nav/frameStackBack')) %>
+    <%- include(_view.get('_part/nav/commonMenu')) %>
+    <%- include(_view.get('_part/nav/frameStackBack')) %>
 
-        <div class="ms-auto"></div>
+    <div class="ms-auto"></div>
 
-        <%- _view.placeWidget('notifications') %>
+    <%- _view.placeWidget('notifications') %>
 
-        <%- include(_view.get('_part/nav/user')) %>
-        <%- include(_view.get('_part/nav/language')) %>
-    </nav>
+    <%- include(_view.get('_part/nav/user')) %>
+    <%- include(_view.get('_part/nav/language')) %>
+  </nav>
 </header>
 
 <aside class="main-sidebar">
 
-    <%- include(_view.get('_part/nav/search')) %>
+  <%- include(_view.get('_part/nav/search')) %>
 
-    <%- _view.placeWidget('sideMenu') %>
+  <%- _view.placeWidget('sideMenu') %>
 
 </aside>
 
 <section class="main-content">
-    <div class="main-container container-fluid">
+  <div class="main-container container-fluid">
 
-        <%- include(_view.get('_part/misc/alert')) %>
+    <%- include(_view.get('_part/misc/alert')) %>
 
-        <% if (_module.getMetaHub().error) { %>
-        <div class="alert-danger alert" data-t="">Invalid metadata</div>
-        <% } %>
+    <% if (_module.getMetaHub().error) { %>
+    <div class="alert-danger alert" data-t="">Invalid metadata</div>
+    <% } %>
 
-        <h1 class="content-header" data-t="<%- blocks.titleTranslation %>"><%- blocks.title %></h1>
+    <h1 class="content-header" data-t="<%- blocks.titleTranslation %>"><%- blocks.title %></h1>
 
-        <%- body %>
+    <%- body %>
 
-    </div>
-    <%- include(_view.get('_part/misc/footer')) %>
+  </div>
+  <%- include(_view.get('_part/misc/footer')) %>
 </section>
 
 <div class="global-loader overlay">
-    <i class="fa fa-spinner fa-spin"></i>
+  <i class="fa fa-spinner fa-spin"></i>
 </div>
 
 <%- include(_view.get('_part/misc/frameStack')) %>

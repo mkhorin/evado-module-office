@@ -1,35 +1,35 @@
 <!-- office/_part/group/tabs -->
 <div class="tabs <%- group.options.css %>"
-     data-id="<%- group.name %>"
-     data-action-binder="<%= group.actionBinder.stringified %>">
-    <div class="nav nav-tabs" role="tablist">
+   data-id="<%- group.name %>"
+   data-action-binder="<%= group.actionBinder.stringified %>">
+  <div class="nav nav-tabs" role="tablist">
+  <% for (const tab of group.children) {
+     if (tab.isGroup() && !tab.isHidden()) { %>
+    <a class="nav-item nav-link <%- tab.isActive() ? 'active' : '' %>" href="javascript:void 0" role="tab"
+       data-id="<%- tab.name %>"><span data-t="meta.<%- tab.translationKey %>"><%= tab.title %></span><% if (tab.hint) {
+      %><i class="hint-icon" title="<%= tab.hint %>" data-t="meta.<%- tab.translationKey %>"></i><% } %></a>
+  <% }} %>
+  </div>
+  <div class="tab-content">
     <% for (const tab of group.children) {
-       if (tab.isGroup() && !tab.isHidden()) { %>
-        <a class="nav-item nav-link <%- tab.isActive() ? 'active' : '' %>" href="javascript:void 0" role="tab"
-           data-id="<%- tab.name %>"><span data-t="meta.<%- tab.translationKey %>"><%= tab.title %></span><% if (tab.hint) {
-            %><i class="hint-icon" title="<%= tab.hint %>" data-t="meta.<%- tab.translationKey %>"></i><% } %></a>
-    <% }} %>
-    </div>
-    <div class="tab-content">
-        <% for (const tab of group.children) {
-            if (tab.isGroup() && !tab.isHidden()) {
-                const loaded = viewModel.isLoadedGroup(tab);
-        %>
-        <div class="tab-pane model-group <%- tab.isActive() ? 'active' : '' %> <%- tab.options.css %>"
-             data-id="<%- tab.name %>"
-             data-action-binder="<%= tab.actionBinder.stringified %>"
-             data-loadable="<%- tab.isLoadable() %>"
-             data-loaded="<%- loaded %>">
-            <div class="model-group-body">
-            <% if (loaded) { %>
-                <%- include(_view.get('_meta/group/children'), {group: tab}) %>
-            <% } else { %>
-                <div class="model-group-loader">
-                    <i class="fa fa-spinner fa-spin"></i>
-                </div>
-            <% } %>
-            </div>
+      if (tab.isGroup() && !tab.isHidden()) {
+        const loaded = viewModel.isLoadedGroup(tab);
+    %>
+    <div class="tab-pane model-group <%- tab.isActive() ? 'active' : '' %> <%- tab.options.css %>"
+       data-id="<%- tab.name %>"
+       data-action-binder="<%= tab.actionBinder.stringified %>"
+       data-loadable="<%- tab.isLoadable() %>"
+       data-loaded="<%- loaded %>">
+      <div class="model-group-body">
+      <% if (loaded) { %>
+        <%- include(_view.get('_meta/group/children'), {group: tab}) %>
+      <% } else { %>
+        <div class="model-group-loader">
+          <i class="fa fa-spinner fa-spin"></i>
         </div>
-        <% }} %>
+      <% } %>
+      </div>
     </div>
+    <% }} %>
+  </div>
 </div>

@@ -1,22 +1,21 @@
 <!-- _meta/attr/noAccess -->
-
 <% if (_module.params.hideForbiddenAttr || attr.isHidden()) { %>
 <div class="form-attr hidden"
-     data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
-    <input type="hidden" name="<%- formAttrName %>" class="form-value">
+   data-handler="<%- typeof handler === 'undefined' ? '' : handler %>">
+  <input type="hidden" name="<%- formAttrName %>" class="form-value">
 </div>
 <% } else { %>
 <div class="form-attr form-group row <%- attr.options.css %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" class="form-value">
-        <div class="form-control-plaintext">
-            <%- _format(null, 'noAccess') %>
-            <div class="error-block"></div>
-        </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input type="hidden" name="<%- formAttrName %>" class="form-value">
+    <div class="form-control-plaintext">
+      <%- _format(null, 'noAccess') %>
+      <div class="error-block"></div>
     </div>
+  </div>
 </div>
 <% } %>

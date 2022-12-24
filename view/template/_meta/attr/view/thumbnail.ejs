@@ -9,36 +9,36 @@ if ((!thumbnail || !values.length) && attr.isHideEmpty()) {
 %>
 <%- include(_view.get('_meta/attr/empty')) %>
 <% } else {
-    const size = attr.options.thumbnail || '';
-    const commands = attr.commandMap;
-    const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
-    const edit = commands.edit ? `office/model/update?${params}&id=` : false;
+  const size = attr.options.thumbnail || '';
+  const commands = attr.commandMap;
+  const params = `c=${attr.relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
+  const edit = commands.edit ? `office/model/update?${params}&id=` : false;
 %>
 <div class="form-attr form-group row <%- required %> <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
-        <% if (thumbnail) {
-            const image = thumbnail + '&s=' + size + '&id='; %>
-        <div class="thumbnail-list">
-            <% for (const value of values) {
-                const id = value.getId ? value.getId() : value;
-                const name = value.getTitle ? value.getTitle() : value;
-            if (edit) { %>
-            <a href="<%- edit + id %>" class="frame-link">
-                <img src="<%- image + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
-            </a>
-            <% } else  { %>
-            <img src="<%- image + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
-            <% }} %>
-        </div>
-        <% } %>
-        <div class="error-block"></div>
-        <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%= model.get(attr) %>" class="form-value">
+    <% if (thumbnail) {
+      const image = thumbnail + '&s=' + size + '&id='; %>
+    <div class="thumbnail-list">
+      <% for (const value of values) {
+        const id = value.getId ? value.getId() : value;
+        const name = value.getTitle ? value.getTitle() : value;
+      if (edit) { %>
+      <a href="<%- edit + id %>" class="frame-link">
+        <img src="<%- image + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
+      </a>
+      <% } else  { %>
+      <img src="<%- image + id %>" class="img-thumbnail img-fluid" title="<%= name %>" alt="">
+      <% }} %>
     </div>
+    <% } %>
+    <div class="error-block"></div>
+    <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
+  </div>
 </div>
 <% } %>

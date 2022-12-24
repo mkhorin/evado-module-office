@@ -1,24 +1,24 @@
 <!-- _meta/attr/sort -->
 <%
 if (p.multiple && extraData.modalSortNames.length && access.canUpdate()) {
-    p.modalSort = {
-        url: `office/model/sort-related?${params}&column=`,
-        columns: extraData.modalSortNames
-    };
+  p.modalSort = {
+    url: `office/model/sort-related?${params}&column=`,
+    columns: extraData.modalSortNames
+  };
 %>
 <button data-command="sort" class="btn-outline-secondary btn" type="button" title="Sort">
-    <i class="fas fa-sort"></i>
+  <i class="fas fa-sort"></i>
 </button>
 <% } if (!model.isNew() && attr.relation.isSortable()) {
-    p.relationSort = {
-        url: `office/model/sort-own-related?${params}`,
-        active: model.isRelationSorted(attr)
-    };
-    if (p.relationSort.active) {
-        p.order = null; // clear default order
-    }
+  p.relationSort = {
+    url: `office/model/sort-own-related?${params}`,
+    active: model.isRelationSorted(attr)
+  };
+  if (p.relationSort.active) {
+    p.order = null; // clear default order
+  }
 %>
 <button data-command="relationSort" class="btn-outline-secondary btn" type="button" title="Sort related objects">
-    <i class="fa fa-sort"></i>
+  <i class="fa fa-sort"></i>
 </button>
 <% } %>

@@ -8,28 +8,28 @@ if (!file && attr.isHideEmpty()) {
 <%- include(_view.get('_meta/attr/empty')) %>
 <% } else { %>
 <div class="form-attr form-group row <%- attr.options.css %>"
-     data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
-     data-action-binder="<%= attr.actionBinder.stringified %>">
+   data-handler="<%- typeof handler === 'undefined' ? attr.options.handler : handler %>"
+   data-action-binder="<%= attr.actionBinder.stringified %>">
 
-    <%- include(_view.get('_meta/attr/label')) %>
+  <%- include(_view.get('_meta/attr/label')) %>
 
-    <div class="<%- attr.options.cssValue || defaultCssValue %>">
-        <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
-        <div class="form-control-plaintext">
-            <% if (data?.size) { %>
-            <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" tabindex="-1"
-               data-preload="<%- options.preload %>"
-               data-t="">Download</a>
-            <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
-            <% if (data.thumbnail) { %>
-            <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>"
-                 class="file-download-thumbnail img-thumbnail img-fluid" alt="">
-            <% }} else { %>
-            <%- _format(null) %>
-            <% } %>
-            <div class="error-block"></div>
-            <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
-        </div>
+  <div class="<%- attr.options.cssValue || defaultCssValue %>">
+    <input type="hidden" name="<%- formAttrName %>" value="<%- file %>" class="form-value">
+    <div class="form-control-plaintext">
+      <% if (data?.size) { %>
+      <a class="download-link" href="<%- data.download %>" title="<%= data.name %>" target="_blank" tabindex="-1"
+         data-preload="<%- options.preload %>"
+         data-t="">Download</a>
+      <span class="file-size">(<%- _format(data.size, 'bytes') %>)</span>
+      <% if (data.thumbnail) { %>
+      <img src="<%- data.thumbnail %>&t=<%- _controller.timestamp %>"
+         class="file-download-thumbnail img-thumbnail img-fluid" alt="">
+      <% }} else { %>
+      <%- _format(null) %>
+      <% } %>
+      <div class="error-block"></div>
+      <div class="hint-block" data-t="meta.<%- attr.view.translationKey %>"><%- attr.hint %></div>
     </div>
+  </div>
 </div>
 <% } %>

@@ -11,8 +11,8 @@ Jam.SortListRelation = class SortListRelation extends Jam.SortListArray {
         }
         return super.getCommandMethod(name);
     }
-    onDeleteSort () {
 
+    onDeleteSort () {
         Jam.dialog
             .confirmDeletion('Remove sorting of related objects?')
             .then(this.deleteSorting.bind(this));

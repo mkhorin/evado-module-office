@@ -1,7 +1,7 @@
 <!-- office/_part/group/columns -->
 <div class="form-columns form-group row <%- group.options.css %>"
    data-id="<%- group.name %>"
-   data-action-binder="<%= group.actionBinder.stringified  %>">
+   data-action-binder="<%= group.actionBinder.stringified %>">
   <%
   for (const column of group.children) {
     if (column.isGroup() && !column.isHidden()) {

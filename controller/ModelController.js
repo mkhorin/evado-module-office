@@ -365,7 +365,8 @@ module.exports = class ModelController extends Base {
     }
 
     async deleteRelatedModels (owner) {
-        for (const model of owner.related.getDeletedModels()) {
+        const models = owner.related.getDeletedModels();
+        for (const model of models) {
             try {
                 await this.deleteById(model.getId(), model.class);
             } catch (err) {
@@ -376,8 +377,8 @@ module.exports = class ModelController extends Base {
 
     async deleteById (id, modelClass) {
         const config = this.getSpawnConfig();
-        const query = modelClass.createQuery(config).byId(id);
-        const model = await query.withStateView().one();
+        const query = modelClass.createQuery(config).byId(id).withStateView();
+        const model = await query.one();
         if (!model) {
             throw new BadRequest(`Object not found: ${id}.${modelClass.id}`);
         }

@@ -135,7 +135,8 @@ module.exports = class BaseMetaController extends Base {
             master.model = master.view.createModel(config);
             return master;
         }
-        master.model = await master.view.createQuery(config).byId(id).one();
+        const query = master.view.createQuery(config).byId(id);
+        master.model = await query.one();
         if (!master.model) {
             throw new BadRequest(`Master object not found: ${data}`);
         }
@@ -214,10 +215,11 @@ module.exports = class BaseMetaController extends Base {
     }
 
     async assignSecurityModelFilter (query) {
-        query.security = this.createMetaSecurity();
-        if (await query.security.resolveOnList(query.view, {skipAccessException: true})) {
-            await query.security.resolveAttrsOnList(query.view);
-            return query.security.access.assignObjectFilter(query);
+        const security = this.createMetaSecurity();
+        query.security = security;
+        if (await security.resolveOnList(query.view, {skipAccessException: true})) {
+            await security.resolveAttrsOnList(query.view);
+            return security.access.assignObjectFilter(query);
         }
         return query.where(['false']);
     }

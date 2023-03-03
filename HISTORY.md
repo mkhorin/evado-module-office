@@ -17,7 +17,7 @@
 * view/template/_meta/attr/view/state
     - fix state template
 * view/template/dataHistory/index
-    - fix source data view    
+    - fix source data view
 
 ## 5.3.0
 

@@ -1,6 +1,7 @@
 <%
 const items = [];
-for (const cls of meta.class.getActiveDescendants()) {
+const classes = meta.class.getActiveDescendants();
+for (const cls of classes) {
   items.push({
     label: cls.title,
     name: cls.name,

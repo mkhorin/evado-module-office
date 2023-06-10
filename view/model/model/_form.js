@@ -18,13 +18,13 @@ module.exports = class ModelForm extends Base {
     }
 
     getAttrData ({name}, key) {
-        if (Object.prototype.hasOwnProperty.call(this.attrData, name)) {
+        if (Object.hasOwn(this.attrData, name)) {
             return this.attrData[name][key];
         }
     }
 
     getGroupData ({name}, key) {
-        if (Object.prototype.hasOwnProperty.call(this.groupData, name)) {
+        if (Object.hasOwn(this.groupData, name)) {
             return this.groupData[name][key];
         }
     }
@@ -93,7 +93,7 @@ module.exports = class ModelForm extends Base {
     }
 
     setAttrData ({name}, key, data) {
-        if (!Object.prototype.hasOwnProperty.call(this.attrData, name)) {
+        if (!Object.hasOwn(this.attrData, name)) {
             this.attrData[name] = {};
         }
         this.attrData[name][key] = data;

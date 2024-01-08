@@ -28,7 +28,7 @@ data = {
 if (!data.list) {
   data.list = `office/model/list?n=${meta.node.id}${nodeUrlParams}`;
 }
-const commands = extraData.commands;
+const {commands} = extraData;
 const canCreate = commands.create && data.create && security.access.canCreate();
 const canDelete = commands.delete && data.delete && security.access.canDelete();
 %>

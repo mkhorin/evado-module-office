@@ -105,7 +105,7 @@ module.exports = class BaseMetaController extends Base {
             return null;
         }
         const [attrName, id, viewName, className] = data.split('.');
-        const master = this.meta.master;
+        const {master} = this.meta;
         master.class = this.baseMeta.getClass(className);
         if (!master.class) {
             throw new BadRequest(`Master class not found: ${data}`);
@@ -143,7 +143,7 @@ module.exports = class BaseMetaController extends Base {
     }
 
     setDefaultMasterValue (model) {
-        const master = this.meta.master;
+        const {master} = this.meta;
         const attr = master.attr?.relation.refAttr;
         if (attr?.relation && !model.has(attr)) {
             const value = master.model.get(attr.relation.refAttrName);
@@ -200,7 +200,7 @@ module.exports = class BaseMetaController extends Base {
         if (!level) {
             throw new BadRequest('Tree view level not found');
         }
-        const master = this.meta.master;
+        const {master} = this.meta;
         master.class = level.sourceClass;
         master.view = master.class;
         master.attr = level.refAttr;

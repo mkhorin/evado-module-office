@@ -15,16 +15,15 @@ module.exports = class SortOwnRelatedAction extends Base {
     }
 
     async execute () {
-        const meta = this.controller.meta;
+        const {meta} = this.controller;
         await this.controller.setMetaParams();
-        const attr = meta.master.attr;
+        const {attr, model} = meta.master;
         if (!attr) {
             throw new BadRequest('Invalid master attribute');
         }
         if (!attr.relation.isSortable()) {
             throw new BadRequest('Not sortable relation');
         }
-        const model = meta.master.model;
         if (model.isNew()) {
             throw new BadRequest('Invalid master model');
         }

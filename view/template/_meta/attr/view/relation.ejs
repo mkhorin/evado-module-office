@@ -1,7 +1,7 @@
 <!-- _meta/attr/view/relation -->
 <%
 const extraData = extraMeta.getData(attr.listView);
-const refClass = attr.relation.refClass;
+const {refClass} = attr.relation;
 const params = `c=${refClass.id}&m=${attr.name}.${model.getMetaId()}`;
 const defaultValue = model.isNew() ? model.get(attr) : null;
 const access = security.relationAccessMap[attr.name];

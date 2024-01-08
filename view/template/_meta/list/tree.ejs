@@ -24,7 +24,7 @@ data = {
 if (!data.list) {
   data.list = `office/model/list-tree?n=${meta.node.id}${nodeUrlParams}`;
 }
-const commands = extraData.commands;
+const {commands} = extraData;
 const canCreate = commands.create && data.create && security.access.canCreate();
 %>
 <div class="tree-data-grid data-grid <%- meta.view.options.css %>"

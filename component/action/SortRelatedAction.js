@@ -15,7 +15,7 @@ module.exports = class SortRelatedAction extends Base {
     }
 
     async execute () {
-        const meta = this.controller.meta;
+        const {meta} = this.controller;
         await this.controller.setMetaParams();
         if (!meta.master.attr) {
             throw new BadRequest('Invalid master attribute');

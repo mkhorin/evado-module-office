@@ -1,7 +1,7 @@
 <!-- _meta/attr/edit/relationSelect -->
 <%
 const extraData = extraMeta.getData(attr.listView);
-const relation = attr.relation;
+const {relation} = attr;
 const params = `c=${relation.refClass.id}&m=${attr.name}.${model.getMetaId()}`;
 const value = model.get(attr);
 const defaultValue = model.isNew() ? model.get(attr) : null;

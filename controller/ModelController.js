@@ -41,7 +41,7 @@ module.exports = class ModelController extends Base {
     }
 
     async actionCreate () {
-        const meta = this.meta;
+        const {meta} = this;
         this.setClassMetaParams();
         this.setCreationMetaParams(meta.class);
         await this.setMasterMetaParams();
@@ -204,7 +204,7 @@ module.exports = class ModelController extends Base {
         const query = this.meta.view.createQuery(config).withListData();
         await this.meta.node.applyFilter(query);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
-        const master = this.meta.master;
+        const {master} = this.meta;
         if (master.attr) {
             await master.attr.relation.setQueryByModel(query, master.model);
         }
@@ -221,7 +221,7 @@ module.exports = class ModelController extends Base {
         await this.setMasterMetaParams();
         await this.resolveMasterAttr({refView: 'selectListView'});
         await this.security.resolveAttrsOnList(this.meta.view);
-        const master = this.meta.master;
+        const {master} = this.meta;
         const {dependency} = this.getPostParams();
         const config = this.getSpawnConfig({
             model: master.model,
@@ -229,7 +229,7 @@ module.exports = class ModelController extends Base {
         });
         const query = this.meta.view.createQuery(config);
         query.setRelatedFilter(this.assignSecurityModelFilter.bind(this));
-        const attr = master.attr;
+        const {attr} = master;
         const name = attr.isRef() ? attr : attr.relation.linkAttrName;
         const value = master.model.get(name);
         if (value) {
@@ -352,7 +352,7 @@ module.exports = class ModelController extends Base {
     }
 
     resolveMasterAttr ({refView, access}) {
-        const attr = this.meta.master.attr;
+        const {attr} = this.meta.master;
         if (!attr) {
             throw new BadRequest(`Master attribute not set`);
         }
